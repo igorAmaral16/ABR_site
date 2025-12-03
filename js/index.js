@@ -217,20 +217,20 @@ class ThemeManager {
       ? 'Clique para modo claro'
       : 'Clique para modo escuro';
     tooltip.style.cssText = `
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: ${this.theme === 'dark' ? 'var(--dark-surface)' : 'var(--bg-white)'};
-            color: ${this.theme === 'dark' ? 'var(--dark-text-primary)' : 'var(--text-primary)'};
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            white-space: nowrap;
-            z-index: 1000;
-            box-shadow: ${this.theme === 'dark' ? 'var(--dark-shadow-md)' : 'var(--shadow-md)'};
-            border: 1px solid ${this.theme === 'dark' ? 'var(--dark-border)' : 'var(--border-light)'};
-        `;
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: ${this.theme === 'dark' ? 'var(--dark-surface)' : 'var(--bg-white)'};
+      color: ${this.theme === 'dark' ? 'var(--dark-text-primary)' : 'var(--text-primary)'};
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 1000;
+      box-shadow: ${this.theme === 'dark' ? 'var(--dark-shadow-md)' : 'var(--shadow-md)'};
+      border: 1px solid ${this.theme === 'dark' ? 'var(--dark-border)' : 'var(--border-light)'};
+    `;
     button.appendChild(tooltip);
   }
 
@@ -410,25 +410,38 @@ class ProductManager {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
-            <div class="modal-content">
-                <h3>Solicitar Orçamento</h3>
-                <p>Formulário de orçamento será aberto em breve.</p>
-                <button class="btn btn-primary close-modal">Fechar</button>
-            </div>
-        `;
+      <div class="modal-content">
+        <h3>Solicitar Orçamento</h3>
+        <p>Formulário de orçamento será aberto em breve.</p>
+        <button type="button" class="btn btn-primary close-modal">Fechar</button>
+      </div>
+    `;
 
-    document.body.appendChild(modal);
-
-    modal.querySelector('.close-modal').addEventListener('click', () => {
+    const closeModal = () => {
       modal.remove();
+      document.removeEventListener('keydown', handleEscape);
+    };
+
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+
+    modal.querySelector('.close-modal').addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeModal();
     });
 
-    // Fechar modal ao clicar fora
     modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.remove();
+      if (!e.target.closest('.modal-content')) {
+        closeModal();
       }
     });
+
+    document.addEventListener('keydown', handleEscape);
+
+    document.body.appendChild(modal);
   }
 
   downloadSpecSheet() {
@@ -454,18 +467,18 @@ class ProductManager {
     notification.className = 'notification';
     notification.textContent = message;
     notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 32px;
-            background: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
-            color: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
-            padding: 16px 24px;
-            border-radius: var(--radius-lg);
-            box-shadow: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
-            z-index: 2000;
-            animation: slideInRight 0.3s ease-out;
-            border: 1px solid ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
-        `;
+      position: fixed;
+      top: 100px;
+      right: 32px;
+      background: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
+      color: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
+      padding: 16px 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
+      z-index: 2000;
+      animation: slideInRight 0.3s ease-out;
+      border: 1px solid ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
+    `;
 
     document.body.appendChild(notification);
 
@@ -522,10 +535,10 @@ class LanguageManager {
 
     // Atualizar botão
     this.flagToggle.innerHTML = `
-            <span class="flag-icon flag-icon-${lang === 'en' ? 'us' : lang}"></span>
-            ${langText.split(' ')[0]}
-            <i class="fa-solid fa-chevron-down"></i>
-        `;
+      <span class="flag-icon flag-icon-${lang === 'en' ? 'us' : lang}"></span>
+      ${langText.split(' ')[0]}
+      <i class="fa-solid fa-chevron-down"></i>
+    `;
 
     // Fechar menu
     this.flagMenu.classList.add('hidden');
@@ -564,18 +577,18 @@ class LanguageManager {
     notification.className = 'notification';
     notification.textContent = message;
     notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 32px;
-            background: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
-            color: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
-            padding: 16px 24px;
-            border-radius: var(--radius-lg);
-            box-shadow: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
-            z-index: 2000;
-            animation: slideInRight 0.3s ease-out;
-            border: 1px solid ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
-        `;
+      position: fixed;
+      top: 100px;
+      right: 32px;
+      background: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
+      color: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
+      padding: 16px 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
+      z-index: 2000;
+      animation: slideInRight 0.3s ease-out;
+      border: 1px solid ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
+    `;
 
     document.body.appendChild(notification);
 
@@ -594,6 +607,11 @@ class SearchManager {
   constructor() {
     this.searchToggle = document.getElementById('searchToggle');
     this.searchActive = false;
+    this.searchInput = null;
+
+    this.handleEscape = this.handleEscape.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+
     this.init();
   }
 
@@ -602,37 +620,45 @@ class SearchManager {
   }
 
   setupEventListeners() {
-    this.searchToggle?.addEventListener('click', () => {
-      if (!this.searchActive) {
+    this.searchToggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+
+      if (this.searchActive) {
+        this.closeSearch();
+      } else {
         this.showSearchInput();
       }
     });
   }
 
   showSearchInput() {
+    if (this.searchActive) return;
+
     const searchInput = document.createElement('input');
     searchInput.type = 'text';
     searchInput.placeholder = 'Buscar produtos...';
     searchInput.className = 'search-input';
     searchInput.style.cssText = `
-            position: absolute;
-            right: 0;
-            top: 100%;
-            width: 300px;
-            padding: 12px 16px;
-            background: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'white'};
-            border: 2px solid var(--primary);
-            border-radius: var(--radius-md);
-            box-shadow: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
-            font-size: 14px;
-            z-index: 1000;
-            animation: slideDown 0.3s ease-out;
-            color: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'var(--text-primary)'};
-        `;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      width: 300px;
+      padding: 12px 16px;
+      background: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'white'};
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-md);
+      box-shadow: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
+      font-size: 14px;
+      z-index: 1000;
+      animation: slideDown 0.3s ease-out;
+      color: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'var(--text-primary)'};
+    `;
 
     const controlsGroup = document.querySelector('.controls-group');
     controlsGroup.appendChild(searchInput);
     searchInput.focus();
+
+    this.searchInput = searchInput;
     this.searchActive = true;
 
     // Funcionalidade de busca
@@ -640,28 +666,43 @@ class SearchManager {
       this.performSearch(e.target.value.toLowerCase());
     });
 
-    // Fechar ao pressionar Escape
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') {
-        searchInput.remove();
-        this.searchActive = false;
-        document.removeEventListener('keydown', handleEscape);
-      }
-    };
+    document.addEventListener('keydown', this.handleEscape);
 
-    document.addEventListener('keydown', handleEscape);
-
-    // Fechar ao clicar fora
     setTimeout(() => {
-      const handleClickOutside = (e) => {
-        if (!searchInput.contains(e.target) && e.target !== this.searchToggle) {
-          searchInput.remove();
-          this.searchActive = false;
-          document.removeEventListener('click', handleClickOutside);
-        }
-      };
-      document.addEventListener('click', handleClickOutside);
+      document.addEventListener('click', this.handleClickOutside);
     }, 100);
+  }
+
+  closeSearch() {
+    if (!this.searchActive) return;
+
+    if (this.searchInput) {
+      this.searchInput.remove();
+      this.searchInput = null;
+    }
+
+    this.searchActive = false;
+
+    document.removeEventListener('keydown', this.handleEscape);
+    document.removeEventListener('click', this.handleClickOutside);
+  }
+
+  handleEscape(e) {
+    if (e.key === 'Escape') {
+      this.closeSearch();
+    }
+  }
+
+  handleClickOutside(e) {
+    if (!this.searchInput) return;
+
+    const clickedOutside =
+      !this.searchInput.contains(e.target) &&
+      e.target !== this.searchToggle;
+
+    if (clickedOutside) {
+      this.closeSearch();
+    }
   }
 
   performSearch(searchTerm) {
@@ -708,26 +749,10 @@ class SearchManager {
 }
 
 // ====================
-// INICIALIZAÇÃO
+// INICIALIZAÇÃO (variáveis globais de instância)
 // ====================
 
-// Instanciar gerenciadores
 let themeManager, productManager, languageManager, searchManager;
-
-document.addEventListener('DOMContentLoaded', () => {
-  // Inicializar gerenciadores
-  themeManager = new ThemeManager();
-  productManager = new ProductManager();
-  languageManager = new LanguageManager();
-  searchManager = new SearchManager();
-
-  // Adicionar estilos dinâmicos
-  this.addDynamicStyles();
-
-  // Log inicial
-  console.log(`Tema inicial: ${themeManager.getCurrentTheme()}`);
-  console.log(`Preferência do sistema: ${themeManager.getSystemPreference()}`);
-});
 
 // ====================
 // SISTEMA DE NAVEGAÇÃO ENTRE PÁGINAS
@@ -839,33 +864,46 @@ class CatalogFeatures {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
-            <div class="modal-content">
-                <h3>Download do Catálogo</h3>
-                <p>O download do catálogo em PDF será iniciado automaticamente.</p>
-                <p>Tamanho do arquivo: 45 MB</p>
-                <div class="modal-actions">
-                    <button class="btn btn-primary download-confirm">Continuar Download</button>
-                    <button class="btn btn-secondary cancel-download">Cancelar</button>
-                </div>
-            </div>
-        `;
+      <div class="modal-content">
+        <h3>Download do Catálogo</h3>
+        <p>O download do catálogo em PDF será iniciado automaticamente.</p>
+        <p>Tamanho do arquivo: 45 MB</p>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-primary download-confirm">Continuar Download</button>
+          <button type="button" class="btn btn-secondary cancel-download">Cancelar</button>
+        </div>
+      </div>
+    `;
 
-    document.body.appendChild(modal);
+    const closeModal = () => {
+      modal.remove();
+      document.removeEventListener('keydown', handleEscape);
+    };
+
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
 
     modal.querySelector('.download-confirm').addEventListener('click', () => {
       this.simulateDownload();
-      modal.remove();
+      closeModal();
     });
 
     modal.querySelector('.cancel-download').addEventListener('click', () => {
-      modal.remove();
+      closeModal();
     });
 
     modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.remove();
+      if (!e.target.closest('.modal-content')) {
+        closeModal();
       }
     });
+
+    document.addEventListener('keydown', handleEscape);
+
+    document.body.appendChild(modal);
   }
 
   simulateDownload() {
@@ -873,18 +911,18 @@ class CatalogFeatures {
     notification.className = 'notification';
     notification.textContent = 'Download iniciado! O arquivo será salvo em seu dispositivo.';
     notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 32px;
-            background: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
-            color: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
-            padding: 16px 24px;
-            border-radius: var(--radius-lg);
-            box-shadow: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
-            z-index: 2000;
-            animation: slideInRight 0.3s ease-out;
-            border: 1px solid ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
-        `;
+      position: fixed;
+      top: 100px;
+      right: 32px;
+      background: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
+      color: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
+      padding: 16px 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
+      z-index: 2000;
+      animation: slideInRight 0.3s ease-out;
+      border: 1px solid ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
+    `;
 
     document.body.appendChild(notification);
 
@@ -921,18 +959,18 @@ class CatalogFeatures {
     notification.className = 'notification';
     notification.textContent = message;
     notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 32px;
-            background: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
-            color: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
-            padding: 16px 24px;
-            border-radius: var(--radius-lg);
-            box-shadow: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
-            z-index: 2000;
-            animation: slideInRight 0.3s ease-out;
-            border: 1px solid ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
-        `;
+      position: fixed;
+      top: 100px;
+      right: 32px;
+      background: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
+      color: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
+      padding: 16px 24px;
+      border-radius: var(--radius-lg);
+      box-shadow: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
+      z-index: 2000;
+      animation: slideInRight 0.3s ease-out;
+      border: 1px solid ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
+    `;
 
     document.body.appendChild(notification);
 
@@ -1007,27 +1045,191 @@ class AboutFeatures {
     const modal = document.createElement('div');
     modal.className = 'modal-overlay';
     modal.innerHTML = `
-            <div class="modal-content">
-                <h3>${certification}</h3>
-                <p>Esta certificação garante que nossos processos atendem aos mais altos padrões internacionais de qualidade.</p>
-                <p><strong>Validade:</strong> Perpétua (com auditorias anuais)</p>
-                <p><strong>Escopo:</strong> Desenvolvimento e fabricação de sistemas de vedação</p>
-                <button class="btn btn-primary close-modal">Fechar</button>
-            </div>
-        `;
+      <div class="modal-content">
+        <h3>${certification}</h3>
+        <p>Esta certificação garante que nossos processos atendem aos mais altos padrões internacionais de qualidade.</p>
+        <p><strong>Validade:</strong> Perpétua (com auditorias anuais)</p>
+        <p><strong>Escopo:</strong> Desenvolvimento e fabricação de sistemas de vedação</p>
+        <button type="button" class="btn btn-primary close-modal">Fechar</button>
+      </div>
+    `;
 
-    document.body.appendChild(modal);
-
-    modal.querySelector('.close-modal').addEventListener('click', () => {
+    const closeModal = () => {
       modal.remove();
+      document.removeEventListener('keydown', handleEscape);
+    };
+
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    };
+
+    modal.querySelector('.close-modal').addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeModal();
     });
 
     modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.remove();
+      if (!e.target.closest('.modal-content')) {
+        closeModal();
       }
     });
+
+    document.addEventListener('keydown', handleEscape);
+
+    document.body.appendChild(modal);
   }
+}
+
+// ====================
+// FUNÇÕES GLOBAIS ADICIONAIS
+// ====================
+
+// Adicionar estilos dinâmicos para novas funcionalidades
+function addAdditionalStyles(currentPage) {
+  const style = document.createElement('style');
+  style.textContent = `
+    .modal-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+    
+    .modal-actions .btn {
+      flex: 1;
+      min-width: 140px;
+    }
+    
+    .team-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    /* Estilos para página específica */
+    .page-indicator {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: var(--primary);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 100;
+    }
+    
+    body.dark-mode .page-indicator {
+      background: var(--dark-primary);
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Adicionar indicador de página (apenas para desenvolvimento)
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    const pageIndicator = document.createElement('div');
+    pageIndicator.className = 'page-indicator';
+    pageIndicator.textContent = currentPage || 'Desconhecida';
+    document.body.appendChild(pageIndicator);
+  }
+}
+
+// Adicionar estilos dinâmicos
+function addDynamicStyles() {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    @keyframes slideOutRight {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    .modal-content {
+      background: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-bg-secondary)' : 'white'};
+      padding: 32px;
+      border-radius: var(--radius-xl);
+      max-width: 400px;
+      width: 90%;
+      box-shadow: var(--shadow-xl);
+      animation: slideDown 0.3s ease-out;
+      border: 1px solid ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'var(--border-light)'};
+      color: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'var(--text-primary)'};
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    .search-highlight {
+      background: ${themeManager?.getCurrentTheme() === 'dark' ? 'rgba(255, 204, 0, 0.3)' : 'rgba(255, 204, 0, 0.5)'};
+      padding: 1px 3px;
+      border-radius: 2px;
+      font-weight: bold;
+    }
+    
+    /* Efeito de transição suave para todo o site */
+    .theme-transition {
+      transition: all 0.3s ease !important;
+    }
+  `;
+  document.head.appendChild(style);
 }
 
 // ====================
@@ -1035,15 +1237,14 @@ class AboutFeatures {
 // ====================
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Inicializar gerenciadores base
+  // Inicializar gerenciador de tema
   themeManager = new ThemeManager();
 
-  // Inicializar gerenciadores específicos por página
+  // Inicializar navegação
   const navigationManager = new NavigationManager();
-
-  // Verificar qual página está ativa e inicializar recursos específicos
   const currentPage = navigationManager.getCurrentPage();
 
+  // Inicializar recursos específicos por página
   if (currentPage === 'index') {
     productManager = new ProductManager();
     languageManager = new LanguageManager();
@@ -1062,166 +1263,28 @@ document.addEventListener('DOMContentLoaded', () => {
     window.searchManager = searchManager;
   }
 
+  // Estilos dinâmicos (agora que themeManager existe)
+  addDynamicStyles();
+  addAdditionalStyles(currentPage);
+
+  // Exportar instâncias globais, se for usar em outro script
+  window.themeManager = themeManager;
+  window.productManager = productManager;
+  window.languageManager = languageManager;
+
   // Log inicial
   console.log(`Página atual: ${currentPage}`);
   console.log(`Tema: ${themeManager.getCurrentTheme()}`);
 });
 
 // ====================
-// FUNÇÕES GLOBAIS ADICIONAIS
+// EXPORTAR CLASSES PARA USO GLOBAL (OPCIONAL)
 // ====================
 
-// Adicionar estilos dinâmicos para novas funcionalidades
-function addAdditionalStyles() {
-  const style = document.createElement('style');
-  style.textContent = `
-        .modal-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .modal-actions .btn {
-            flex: 1;
-            min-width: 140px;
-        }
-        
-        .team-card {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        
-        /* Estilos para página específica */
-        .page-indicator {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: var(--primary);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            z-index: 100;
-        }
-        
-        body.dark-mode .page-indicator {
-            background: var(--dark-primary);
-        }
-    `;
-  document.head.appendChild(style);
-
-  // Adicionar indicador de página (apenas para desenvolvimento)
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    const pageIndicator = document.createElement('div');
-    pageIndicator.className = 'page-indicator';
-    pageIndicator.textContent = navigationManager?.getCurrentPage() || 'Desconhecida';
-    document.body.appendChild(pageIndicator);
-  }
-}
-
-// Chamar função de estilos adicionais
-addAdditionalStyles();
-
-// Adicionar estilos dinâmicos
-function addDynamicStyles() {
-  const style = document.createElement('style');
-  style.textContent = `
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        @keyframes slideOutRight {
-            from {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateX(100%);
-            }
-        }
-        
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            animation: fadeIn 0.3s ease-out;
-        }
-        
-        .modal-content {
-            background: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-bg-secondary)' : 'white'};
-            padding: 32px;
-            border-radius: var(--radius-xl);
-            max-width: 400px;
-            width: 90%;
-            box-shadow: var(--shadow-xl);
-            animation: slideDown 0.3s ease-out;
-            border: 1px solid ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'var(--border-light)'};
-            color: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'var(--text-primary)'};
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-        
-        .search-highlight {
-            background: ${themeManager?.getCurrentTheme() === 'dark' ? 'rgba(255, 204, 0, 0.3)' : 'rgba(255, 204, 0, 0.5)'};
-            padding: 1px 3px;
-            border-radius: 2px;
-            font-weight: bold;
-        }
-        
-        /* Efeito de transição suave para todo o site */
-        .theme-transition {
-            transition: all 0.3s ease !important;
-        }
-    `;
-  document.head.appendChild(style);
-}
-
-// Exportar para uso global (se necessário)
 window.ThemeManager = ThemeManager;
-window.themeManager = themeManager;
 window.ProductManager = ProductManager;
-window.productManager = productManager;
+window.LanguageManager = LanguageManager;
+window.SearchManager = SearchManager;
+window.NavigationManager = NavigationManager;
+window.CatalogFeatures = CatalogFeatures;
+window.AboutFeatures = AboutFeatures;
