@@ -461,32 +461,68 @@ svg {
 .image-container {
     position: relative;
     width: 100%;
-    height: 480px;
+    height: 270px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+.floating-image-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.floating-shadow {
+    position: absolute;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 38px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.04) 80%, transparent 100%);
+    filter: blur(8px);
+    z-index: 1;
+    pointer-events: none;
 }
 
 .image-frame {
-    width: 100%;
-    height: 100%;
-    background: var(--bg-white);
-    border-radius: var(--radius-xl);
+    width: auto;
+    height: auto;
+    background: none !important;
+    border-radius: 0 !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow-xl);
-    border: 1px solid var(--border-light);
-    overflow: hidden;
-    padding: 40px;
-    transition: all var(--theme-transition) ease;
+    box-shadow: none !important;
+    border: none !important;
+    overflow: visible;
+    padding: 0 !important;
+    transition: none !important;
 }
 
 .product-image {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 420px;
+    width: 100%;
+    height: auto;
     object-fit: contain;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    position: relative;
+    z-index: 2;
+}
+
+.floating-image-wrapper:hover .product-image {
+    transform: translateY(-10px) scale(1.04);
 }
 
 .image-controls {
@@ -2034,16 +2070,24 @@ body.dark-mode .badge-promo {
     color: var(--text-secondary);
     text-decoration: none;
     transition: color 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .footer-section ul li a:hover {
     color: var(--primary);
 }
 
+.footer-section ul li a span {
+    display: inline;
+}
+
 .footer-section ul li i {
-    width: 20px;
-    margin-right: 10px;
+    width: auto;
+    margin-right: 0;
     color: var(--primary);
+    font-size: 16px;
 }
 
 .footer-bottom {
@@ -2118,10 +2162,168 @@ body.dark-mode .footer-bottom {
 }
 
 /* ==================== */
+/* MENU HAMBURGUER */
+/* ==================== */
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+    margin-left: auto;
+}
+
+.menu-toggle span {
+    width: 24px;
+    height: 2.5px;
+    background: var(--text-primary);
+    border-radius: var(--radius-full);
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translateY(12px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-12px);
+}
+
+body.dark-mode .menu-toggle span {
+    background: var(--dark-text-primary);
+}
+
+/* ==================== */
 /* RESPONSIVIDADE PARA NOVAS PÁGINAS */
 /* ==================== */
 
 @media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+        padding: 24px 16px;
+        gap: 24px;
+    }
+
+    .header-inner {
+        padding: 0 16px;
+        gap: 16px;
+        flex-wrap: nowrap;
+    }
+
+    .logo-text {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .menu {
+        display: none;
+        position: fixed;
+        top: 72px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--bg-white);
+        border-bottom: 1px solid var(--border-light);
+        padding: 0;
+        gap: 0;
+        z-index: 999;
+        max-height: calc(100vh - 72px);
+        overflow-y: auto;
+        box-shadow: var(--shadow-md);
+        margin: 0;
+    }
+
+    .menu.active {
+        display: flex;
+    }
+
+    .menu .nav-link {
+        padding: 16px 24px;
+        border-radius: 0;
+        border-bottom: 1px solid var(--border-light);
+        text-align: left;
+        width: 100%;
+        display: block;
+    }
+
+    .menu .nav-link:last-child {
+        border-bottom: none;
+    }
+
+    .menu .nav-link.active {
+        background: var(--primary-light);
+        border-bottom: 1px solid var(--border-light);
+    }
+
+    .menu .nav-link.active::after {
+        display: none;
+    }
+
+    body.dark-mode .menu {
+        background: var(--dark-bg-secondary);
+        border-bottom-color: var(--dark-border);
+    }
+
+    body.dark-mode .menu .nav-link {
+        border-bottom-color: var(--dark-border);
+    }
+
+    body.dark-mode .menu .nav-link.active {
+        background: rgba(77, 166, 255, 0.15);
+    }
+
+    .controls {
+        flex-shrink: 0;
+        order: -1;
+    }
+
+    .controls-group {
+        order: 2;
+    }
+
+    .product-panel {
+        padding: 24px;
+    }
+
+    .product-title {
+        font-size: 28px;
+    }
+
+    .specs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .action-section {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .image-frame {
+        padding: 20px;
+    }
+
+    .category-indicator {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+        text-align: center;
+    }
 
     .catalog-container,
     .about-container {

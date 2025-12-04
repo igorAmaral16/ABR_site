@@ -16,7 +16,7 @@
         crossorigin="anonymous" />
 
     <link rel="stylesheet" href="../styles/index.css" />
-    <title>Junta do Cabeçote D229 — Catálogo Técnico</title>
+    <title>Home</title>
 </head>
 
 <body>
@@ -34,27 +34,33 @@
                 </span>
             </div>
 
-            <nav class="menu"
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="menu" id="navMenu"
                  aria-label="Navegação principal"
                  data-i18n-aria-label
                  data-i18n-aria-label-pt="Navegação principal"
                  data-i18n-aria-label-en="Main navigation"
                  data-i18n-aria-label-es="Navegación principal">
-                <a href="../src/sobre.html" class="nav-link"
+                <a href="sobre.html" class="nav-link"
                    data-i18n
                    data-i18n-pt="Sobre"
                    data-i18n-en="About"
                    data-i18n-es="Nosotros">
                     Sobre
                 </a>
-                <a href="../src/" class="nav-link active"
+                <a href="index.html" class="nav-link active"
                    data-i18n
                    data-i18n-pt="Produtos"
                    data-i18n-en="Products"
                    data-i18n-es="Productos">
                     Produtos
                 </a>
-                <a href="../src/catalog.html" class="nav-link"
+                <a href="catalog.html" class="nav-link"
                    data-i18n
                    data-i18n-pt="Catálogo"
                    data-i18n-en="Catalog"
@@ -64,7 +70,7 @@
                 <a href="imprensa.html" class="nav-link"
                    data-i18n
                    data-i18n-pt="Imprensa"
-                   data-i18n-en="Press"
+                   data-i18n-en="News"
                    data-i18n-es="Prensa">
                     Imprensa
                 </a>
@@ -270,43 +276,17 @@
 
             <!-- Visualização da Imagem (Centro) -->
             <div class="image-viewer">
-                <div class="image-container">
-                    <div class="image-frame">
+                <div class="image-container" style="background: none; box-shadow: none; border: none; padding: 0;">
+                    <div class="floating-image-wrapper">
                         <img id="productImage" class="product-image" src="../assets/D229.png"
                             alt="Junta do Cabeçote D229 - Vista técnica"
                             data-i18n-alt
                             data-i18n-alt-pt="Junta do Cabeçote D229 - Vista técnica"
                             data-i18n-alt-en="Cylinder Head Gasket D229 - Technical view"
                             data-i18n-alt-es="Empaque de culata D229 - Vista técnica" />
-                    </div>
-                    <div class="image-controls">
-                        <button class="image-btn"
-                                title="Zoom"
-                                data-i18n-title
-                                data-i18n-title-pt="Zoom"
-                                data-i18n-title-en="Zoom"
-                                data-i18n-title-es="Zoom">
-                            <i class="fa-solid fa-magnifying-glass-plus"></i>
-                        </button>
-                        <button class="image-btn"
-                                title="Rotacionar"
-                                data-i18n-title
-                                data-i18n-title-pt="Rotacionar"
-                                data-i18n-title-en="Rotate"
-                                data-i18n-title-es="Rotar">
-                            <i class="fa-solid fa-rotate-right"></i>
-                        </button>
-                        <button class="image-btn"
-                                title="Visualizar em 3D"
-                                data-i18n-title
-                                data-i18n-title-pt="Visualizar em 3D"
-                                data-i18n-title-en="View in 3D"
-                                data-i18n-title-es="Ver en 3D">
-                            <i class="fa-solid fa-cube"></i>
-                        </button>
+                        <div class="floating-shadow"></div>
                     </div>
                 </div>
-                <div class="shadow-effect"></div>
             </div>
 
             <!-- Catálogo de Produtos (Direita) -->
@@ -418,8 +398,8 @@
                             </div>
 
                             <div class="product-card" data-id="x10" data-img="../assets/x10.png"
-                                data-title="Vedador X10"
-                                data-description="Vedador compacto X10, solução econômica sem comprometer a qualidade. Perfeito para aplicações com espaço limitado.">
+                                data-title="Junta de cabeçote X10"
+                                data-description="Junta de cabeçote X10, solução econômica sem comprometer a qualidade. Perfeito para aplicações com espaço limitado.">
                                 <div class="card-header">
                                     <span class="product-code">REF: X10</span>
                                     <span class="product-status"
@@ -433,10 +413,10 @@
                                 </div>
                                 <h4 class="product-name"
                                     data-i18n
-                                    data-i18n-pt="Vedador X10"
+                                    data-i18n-pt="Junta de cabeçote X10"
                                     data-i18n-en="Seal X10"
                                     data-i18n-es="Sello X10">
-                                    Vedador X10
+                                    Junta de cabeçote X10
                                 </h4>
                                 <p class="product-summary"
                                    data-i18n
@@ -559,26 +539,12 @@
                            data-i18n-es="Sobre nosotros">
                         Sobre Nós
                     </a></li>
-                    <li><a href="#"
+                    <li><a href="contato.html"
                            data-i18n
                            data-i18n-pt="Contato"
                            data-i18n-en="Contact"
                            data-i18n-es="Contacto">
                         Contato
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Trabalhe Conosco"
-                           data-i18n-en="Work With Us"
-                           data-i18n-es="Trabaje con nosotros">
-                        Trabalhe Conosco
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Imprensa"
-                           data-i18n-en="Press"
-                           data-i18n-es="Prensa">
-                        Imprensa
                     </a></li>
                 </ul>
             </div>
@@ -597,26 +563,12 @@
                            data-i18n-es="Catálogo web">
                         Catálogo Web
                     </a></li>
-                    <li><a href="catalog.html"
+                    <li><a href="catalog.html#downloads"
                            data-i18n
                            data-i18n-pt="Downloads"
                            data-i18n-en="Downloads"
                            data-i18n-es="Descargas">
                         Downloads
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Especificações"
-                           data-i18n-en="Specifications"
-                           data-i18n-es="Especificaciones">
-                        Especificações
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Aplicações"
-                           data-i18n-en="Applications"
-                           data-i18n-es="Aplicaciones">
-                        Aplicações
                     </a></li>
                 </ul>
             </div>
@@ -628,34 +580,53 @@
                     Suporte
                 </h3>
                 <ul>
-                    <li><a href="#"
+                    <li><a href="contato.html"
                            data-i18n
-                           data-i18n-pt="FAQ"
-                           data-i18n-en="FAQ"
-                           data-i18n-es="FAQ">
-                        FAQ
+                           data-i18n-pt="Contato"
+                           data-i18n-en="Contact"
+                           data-i18n-es="Contacto">
+                        Contato
                     </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Manuais"
-                           data-i18n-en="Manuals"
-                           data-i18n-es="Manuales">
-                        Manuais
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n
+                    data-i18n-pt="Contato"
+                    data-i18n-en="Contact"
+                    data-i18n-es="Contacto">
+                    Contato
+                </h3>
+                <ul>
+                    <li><a href="tel:+551931160145" title="Telefone">
+                        <i class="fas fa-phone"></i>
+                        <span data-i18n
+                              data-i18n-pt="+55 (19) 3116 0145"
+                              data-i18n-en="+55 (19) 3116 0145"
+                              data-i18n-es="+55 (19) 3116 0145">
+                            +55 (19) 3116 0145
+                        </span>
                     </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Assistência Técnica"
-                           data-i18n-en="Technical Support"
-                           data-i18n-es="Asistencia técnica">
-                        Assistência Técnica
+                    <li><a href="mailto:contato@abr.ind.br" title="Email">
+                        <i class="fas fa-envelope"></i>
+                        <span>contato@abr.ind.br</span>
                     </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Garantia"
-                           data-i18n-en="Warranty"
-                           data-i18n-es="Garantía">
-                        Garantia
+                    <li><a href="#" title="Endereço">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span data-i18n
+                              data-i18n-pt="Hortolândia, SP"
+                              data-i18n-en="Hortolândia, SP"
+                              data-i18n-es="Hortolândia, SP">
+                            Hortolândia, SP
+                        </span>
                     </a></li>
+                    <li style="margin-top: 8px; font-size: 12px; color: #999;">
+                        <span data-i18n
+                              data-i18n-pt="Seg–Sex: 8h30 – 17h30"
+                              data-i18n-en="Mon–Fri: 8:30am – 5:30pm"
+                              data-i18n-es="Lun–Vie: 8:30 – 17:30">
+                            Seg–Sex: 8h30 – 17h30
+                        </span>
+                    </li>
                 </ul>
             </div>
         </div>

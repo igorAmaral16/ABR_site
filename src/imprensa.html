@@ -16,35 +16,63 @@
         crossorigin="anonymous" />
 
     <link rel="stylesheet" href="../styles/index.css" />
-    <title>Imprensa — ABR </title>
+    <title>News</title>
 
     <style>
         /* estilos específicos da página imprensa (mantêm o padrão visual da landing) */
+        :root {
+            --press-bg: #f7f9fc;
+            --press-card: #ffffff;
+            --press-text: #0d1e40;
+            --press-muted: #6b7380;
+            --press-meta: #8a919a;
+            --press-accent: #0d6efd;
+            --press-shadow: 0 6px 22px rgba(13, 30, 64, 0.06);
+            --press-shadow-card: 0 6px 18px rgba(13, 30, 64, 0.04);
+            --press-shadow-hover: 0 14px 40px rgba(13, 30, 64, 0.08);
+        }
+
+        body.dark-mode {
+            --press-bg: var(--dark-bg-primary);
+            --press-card: var(--dark-bg-secondary);
+            --press-text: var(--dark-text-primary);
+            --press-muted: var(--dark-text-secondary);
+            --press-meta: var(--dark-text-secondary);
+            --press-accent: var(--dark-primary);
+            --press-shadow: 0 6px 22px rgba(0, 0, 0, 0.2);
+            --press-shadow-card: 0 6px 18px rgba(0, 0, 0, 0.15);
+            --press-shadow-hover: 0 14px 40px rgba(0, 0, 0, 0.3);
+        }
+
         .press-hero {
             padding: 90px 0 40px;
-            background: #f7f9fc;
+            background: var(--press-bg);
             text-align: center;
+            transition: background-color 300ms ease;
         }
 
         .press-hero .page-title {
             font-size: 42px;
             font-weight: 800;
-            color: #0d1e40;
+            color: var(--press-text);
             margin: 0;
+            transition: color 300ms ease;
         }
 
         .press-hero .title-underline {
             width: 64px;
             height: 4px;
-            background: #0d6efd;
+            background: var(--press-accent);
             margin: 14px auto;
             border-radius: 3px;
+            transition: background-color 300ms ease;
         }
 
         .press-hero .subtitle {
-            color: #6b7380;
+            color: var(--press-muted);
             margin-top: 12px;
             font-size: 16px;
+            transition: color 300ms ease;
         }
 
         .press-container {
@@ -58,8 +86,9 @@
             margin: 0 auto 60px;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 6px 22px rgba(13, 30, 64, 0.06);
+            box-shadow: var(--press-shadow);
             background: #000;
+            transition: box-shadow 300ms ease;
         }
 
         .press-video iframe {
@@ -77,16 +106,16 @@
         }
 
         .press-card {
-            background: #ffffff;
+            background: var(--press-card);
             border-radius: 14px;
             padding: 20px;
-            box-shadow: 0 6px 18px rgba(13, 30, 64, 0.04);
-            transition: transform .22s ease, box-shadow .22s ease;
+            box-shadow: var(--press-shadow-card);
+            transition: transform 220ms ease, box-shadow 220ms ease, background-color 300ms ease;
         }
 
         .press-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 14px 40px rgba(13, 30, 64, 0.08);
+            box-shadow: var(--press-shadow-hover);
         }
 
         .press-card img {
@@ -101,8 +130,9 @@
         .press-card h3 {
             margin: 0 0 8px;
             font-size: 20px;
-            color: #0d1e40;
+            color: var(--press-text);
             font-weight: 700;
+            transition: color 300ms ease;
         }
 
         .press-card p {
@@ -110,6 +140,7 @@
             color: #58606a;
             line-height: 1.5;
             font-size: 15px;
+            transition: color 300ms ease;
         }
 
         /* small meta row */
@@ -118,8 +149,9 @@
             gap: 12px;
             align-items: center;
             margin-top: 14px;
-            color: #8a919a;
+            color: var(--press-meta);
             font-size: 13px;
+            transition: color 300ms ease;
         }
 
         .press-meta .date {
@@ -128,13 +160,100 @@
             gap: 8px;
         }
 
-        @media (max-width: 980px) {
+        @media (max-width: 1024px) {
+            .press-hero .page-title {
+                font-size: 36px;
+            }
+
+            .press-video iframe {
+                height: 420px;
+            }
+
+            .press-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .press-container {
+                width: 95%;
+                margin: 30px auto 80px;
+            }
+
+            .press-hero {
+                padding: 60px 0 30px;
+            }
+
+            .press-hero .page-title {
+                font-size: 28px;
+            }
+
+            .press-hero .subtitle {
+                font-size: 14px;
+            }
+
+            .press-video {
+                margin: 0 auto 40px;
+            }
+
             .press-video iframe {
                 height: 360px;
             }
 
             .press-grid {
                 grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .press-card {
+                padding: 16px;
+            }
+
+            .press-card img {
+                height: 160px;
+                margin-bottom: 14px;
+            }
+
+            .press-card h3 {
+                font-size: 18px;
+                margin-bottom: 6px;
+            }
+
+            .press-card p {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .press-hero .page-title {
+                font-size: 24px;
+            }
+
+            .press-hero .title-underline {
+                width: 48px;
+                height: 3px;
+            }
+
+            .press-video iframe {
+                height: 280px;
+            }
+
+            .press-card {
+                padding: 12px;
+            }
+
+            .press-card img {
+                height: 140px;
+                margin-bottom: 12px;
+            }
+
+            .press-card h3 {
+                font-size: 16px;
+            }
+
+            .press-meta {
+                font-size: 12px;
             }
         }
     </style>
@@ -154,7 +273,13 @@
                 </span>
             </div>
 
-            <nav class="menu"
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="menu" id="navMenu"
                  aria-label="Navegação principal"
                  data-i18n-aria-label
                  data-i18n-aria-label-pt="Navegação principal"
@@ -184,7 +309,7 @@
                 <a href="imprensa.html" class="nav-link active"
                    data-i18n
                    data-i18n-pt="Imprensa"
-                   data-i18n-en="Press"
+                   data-i18n-en="News"
                    data-i18n-es="Prensa">
                     Imprensa
                 </a>
@@ -255,7 +380,7 @@
                 <h1 id="press-title" class="page-title"
                     data-i18n
                     data-i18n-pt="Imprensa"
-                    data-i18n-en="Press"
+                    data-i18n-en="News"
                     data-i18n-es="Prensa">
                     Imprensa
                 </h1>
@@ -274,7 +399,7 @@
              aria-label="Conteúdo de imprensa"
              data-i18n-aria-label
              data-i18n-aria-label-pt="Conteúdo de imprensa"
-             data-i18n-aria-label-en="Press content"
+             data-i18n-aria-label-en="News content"
              data-i18n-aria-label-es="Contenido de prensa">
 
             <div class="press-video" aria-hidden="false">
@@ -491,9 +616,36 @@
                     Contato
                 </h3>
                 <ul>
-                    <li><i class="fa-solid fa-phone"></i> (11) 99999-9999</li>
-                    <li><i class="fa-solid fa-envelope"></i> contato@empresa.com</li>
-                    <li><i class="fa-solid fa-map-marker-alt"></i> São Paulo, SP</li>
+                    <li><a href="tel:+551931160145" title="Telefone">
+                        <i class="fas fa-phone"></i>
+                        <span data-i18n
+                              data-i18n-pt="+55 (19) 3116 0145"
+                              data-i18n-en="+55 (19) 3116 0145"
+                              data-i18n-es="+55 (19) 3116 0145">
+                            +55 (19) 3116 0145
+                        </span>
+                    </a></li>
+                    <li><a href="mailto:contato@abr.ind.br" title="Email">
+                        <i class="fas fa-envelope"></i>
+                        <span>contato@abr.ind.br</span>
+                    </a></li>
+                    <li><a href="#" title="Endereço">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span data-i18n
+                              data-i18n-pt="Hortolândia, SP"
+                              data-i18n-en="Hortolândia, SP"
+                              data-i18n-es="Hortolândia, SP">
+                            Hortolândia, SP
+                        </span>
+                    </a></li>
+                    <li style="margin-top: 8px; font-size: 12px; color: #999;">
+                        <span data-i18n
+                              data-i18n-pt="Seg–Sex: 8h30 – 17h30"
+                              data-i18n-en="Mon–Fri: 8:30am – 5:30pm"
+                              data-i18n-es="Lun–Vie: 8:30 – 17:30">
+                            Seg–Sex: 8h30 – 17h30
+                        </span>
+                    </li>
                 </ul>
             </div>
         </div>

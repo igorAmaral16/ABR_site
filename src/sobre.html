@@ -16,7 +16,7 @@
         crossorigin="anonymous" />
 
     <link rel="stylesheet" href="../styles/index.css" />
-    <title>Sobre Nós — Nossa História</title>
+    <title>About us</title>
 </head>
 
 <body>
@@ -34,7 +34,13 @@
                 </span>
             </div>
 
-            <nav class="menu"
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="menu" id="navMenu"
                  aria-label="Navegação principal"
                  data-i18n-aria-label
                  data-i18n-aria-label-pt="Navegação principal"
@@ -64,7 +70,7 @@
                 <a href="imprensa.html" class="nav-link"
                    data-i18n
                    data-i18n-pt="Imprensa"
-                   data-i18n-en="Press"
+                   data-i18n-en="News"
                    data-i18n-es="Prensa">
                     Imprensa
                 </a>
@@ -224,23 +230,6 @@
                             </p>
                         </div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-year">2020</div>
-                        <div class="timeline-content">
-                            <h3 data-i18n
-                                data-i18n-pt="Sustentabilidade"
-                                data-i18n-en="Sustainability"
-                                data-i18n-es="Sostenibilidad">
-                                Sustentabilidade
-                            </h3>
-                            <p data-i18n
-                               data-i18n-pt="Implementação de práticas sustentáveis e desenvolvimento de produtos eco-friendly."
-                               data-i18n-en="Implementation of sustainable practices and development of eco-friendly products."
-                               data-i18n-es="Implementación de prácticas sostenibles y desarrollo de productos ecológicos.">
-                                Implementação de práticas sustentáveis e desenvolvimento de produtos eco-friendly.
-                            </p>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="history-description">
@@ -286,10 +275,10 @@
                             Planta Industrial
                         </h3>
                         <p data-i18n
-                           data-i18n-pt="Mais de 200 colaboradores especializados em uma planta de 5.000 m², com processos automatizados e extenso controle de qualidade."
-                           data-i18n-en="Over 200 specialized employees in a 5,000 m² plant with automated processes and extensive quality control."
-                           data-i18n-es="Más de 200 colaboradores especializados en una planta de 5.000 m², con procesos automatizados y amplio control de calidad.">
-                            Mais de 200 colaboradores especializados em uma planta de 5.000 m², com processos
+                           data-i18n-pt="Mais de 200 colaboradores especializados em uma planta de 9.000 m², com processos automatizados e extenso controle de qualidade."
+                           data-i18n-en="Over 200 specialized employees in a 9,000 m² plant with automated processes and extensive quality control."
+                           data-i18n-es="Más de 200 colaboradores especializados en una planta de 9.000 m², con procesos automatizados y amplio control de calidad.">
+                            Mais de 200 colaboradores especializados em uma planta de 9.000 m², com processos
                             automatizados e extenso controle de qualidade.
                         </p>
                     </div>
@@ -308,23 +297,6 @@
                            data-i18n-en="Fully equipped analysis laboratory for material testing and product validation."
                            data-i18n-es="Laboratorio de análisis completo para pruebas de materiales y validación de productos.">
                             Laboratório de análise completo para testes de materiais e validação de produtos.
-                        </p>
-                    </div>
-                    <div class="structure-card">
-                        <div class="structure-icon">
-                            <i class="fa-solid fa-robot"></i>
-                        </div>
-                        <h3 data-i18n
-                            data-i18n-pt="Automação"
-                            data-i18n-en="Automation"
-                            data-i18n-es="Automatización">
-                            Automação
-                        </h3>
-                        <p data-i18n
-                           data-i18n-pt="Processos automatizados garantem precisão e consistência na produção."
-                           data-i18n-en="Automated processes ensure precision and consistency in production."
-                           data-i18n-es="Los procesos automatizados garantizan precisión y consistencia en la producción.">
-                            Processos automatizados garantem precisão e consistência na produção.
                         </p>
                     </div>
                     <div class="structure-card">
@@ -372,7 +344,7 @@
                            data-i18n-pt="Atendemos os segmentos automotivo, industrial, agrícola, marítimo e ferrovias, com sistema de qualidade OEM que atende mercados no Brasil e exterior."
                            data-i18n-en="We serve the automotive, industrial, agricultural, marine and railway segments, with an OEM quality system that covers markets in Brazil and abroad."
                            data-i18n-es="Atendemos los segmentos automotriz, industrial, agrícola, marítimo y ferroviario, con un sistema de calidad OEM que atiende mercados en Brasil y el exterior.">
-                            Atendemos os segmentos automotivo, industrial, agrícola, marítimo e ferrovias, com sistema de
+                            Atendemos os segmentos automotivo leve, automotivo pesado e agrícola, com sistema de
                             qualidade OEM que atende mercados no Brasil e exterior.
                         </p>
 
@@ -387,39 +359,12 @@
                                 </span>
                             </div>
                             <div class="market-item">
-                                <i class="fa-solid fa-industry"></i>
-                                <span data-i18n
-                                      data-i18n-pt="Industrial"
-                                      data-i18n-en="Industrial"
-                                      data-i18n-es="Industrial">
-                                    Industrial
-                                </span>
-                            </div>
-                            <div class="market-item">
                                 <i class="fa-solid fa-tractor"></i>
                                 <span data-i18n
                                       data-i18n-pt="Agrícola"
                                       data-i18n-en="Agricultural"
                                       data-i18n-es="Agrícola">
                                     Agrícola
-                                </span>
-                            </div>
-                            <div class="market-item">
-                                <i class="fa-solid fa-ship"></i>
-                                <span data-i18n
-                                      data-i18n-pt="Marítimo"
-                                      data-i18n-en="Maritime"
-                                      data-i18n-es="Marítimo">
-                                    Marítimo
-                                </span>
-                            </div>
-                            <div class="market-item">
-                                <i class="fa-solid fa-train"></i>
-                                <span data-i18n
-                                      data-i18n-pt="Ferroviário"
-                                      data-i18n-en="Railway"
-                                      data-i18n-es="Ferroviario">
-                                    Ferroviário
                                 </span>
                             </div>
                         </div>
@@ -437,7 +382,7 @@
             </section>
 
             <!-- Qualidade -->
-            <section class="about-section quality-section">
+            <section class="about-section quality-section" id="#qualidade">
                 <div class="section-header">
                     <h2 class="section-title"
                         data-i18n
@@ -496,28 +441,6 @@
                            data-i18n-es="Invertimos continuamente en I+D para desarrollar nuevas tecnologías y materiales avanzados.">
                             Investimos continuamente em P&D para desenvolver novas tecnologias e materiais avançados.
                         </p>
-                        <div class="rd-stats">
-                            <div class="stat">
-                                <span class="stat-number">15%</span>
-                                <span class="stat-label"
-                                      data-i18n
-                                      data-i18n-pt="do faturamento em P&amp;D"
-                                      data-i18n-en="of revenue invested in R&amp;D"
-                                      data-i18n-es="de los ingresos en I+D">
-                                    do faturamento em P&amp;D
-                                </span>
-                            </div>
-                            <div class="stat">
-                                <span class="stat-number">10+</span>
-                                <span class="stat-label"
-                                      data-i18n
-                                      data-i18n-pt="patentes registradas"
-                                      data-i18n-en="registered patents"
-                                      data-i18n-es="patentes registradas">
-                                    patentes registradas
-                                </span>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="quality-card">
@@ -624,23 +547,6 @@
                             Trabalhamos em conjunto com nossos clientes.
                         </p>
                     </div>
-                    <div class="value-item">
-                        <div class="value-icon">
-                            <i class="fa-solid fa-leaf"></i>
-                        </div>
-                        <h3 data-i18n
-                            data-i18n-pt="Sustentabilidade"
-                            data-i18n-en="Sustainability"
-                            data-i18n-es="Sostenibilidad">
-                            Sustentabilidade
-                        </h3>
-                        <p data-i18n
-                           data-i18n-pt="Compromisso com o meio ambiente e futuro sustentável."
-                           data-i18n-en="Commitment to the environment and a sustainable future."
-                           data-i18n-es="Compromiso con el medio ambiente y un futuro sostenible.">
-                            Compromisso com o meio ambiente e futuro sustentável.
-                        </p>
-                    </div>
                 </div>
             </section>
         </div>
@@ -678,7 +584,7 @@
                            data-i18n-es="Calidad">
                         Qualidade
                     </a></li>
-                    <li><a href="#"
+                    <li><a href="#qualidade"
                            data-i18n
                            data-i18n-pt="Trabalhe Conosco"
                            data-i18n-en="Work With Us"
@@ -695,33 +601,19 @@
                     Produtos
                 </h3>
                 <ul>
-                    <li><a href="../index.html"
+                    <li><a href="catalog.html"
                            data-i18n
                            data-i18n-pt="Catálogo"
                            data-i18n-en="Catalog"
                            data-i18n-es="Catálogo">
                         Catálogo
                     </a></li>
-                    <li><a href="catalog.html"
+                    <li><a href="catalog.html#downloads"
                            data-i18n
                            data-i18n-pt="Downloads"
                            data-i18n-en="Downloads"
                            data-i18n-es="Descargas">
                         Downloads
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Aplicações"
-                           data-i18n-en="Applications"
-                           data-i18n-es="Aplicaciones">
-                        Aplicações
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Novidades"
-                           data-i18n-en="News"
-                           data-i18n-es="Novedades">
-                        Novidades
                     </a></li>
                 </ul>
             </div>
@@ -733,28 +625,7 @@
                     Suporte
                 </h3>
                 <ul>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="FAQ"
-                           data-i18n-en="FAQ"
-                           data-i18n-es="FAQ">
-                        FAQ
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Assistência Técnica"
-                           data-i18n-en="Technical Support"
-                           data-i18n-es="Asistencia técnica">
-                        Assistência Técnica
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Manuais"
-                           data-i18n-en="Manuals"
-                           data-i18n-es="Manuales">
-                        Manuais
-                    </a></li>
-                    <li><a href="#"
+                    <li><a href="contato.html"
                            data-i18n
                            data-i18n-pt="Contato"
                            data-i18n-en="Contact"
@@ -771,9 +642,36 @@
                     Contato
                 </h3>
                 <ul>
-                    <li><i class="fa-solid fa-phone"></i> (11) 99999-9999</li>
-                    <li><i class="fa-solid fa-envelope"></i> contato@empresa.com</li>
-                    <li><i class="fa-solid fa-map-marker-alt"></i> São Paulo, SP</li>
+                    <li><a href="tel:+551931160145" title="Telefone">
+                        <i class="fas fa-phone"></i>
+                        <span data-i18n
+                              data-i18n-pt="+55 (19) 3116 0145"
+                              data-i18n-en="+55 (19) 3116 0145"
+                              data-i18n-es="+55 (19) 3116 0145">
+                            +55 (19) 3116 0145
+                        </span>
+                    </a></li>
+                    <li><a href="mailto:contato@abr.ind.br" title="Email">
+                        <i class="fas fa-envelope"></i>
+                        <span>contato@abr.ind.br</span>
+                    </a></li>
+                    <li><a href="#" title="Endereço">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span data-i18n
+                              data-i18n-pt="Hortolândia, SP"
+                              data-i18n-en="Hortolândia, SP"
+                              data-i18n-es="Hortolândia, SP">
+                            Hortolândia, SP
+                        </span>
+                    </a></li>
+                    <li style="margin-top: 8px; font-size: 12px; color: #999;">
+                        <span data-i18n
+                              data-i18n-pt="Seg–Sex: 8h30 – 17h30"
+                              data-i18n-en="Mon–Fri: 8:30am – 5:30pm"
+                              data-i18n-es="Lun–Vie: 8:30 – 17:30">
+                            Seg–Sex: 8h30 – 17h30
+                        </span>
+                    </li>
                 </ul>
             </div>
         </div>

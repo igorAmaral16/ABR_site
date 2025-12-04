@@ -874,6 +874,8 @@ class NavigationManager {
     const path = window.location.pathname;
     if (path.includes('catalog.html')) return 'catalog';
     if (path.includes('sobre.html')) return 'sobre';
+    if (path.includes('imprensa.html')) return 'imprensa';
+    if (path.includes('contato.html')) return 'contato';
     return 'index';
   }
 
@@ -887,7 +889,9 @@ class NavigationManager {
 
       if ((this.currentPage === 'index' && href.includes('index.html')) ||
         (this.currentPage === 'catalog' && href.includes('catalog.html')) ||
-        (this.currentPage === 'sobre' && href.includes('sobre.html'))) {
+        (this.currentPage === 'sobre' && href.includes('sobre.html')) ||
+        (this.currentPage === 'imprensa' && href.includes('imprensa.html')) ||
+        (this.currentPage === 'contato' && href.includes('contato.html'))) {
         link.classList.add('active');
       }
     });
@@ -1334,12 +1338,93 @@ function addDynamicStyles() {
 }
 
 // ====================
+// MENU HAMBURGUER
+// ====================
+
+class MenuToggle {
+  constructor() {
+    this.menuToggle = document.getElementById('menuToggle');
+    this.navMenu = document.getElementById('navMenu');
+    this.init();
+  }
+
+  init() {
+    if (!this.menuToggle || !this.navMenu) return;
+
+    this.setupEventListeners();
+    this.closeMenuOnResize();
+  }
+
+  setupEventListeners() {
+    // Clicar no botão hamburguer
+    this.menuToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.toggleMenu();
+    });
+
+    // Clicar em um link do menu
+    this.navMenu.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        this.closeMenu();
+      });
+    });
+
+    // Clicar fora do menu para fechar
+    document.addEventListener('click', (e) => {
+      if (!this.menuToggle.contains(e.target) && !this.navMenu.contains(e.target)) {
+        this.closeMenu();
+      }
+    });
+
+    // Fechar ao pressionar ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeMenu();
+      }
+    });
+  }
+
+  toggleMenu() {
+    const isActive = this.navMenu.classList.contains('active');
+    if (isActive) {
+      this.closeMenu();
+    } else {
+      this.openMenu();
+    }
+  }
+
+  openMenu() {
+    this.navMenu.classList.add('active');
+    this.menuToggle.classList.add('active');
+    this.menuToggle.setAttribute('aria-expanded', 'true');
+  }
+
+  closeMenu() {
+    this.navMenu.classList.remove('active');
+    this.menuToggle.classList.remove('active');
+    this.menuToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  closeMenuOnResize() {
+    window.addEventListener('resize', () => {
+      // Fechar menu quando sair do modo mobile
+      if (window.innerWidth > 768) {
+        this.closeMenu();
+      }
+    });
+  }
+}
+
+// ====================
 // INICIALIZAÇÃO COMPLETA
 // ====================
 
 document.addEventListener('DOMContentLoaded', () => {
   // Inicializar gerenciador de tema
   themeManager = new ThemeManager();
+
+  // Inicializar menu hamburguer
+  const menuToggle = new MenuToggle();
 
   // Inicializar navegação
   const navigationManager = new NavigationManager();
@@ -1376,63 +1461,68 @@ document.addEventListener('DOMContentLoaded', () => {
   // Log inicial
   console.log(`Página atual: ${currentPage}`);
   console.log(`Tema: ${themeManager.getCurrentTheme()}`);
-});
 
-const form = document.getElementById('contactForm');
-const submitBtn = document.getElementById('submitBtn');
-const sending = document.getElementById('sending');
-const alertEl = document.getElementById('formAlert');
-const errorEl = document.getElementById('formError');
-const charCount = document.getElementById('charCount');
-const mensagem = document.getElementById('mensagem');
+  // Inicializar form de contato
+  const form = document.getElementById('contactForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const sending = document.getElementById('sending');
+  const alertEl = document.getElementById('formAlert');
+  const errorEl = document.getElementById('formError');
+  const charCount = document.getElementById('charCount');
+  const mensagem = document.getElementById('mensagem');
 
-mensagem.addEventListener('input', () => {
-  charCount.textContent = `${mensagem.value.length} / 3000`;
-});
-
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  alertEl.style.display = 'none';
-  errorEl.style.display = 'none';
-
-  const formData = new FormData(form);
-  if (formData.get('website')) { // honeypot
-    return;
+  if (mensagem) {
+    mensagem.addEventListener('input', () => {
+      charCount.textContent = `${mensagem.value.length} / 3000`;
+    });
   }
 
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    return;
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alertEl.style.display = 'none';
+      errorEl.style.display = 'none';
+
+      const formData = new FormData(form);
+      if (formData.get('website')) { // honeypot
+        return;
+      }
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      submitBtn.disabled = true;
+      sending.style.display = 'block';
+
+      // Simulação de envio (substitua por fetch para integrar ao backend)
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        sending.style.display = 'none';
+        form.reset();
+        charCount.textContent = '0 / 3000';
+        alertEl.textContent = 'Mensagem enviada com sucesso. Obrigado pelo contato.';
+        alertEl.style.display = 'block';
+      }, 900);
+
+      // Exemplo de fetch (descomente e ajuste a URL se integrar com backend)
+      /*
+      fetch('/api/contact', {
+        method: 'POST',
+        body: formData
+      }).then(r => {
+        // tratar resposta
+      }).catch(err => {
+        errorEl.textContent = 'Erro ao enviar. Tente novamente mais tarde.';
+        errorEl.style.display = 'block';
+      }).finally(() => {
+        submitBtn.disabled = false;
+        sending.style.display = 'none';
+      });
+      */
+    });
   }
-
-  submitBtn.disabled = true;
-  sending.style.display = 'block';
-
-  // Simulação de envio (substitua por fetch para integrar ao backend)
-  setTimeout(() => {
-    submitBtn.disabled = false;
-    sending.style.display = 'none';
-    form.reset();
-    charCount.textContent = '0 / 3000';
-    alertEl.textContent = 'Mensagem enviada com sucesso. Obrigado pelo contato.';
-    alertEl.style.display = 'block';
-  }, 900);
-
-  // Exemplo de fetch (descomente e ajuste a URL se integrar com backend)
-  /*
-  fetch('/api/contact', {
-    method: 'POST',
-    body: formData
-  }).then(r => {
-    // tratar resposta
-  }).catch(err => {
-    errorEl.textContent = 'Erro ao enviar. Tente novamente mais tarde.';
-    errorEl.style.display = 'block';
-  }).finally(() => {
-    submitBtn.disabled = false;
-    sending.style.display = 'none';
-  });
-  */
 });
 
 // ====================
@@ -1446,3 +1536,4 @@ window.SearchManager = SearchManager;
 window.NavigationManager = NavigationManager;
 window.CatalogFeatures = CatalogFeatures;
 window.AboutFeatures = AboutFeatures;
+window.MenuToggle = MenuToggle;
