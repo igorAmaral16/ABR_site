@@ -1242,12 +1242,7 @@ function addAdditionalStyles(currentPage) {
   document.head.appendChild(style);
 
   // Adicionar indicador de página (apenas para desenvolvimento)
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    const pageIndicator = document.createElement('div');
-    pageIndicator.className = 'page-indicator';
-    pageIndicator.textContent = currentPage || 'Desconhecida';
-    document.body.appendChild(pageIndicator);
-  }
+  // (Removed page indicator insertion - no visual dev balloon shown)
 }
 
 // Adicionar estilos dinâmicos
@@ -1521,6 +1516,251 @@ document.addEventListener('DOMContentLoaded', () => {
         sending.style.display = 'none';
       });
       */
+    });
+  }
+
+  // Footer link / deep-hash handling: smooth scroll on same-page anchors and scroll-on-load for deep links
+  function smoothScrollToId(id) {
+    if (!id) return;
+    const el = document.getElementById(id) || document.querySelector(`[id="#${id}"]`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // Intercept footer links that are same-page anchors (e.g., href="#qualidade")
+  document.querySelectorAll('.footer a[href^="#"]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href || href === '#') return;
+    link.addEventListener('click', (e) => {
+      // If the link is a pure hash and we're on any page, try smooth scroll
+      e.preventDefault();
+      const id = href.slice(1);
+      smoothScrollToId(id);
+      // update URL without reloading
+      history.replaceState(null, '', '#' + id);
+    });
+  });
+
+  // For footer links that point to another page with a hash (e.g., sobre.html#qualidade)
+  // store the target hash so the destination page can smooth-scroll after navigation.
+  document.querySelectorAll('.footer a[href*="#"]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href || href.indexOf('#') === -1) return;
+    // skip pure-hash links (already handled above)
+    if (href.startsWith('#')) return;
+    link.addEventListener('click', () => {
+      try {
+        const url = new URL(href, window.location.href);
+        const hash = url.hash.replace('#', '');
+        if (hash) {
+          sessionStorage.setItem('scrollTarget', hash);
+        }
+      } catch (err) {
+        // ignore malformed urls
+      }
+    });
+  });
+
+  // On load, first check for sessionStorage handoff (set when clicking a footer link that navigates)
+  const pendingHash = sessionStorage.getItem('scrollTarget');
+  if (pendingHash) {
+    setTimeout(() => {
+      smoothScrollToId(pendingHash);
+      sessionStorage.removeItem('scrollTarget');
+    }, 80);
+  } else if (window.location.hash) {
+    const hashId = window.location.hash.replace('#', '');
+    setTimeout(() => smoothScrollToId(hashId), 60);
+  }
+
+  // --------- Download PDF modal (Catalog page) ---------
+  const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+  if (downloadPdfBtn) {
+    downloadPdfBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      openDownloadModal();
+    });
+  }
+
+  function openDownloadModal() {
+    // Dados com links reais
+    const leveOptions = [
+      { label: 'Catálogo Completo Linha Leve', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20LEVE.pdf' },
+      { label: 'Linha FIAT', url: 'https://abr.ind.br/catalogos/pb/2%20-%20FIAT%202019.pdf' },
+      { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/3%20-%20FORD%202019%20site.pdf' },
+      { label: 'Linha GM', url: 'https://abr.ind.br/catalogos/pb/4%20-%20GM%202019.pdf' },
+      { label: 'Linha Honda', url: 'https://abr.ind.br/catalogos/pb/5%20-%20HONDA%202019.pdf' },
+      { label: 'Linha HYNDAI / MITSUBISHI', url: 'https://abr.ind.br/catalogos/pb/6%20-%20HYUNDAI-MITSUBISHI%202019.pdf' },
+      { label: 'Linha ASIA-KIA', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ASIA-KIA%202019.pdf' },
+      { label: 'Linha NISSAN', url: 'https://abr.ind.br/catalogos/pb/8%20-%20NISSAN%202019.pdf' },
+      { label: 'Linha PEUGEOT / CITROEN', url: 'https://abr.ind.br/catalogos/pb/9%20-%20PEUGEOT-CITROEN%202019.pdf' },
+      { label: 'Linha RENAULT', url: 'https://abr.ind.br/catalogos/pb/10%20-%20RENAULT%202019.pdf' },
+      { label: 'Linha SUZUKI', url: 'https://abr.ind.br/catalogos/pb/11%20-%20SUZUKI%202019.pdf' },
+      { label: 'Linha TOYOTA', url: 'https://abr.ind.br/catalogos/pb/12%20-%20TOYOTA%202019.pdf' },
+      { label: 'Linha VOLKSWAGEN', url: 'https://abr.ind.br/catalogos/pb/13%20-%20VOLKSWAGEN%202019.pdf' }
+    ];
+
+    const pesadaOptions = [
+      { label: 'Catálogo Completo Linha Pesada', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20PESADA.pdf' },
+      { label: 'Linha CUMMINS', url: 'https://abr.ind.br/catalogos/pb/1%20-%20ABR%20Catalogo%20CUMMINS.pdf' },
+      { label: 'Linha Mercedes', url: 'https://abr.ind.br/catalogos/pb/2%20-%20ABR%20Catalogo%20MERCEDES.pdf' },
+      { label: 'Linha MWM', url: 'https://abr.ind.br/catalogos/pb/3%20-%20ABR%20Catalogo%20MWM.pdf' },
+      { label: 'Linha MAXION / PERKINS', url: 'https://abr.ind.br/catalogos/pb/4%20-%20ABR%20Catalogo%20MAXION%20PERKINS.pdf' },
+      { label: 'Linha IVECO', url: 'https://abr.ind.br/catalogos/pb/5%20-%20ABR%20Catalogo%20IVECO.pdf' },
+      { label: 'Linha SCANIA', url: 'https://abr.ind.br/catalogos/pb/6%20-%20ABR%20Catalogo%20SCANIA.pdf' },
+      { label: 'Linha JOHN DEERE', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ABR%20Catalogo%20JOHN%20DEERE.pdf' },
+      { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/8%20-%20ABR%20Catalogo%20FORD.pdf' },
+      { label: 'Linha VALTRA', url: 'https://abr.ind.br/catalogos/pb/9%20-%20ABR%20Catalogo%20VALTRA.pdf' }
+    ];
+
+    // Modal structure com estilo profissional
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay download-modal-overlay';
+    overlay.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3000;
+      padding: 20px;
+      animation: fadeIn 0.3s ease-out;
+    `;
+
+    const modal = document.createElement('div');
+    modal.className = 'download-modal-content';
+    modal.style.cssText = `
+      width: 100%;
+      max-width: 520px;
+      background: var(--bg-white);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      color: var(--text-primary);
+      animation: slideDown 0.3s ease-out;
+    `;
+
+    modal.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border-light); padding-bottom: 16px">
+        <h2 style="margin: 0; font-size: 20px; font-weight: 600">Catálogos em PDF</h2>
+        <button class="close-download-modal" aria-label="Fechar" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary); transition: color 0.2s">✕</button>
+      </div>
+
+      <fieldset style="border: none; padding: 0; margin: 0 0 24px 0">
+        <legend style="font-weight: 600; margin-bottom: 12px; color: var(--text-primary)">Escolha o tipo de catálogo</legend>
+        <div style="display: flex; flex-direction: column; gap: 12px">
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none">
+            <input type="radio" name="downloadType" value="complete" checked style="width: 18px; height: 18px; cursor: pointer">
+            <span>Catálogo Completo</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none">
+            <input type="radio" name="downloadType" value="leve" style="width: 18px; height: 18px; cursor: pointer">
+            <span>Linha Leve</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none">
+            <input type="radio" name="downloadType" value="pesada" style="width: 18px; height: 18px; cursor: pointer">
+            <span>Linha Pesada</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div id="leve-select-container" style="display: none; margin-bottom: 20px">
+        <label for="leveSelect" style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-primary)">Selecione a opção</label>
+        <select id="leveSelect" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px; background: var(--bg-white); color: var(--text-primary); cursor: pointer; transition: border-color 0.2s">
+        </select>
+      </div>
+
+      <div id="pesada-select-container" style="display: none; margin-bottom: 20px">
+        <label for="pesadaSelect" style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-primary)">Selecione a opção</label>
+        <select id="pesadaSelect" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px; background: var(--bg-white); color: var(--text-primary); cursor: pointer; transition: border-color 0.2s">
+        </select>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: flex-end">
+        <button class="cancel-download" style="padding: 10px 20px; border: 1px solid var(--border-light); background: var(--bg-white); color: var(--text-primary); border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-size: 14px">Cancelar</button>
+        <button class="confirm-download" style="padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-size: 14px; display: flex; align-items: center; gap: 6px"><i class="fa-solid fa-download"></i> Download</button>
+      </div>
+    `;
+
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    const leveSelect = modal.querySelector('#leveSelect');
+    leveOptions.forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt.url;
+      o.textContent = opt.label;
+      leveSelect.appendChild(o);
+    });
+
+    const pesadaSelect = modal.querySelector('#pesadaSelect');
+    pesadaOptions.forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt.url;
+      o.textContent = opt.label;
+      pesadaSelect.appendChild(o);
+    });
+
+    const updateVisibility = () => {
+      const val = modal.querySelector('input[name="downloadType"]:checked').value;
+      modal.querySelector('#leve-select-container').style.display = val === 'leve' ? 'block' : 'none';
+      modal.querySelector('#pesada-select-container').style.display = val === 'pesada' ? 'block' : 'none';
+    };
+
+    modal.querySelectorAll('input[name="downloadType"]').forEach(r => r.addEventListener('change', updateVisibility));
+
+    // close handlers
+    modal.querySelector('.close-download-modal').addEventListener('click', closeModal);
+    modal.querySelector('.cancel-download').addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+
+    function closeModal() {
+      overlay.style.animation = 'fadeOut 0.2s ease-out';
+      setTimeout(() => overlay.remove(), 200);
+    }
+
+    modal.querySelector('.confirm-download').addEventListener('click', () => {
+      const type = modal.querySelector('input[name="downloadType"]:checked').value;
+      if (type === 'complete') {
+        const url = 'https://abr.ind.br/catalogos/pb/ABR_CATALOGO_COMPLETO_2022.pdf';
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.click();
+        closeModal();
+        return;
+      }
+
+      if (type === 'leve') {
+        const link = modal.querySelector('#leveSelect').value;
+        if (link) {
+          const a = document.createElement('a');
+          a.href = link;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.click();
+          closeModal();
+        }
+        return;
+      }
+
+      if (type === 'pesada') {
+        const link = modal.querySelector('#pesadaSelect').value;
+        if (link) {
+          const a = document.createElement('a');
+          a.href = link;
+          a.target = '_blank';
+          a.rel = 'noopener';
+          a.click();
+          closeModal();
+        }
+        return;
+      }
     });
   }
 });
