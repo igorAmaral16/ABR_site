@@ -4,6 +4,39 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- SEO essencial -->
+    <title>ABR Indústria e Comércio de Auto Peças | Juntas Automotivas e Vedação</title>
+    <meta name="description"
+        content="A ABR Indústria e Comércio de Auto Peças, em Hortolândia - SP, é especializada em juntas automotivas, juntas de cabeçote e kits de vedação para montadoras, reposição e lojas de autopeças." />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="ABR Indústria e Comércio de Auto Peças" />
+
+    <!-- URL principal do site (ajuste para o domínio real) -->
+    <link rel="canonical" href="https://abr.ind.br" />
+
+    <!-- Favicon simples (logo na aba) -->
+
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+    <!-- Schema.org básico para o Google entender o que é o site (sem exagero) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoPartsStore",
+      "name": "ABR Indústria e Comércio de Auto Peças",
+      "url": "https://abr.ind.br",
+      "description": "Especializada em juntas automotivas e vedação para montadoras, reposição e lojas de autopeças em Hortolândia - SP.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Hortolândia",
+        "addressRegion": "SP",
+        "addressCountry": "BR"
+      }
+    }
+    </script>
+
+    <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
@@ -16,7 +49,6 @@
         crossorigin="anonymous" />
 
     <link rel="stylesheet" href="styles/index.css" />
-    <title>Home</title>
 </head>
 
 <body>
@@ -25,11 +57,8 @@
         <div class="header-inner">
             <div class="logo-container">
                 <img src="assets/logo.png" class="logo" alt="Logo da Empresa" />
-                <span class="logo-text"
-                      data-i18n
-                      data-i18n-pt="Catálogo Técnico"
-                      data-i18n-en="Technical Catalog"
-                      data-i18n-es="Catálogo técnico">
+                <span class="logo-text" data-i18n data-i18n-pt="Catálogo Técnico" data-i18n-en="Technical Catalog"
+                    data-i18n-es="Catálogo técnico">
                     Catálogo Técnico
                 </span>
             </div>
@@ -40,63 +69,39 @@
                 <span></span>
             </button>
 
-            <nav class="menu" id="navMenu"
-                 aria-label="Navegação principal"
-                 data-i18n-aria-label
-                 data-i18n-aria-label-pt="Navegação principal"
-                 data-i18n-aria-label-en="Main navigation"
-                 data-i18n-aria-label-es="Navegación principal">
-                <a href="sobre.html" class="nav-link"
-                   data-i18n
-                   data-i18n-pt="Sobre"
-                   data-i18n-en="About"
-                   data-i18n-es="Nosotros">
+            <nav class="menu" id="navMenu" aria-label="Navegação principal" data-i18n-aria-label
+                data-i18n-aria-label-pt="Navegação principal" data-i18n-aria-label-en="Main navigation"
+                data-i18n-aria-label-es="Navegación principal">
+                <a href="sobre.html" class="nav-link" data-i18n data-i18n-pt="Sobre" data-i18n-en="About"
+                    data-i18n-es="Nosotros">
                     Sobre
                 </a>
-                <a href="index.html" class="nav-link active"
-                   data-i18n
-                   data-i18n-pt="Produtos"
-                   data-i18n-en="Products"
-                   data-i18n-es="Productos">
+                <a href="index.html" class="nav-link active" data-i18n data-i18n-pt="Produtos" data-i18n-en="Products"
+                    data-i18n-es="Productos">
                     Produtos
                 </a>
-                <a href="catalog.html" class="nav-link"
-                   data-i18n
-                   data-i18n-pt="Catálogo"
-                   data-i18n-en="Catalog"
-                   data-i18n-es="Catálogo">
+                <a href="catalog.html" class="nav-link" data-i18n data-i18n-pt="Catálogo" data-i18n-en="Catalog"
+                    data-i18n-es="Catálogo">
                     Catálogo
                 </a>
-                <a href="imprensa.html" class="nav-link"
-                   data-i18n
-                   data-i18n-pt="Imprensa"
-                   data-i18n-en="News"
-                   data-i18n-es="Prensa">
+                <a href="imprensa.html" class="nav-link" data-i18n data-i18n-pt="Imprensa" data-i18n-en="News"
+                    data-i18n-es="Prensa">
                     Imprensa
                 </a>
-                <a href="contato.html" class="nav-link"
-                   data-i18n
-                   data-i18n-pt="Contato"
-                   data-i18n-en="Contact"
-                   data-i18n-es="Contacto">
+                <a href="contato.html" class="nav-link" data-i18n data-i18n-pt="Contato" data-i18n-en="Contact"
+                    data-i18n-es="Contacto">
                     Contato
                 </a>
             </nav>
 
-            <div class="controls" role="group"
-                 aria-label="Controles do sistema"
-                 data-i18n-aria-label
-                 data-i18n-aria-label-pt="Controles do sistema"
-                 data-i18n-aria-label-en="System controls"
-                 data-i18n-aria-label-es="Controles del sistema">
+            <div class="controls" role="group" aria-label="Controles do sistema" data-i18n-aria-label
+                data-i18n-aria-label-pt="Controles do sistema" data-i18n-aria-label-en="System controls"
+                data-i18n-aria-label-es="Controles del sistema">
                 <div class="controls-group">
                     <div class="flags-container">
                         <button id="flagToggle" class="flag-btn" aria-haspopup="true" aria-expanded="false"
-                            title="Selecionar idioma"
-                            data-i18n-title
-                            data-i18n-title-pt="Selecionar idioma"
-                            data-i18n-title-en="Select language"
-                            data-i18n-title-es="Seleccionar idioma">
+                            title="Selecionar idioma" data-i18n-title data-i18n-title-pt="Selecionar idioma"
+                            data-i18n-title-en="Select language" data-i18n-title-es="Seleccionar idioma">
                             <span class="flag-icon flag-icon-br"></span>
                             <i class="fa-solid fa-chevron-down"></i>
                         </button>
@@ -117,17 +122,12 @@
                         </div>
                     </div>
 
-                    <button id="darkModeToggle" class="icon-btn" aria-pressed="false"
-                        title="Alternar modo escuro/claro"
-                        data-i18n-title
-                        data-i18n-title-pt="Alternar modo escuro/claro"
-                        data-i18n-title-en="Toggle dark/light mode"
-                        data-i18n-title-es="Alternar modo oscuro/claro"
-                        data-i18n-aria-label
-                        data-i18n-aria-label-pt="Alternar modo escuro/claro"
+                    <button id="darkModeToggle" class="icon-btn" aria-pressed="false" title="Alternar modo escuro/claro"
+                        data-i18n-title data-i18n-title-pt="Alternar modo escuro/claro"
+                        data-i18n-title-en="Toggle dark/light mode" data-i18n-title-es="Alternar modo oscuro/claro"
+                        data-i18n-aria-label data-i18n-aria-label-pt="Alternar modo escuro/claro"
                         data-i18n-aria-label-en="Toggle dark/light mode"
-                        data-i18n-aria-label-es="Alternar modo oscuro/claro"
-                        aria-label="Alternar modo escuro/claro">
+                        data-i18n-aria-label-es="Alternar modo oscuro/claro" aria-label="Alternar modo escuro/claro">
                         <i class="fa-solid fa-moon"></i>
                     </button>
                 </div>
@@ -141,26 +141,18 @@
             <section class="product-panel">
                 <div class="product-header">
                     <div class="product-badge">
-                        <span class="badge-text"
-                              data-i18n
-                              data-i18n-pt="Destaque"
-                              data-i18n-en="Highlight"
-                              data-i18n-es="Destacado">
+                        <span class="badge-text" data-i18n data-i18n-pt="Destaque" data-i18n-en="Highlight"
+                            data-i18n-es="Destacado">
                             Destaque
                         </span>
                     </div>
-                    <h1 id="productTitle" class="product-title"
-                        data-i18n
-                        data-i18n-pt="Junta do Cabeçote D229"
-                        data-i18n-en="Cylinder Head Gasket D229"
-                        data-i18n-es="Empaque de culata D229">
+                    <h1 id="productTitle" class="product-title" data-i18n data-i18n-pt="Junta do Cabeçote D229"
+                        data-i18n-en="Cylinder Head Gasket D229" data-i18n-es="Empaque de culata D229">
                         Junta do Cabeçote D229
                     </h1>
-                    <p class="product-subtitle"
-                       data-i18n
-                       data-i18n-pt="Vedação de Alta Performance para Motores"
-                       data-i18n-en="High-performance sealing for engines"
-                       data-i18n-es="Sellado de alto rendimiento para motores">
+                    <p class="product-subtitle" data-i18n data-i18n-pt="Vedação de Alta Performance para Motores"
+                        data-i18n-en="High-performance sealing for engines"
+                        data-i18n-es="Sellado de alto rendimiento para motores">
                         Vedação de Alta Performance para Motores
                     </p>
                 </div>
@@ -168,87 +160,59 @@
                 <div class="product-details">
                     <div class="specs-grid">
                         <div class="spec-item">
-                            <span class="spec-label"
-                                  data-i18n
-                                  data-i18n-pt="Material:"
-                                  data-i18n-en="Material:"
-                                  data-i18n-es="Material:">
+                            <span class="spec-label" data-i18n data-i18n-pt="Material:" data-i18n-en="Material:"
+                                data-i18n-es="Material:">
                                 Material:
                             </span>
-                            <span class="spec-value"
-                                  data-i18n
-                                  data-i18n-pt="xxx"
-                                  data-i18n-en="xxx"
-                                  data-i18n-es="xxx">
+                            <span class="spec-value" data-i18n data-i18n-pt="xxx" data-i18n-en="xxx" data-i18n-es="xxx">
                                 XXX
                             </span>
                         </div>
                         <div class="spec-item">
-                            <span class="spec-label"
-                                  data-i18n
-                                  data-i18n-pt="Temperatura:"
-                                  data-i18n-en="Temperature:"
-                                  data-i18n-es="Temperatura:">
+                            <span class="spec-label" data-i18n data-i18n-pt="Temperatura:" data-i18n-en="Temperature:"
+                                data-i18n-es="Temperatura:">
                                 Temperatura:
                             </span>
-                            <span class="spec-value"
-                                  data-i18n
-                                  data-i18n-pt="xxx"
-                                  data-i18n-en="Up to xxxC"
-                                  data-i18n-es="Hasta xxxC">
+                            <span class="spec-value" data-i18n data-i18n-pt="xxx" data-i18n-en="Up to xxxC"
+                                data-i18n-es="Hasta xxxC">
                                 XXX
                             </span>
                         </div>
                         <div class="spec-item">
-                            <span class="spec-label"
-                                  data-i18n
-                                  data-i18n-pt="Pressão:"
-                                  data-i18n-en="Pressure:"
-                                  data-i18n-es="Presión:">
+                            <span class="spec-label" data-i18n data-i18n-pt="Pressão:" data-i18n-en="Pressure:"
+                                data-i18n-es="Presión:">
                                 Pressão:
                             </span>
-                            <span class="spec-value"
-                                  data-i18n
-                                  data-i18n-pt="xxx"
-                                  data-i18n-en="xxx"
-                                  data-i18n-es="xxx">
+                            <span class="spec-value" data-i18n data-i18n-pt="xxx" data-i18n-en="xxx" data-i18n-es="xxx">
                                 XXX
                             </span>
                         </div>
                         <div class="spec-item">
-                            <span class="spec-label"
-                                  data-i18n
-                                  data-i18n-pt="Compatibilidade:"
-                                  data-i18n-en="Compatibility:"
-                                  data-i18n-es="Compatibilidad:">
+                            <span class="spec-label" data-i18n data-i18n-pt="Compatibilidade:"
+                                data-i18n-en="Compatibility:" data-i18n-es="Compatibilidad:">
                                 Compatibilidade:
                             </span>
-                            <span class="spec-value"
-                                  data-i18n
-                                  data-i18n-pt="xxx"
-                                  data-i18n-en="Diesel engines"
-                                  data-i18n-es="Motores diésel">
+                            <span class="spec-value" data-i18n data-i18n-pt="xxx" data-i18n-en="Diesel engines"
+                                data-i18n-es="Motores diésel">
                                 XXX
                             </span>
                         </div>
                     </div>
 
                     <div class="description-section">
-                        <h3 class="section-title"
-                            data-i18n
-                            data-i18n-pt="Descrição Técnica"
-                            data-i18n-en="Technical Description"
-                            data-i18n-es="Descripción técnica">
+                        <h3 class="section-title" data-i18n data-i18n-pt="Descrição Técnica"
+                            data-i18n-en="Technical Description" data-i18n-es="Descripción técnica">
                             Descrição Técnica
                         </h3>
-                        <p id="productDescription" class="product-description"
-                           data-i18n
-                           data-i18n-pt="Junta de cabeçote para motor D229, construída em aço multicamadas, projetada para vedar câmaras de combustão, 
+                        <p id="productDescription" class="product-description" data-i18n
+                            data-i18n-pt="Junta de cabeçote para motor D229, construída em aço multicamadas, projetada para vedar câmaras de combustão, 
                                 dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho."
-                           data-i18n-en="The D229 cylinder head gasket was developed with cutting-edge technology to provide precise sealing under extreme conditions. Made with reinforced composite graphite material, it ensures superior durability and thermal resistance."
-                           data-i18n-es="La junta de culata D229 fue desarrollada con tecnología de punta para ofrecer un sellado preciso en condiciones extremas. Fabricada con material reforzado de grafito compuesto, garantiza mayor durabilidad y resistencia térmica.">
-                            Junta de cabeçote para motor D229, construída em aço multicamadas, projetada para vedar câmaras de combustão, 
-                                dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.
+                            data-i18n-en="The D229 cylinder head gasket was developed with cutting-edge technology to provide precise sealing under extreme conditions. Made with reinforced composite graphite material, it ensures superior durability and thermal resistance."
+                            data-i18n-es="La junta de culata D229 fue desarrollada con tecnología de punta para ofrecer un sellado preciso en condiciones extremas. Fabricada con material reforzado de grafito compuesto, garantiza mayor durabilidad y resistencia térmica.">
+                            Junta de cabeçote para motor D229, construída em aço multicamadas, projetada para vedar
+                            câmaras de combustão,
+                            dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas
+                            temperaturas e pressão de trabalho.
                         </p>
                     </div>
                 </div>
@@ -259,8 +223,7 @@
                 <div class="image-container" style="background: none; box-shadow: none; border: none; padding: 0;">
                     <div class="floating-image-wrapper">
                         <img id="productImage" class="product-image" src="assets/D229.png"
-                            alt="Junta do Cabeçote D229 - Vista técnica"
-                            data-i18n-alt
+                            alt="Junta do Cabeçote D229 - Vista técnica" data-i18n-alt
                             data-i18n-alt-pt="Junta do Cabeçote D229 - Vista técnica"
                             data-i18n-alt-en="Cylinder Head Gasket D229 - Technical view"
                             data-i18n-alt-es="Empaque de culata D229 - Vista técnica" />
@@ -270,36 +233,25 @@
             </div>
 
             <!-- Catálogo de Produtos (Direita) -->
-            <aside class="catalog-sidebar"
-                   aria-label="Catálogo de Principais Produtos"
-                   data-i18n-aria-label
-                   data-i18n-aria-label-pt="Catálogo de Principais Produtos"
-                   data-i18n-aria-label-en="Related products catalog"
-                   data-i18n-aria-label-es="Catálogo de productos relacionados">
+            <aside class="catalog-sidebar" aria-label="Catálogo de Principais Produtos" data-i18n-aria-label
+                data-i18n-aria-label-pt="Catálogo de Principais Produtos"
+                data-i18n-aria-label-en="Related products catalog"
+                data-i18n-aria-label-es="Catálogo de productos relacionados">
                 <div class="sidebar-header">
-                    <h2 class="sidebar-title"
-                        data-i18n
-                        data-i18n-pt="Principais Produtos"
-                        data-i18n-en="Related Products"
-                        data-i18n-es="Productos relacionados">
+                    <h2 class="sidebar-title" data-i18n data-i18n-pt="Principais Produtos"
+                        data-i18n-en="Related Products" data-i18n-es="Productos relacionados">
                         <i class="fa-solid fa-boxes-stacked"></i>
                         Principais Produtos
                     </h2>
-                    <div class="sidebar-subtitle"
-                         data-i18n
-                         data-i18n-pt="Sistema de Vedação"
-                         data-i18n-en="Sealing System"
-                         data-i18n-es="Sistema de sellado">
+                    <div class="sidebar-subtitle" data-i18n data-i18n-pt="Sistema de Vedação"
+                        data-i18n-en="Sealing System" data-i18n-es="Sistema de sellado">
                         Sistema de Vedação
                     </div>
                 </div>
 
                 <nav class="product-catalog" role="navigation">
                     <div class="catalog-category">
-                        <h3 class="category-title"
-                            data-i18n
-                            data-i18n-pt="Anéis O'ring"
-                            data-i18n-en="O-ring seals"
+                        <h3 class="category-title" data-i18n data-i18n-pt="Anéis O'ring" data-i18n-en="O-ring seals"
                             data-i18n-es="Anillos O-ring">
                             <span class="category-icon">⭕</span>
                             Anéis O'ring
@@ -310,27 +262,18 @@
                                 data-description="Anel O’ring 113 utilizado em sistemas de óleo, combustível ou arrefecimento para vedação entre componentes, evitando vazamentos em ligações fixas ou móveis.">
                                 <div class="card-header">
                                     <span class="product-code">REF: OR113</span>
-                                    <span class="product-status"
-                                          data-i18n
-                                          data-i18n-pt="Em estoque"
-                                          data-i18n-en="In stock"
-                                          data-i18n-es="En stock">
+                                    <span class="product-status" data-i18n data-i18n-pt="Em estoque"
+                                        data-i18n-en="In stock" data-i18n-es="En stock">
                                         <i class="fa-solid fa-circle"></i>
                                         Em estoque
                                     </span>
                                 </div>
-                                <h4 class="product-name"
-                                    data-i18n
-                                    data-i18n-pt="Anel O'ring 113"
-                                    data-i18n-en="O-ring 113"
-                                    data-i18n-es="Anillo O-ring 113">
+                                <h4 class="product-name" data-i18n data-i18n-pt="Anel O'ring 113"
+                                    data-i18n-en="O-ring 113" data-i18n-es="Anillo O-ring 113">
                                     Anel O'ring 113
                                 </h4>
-                                <p class="product-summary"
-                                   data-i18n
-                                   data-i18n-pt="Padrão industrial básico"
-                                   data-i18n-en="Basic industrial standard"
-                                   data-i18n-es="Estándar industrial básico">
+                                <p class="product-summary" data-i18n data-i18n-pt="Padrão industrial básico"
+                                    data-i18n-en="Basic industrial standard" data-i18n-es="Estándar industrial básico">
                                     Padrão industrial básico
                                 </p>
                             </div>
@@ -338,11 +281,8 @@
                     </div>
 
                     <div class="catalog-category">
-                        <h3 class="category-title"
-                            data-i18n
-                            data-i18n-pt="Vedadores Especiais"
-                            data-i18n-en="Special seals"
-                            data-i18n-es="Sellos especiales">
+                        <h3 class="category-title" data-i18n data-i18n-pt="Vedadores Especiais"
+                            data-i18n-en="Special seals" data-i18n-es="Sellos especiales">
                             <span class="category-icon">🔧</span>
                             Vedadores Especiais
                         </h3>
@@ -352,27 +292,19 @@
                                 data-description="Vedador do conjunto X12 em elastômero, destinado à vedação de óleo/fluido em eixo ou alojamento, resistente a variações térmicas e à ação de derivados de petróleo, evitando vazamentos e contaminação do sistema.">
                                 <div class="card-header">
                                     <span class="product-code">REF: X12</span>
-                                    <span class="product-status"
-                                          data-i18n
-                                          data-i18n-pt="Em estoque"
-                                          data-i18n-en="In stock"
-                                          data-i18n-es="En stock">
+                                    <span class="product-status" data-i18n data-i18n-pt="Em estoque"
+                                        data-i18n-en="In stock" data-i18n-es="En stock">
                                         <i class="fa-solid fa-circle"></i>
                                         Em estoque
                                     </span>
                                 </div>
-                                <h4 class="product-name"
-                                    data-i18n
-                                    data-i18n-pt="Vedador X12"
-                                    data-i18n-en="Seal X12"
+                                <h4 class="product-name" data-i18n data-i18n-pt="Vedador X12" data-i18n-en="Seal X12"
                                     data-i18n-es="Sello X12">
                                     Vedador X12
                                 </h4>
-                                <p class="product-summary"
-                                   data-i18n
-                                   data-i18n-pt="Alta temperatura (até 500°C)"
-                                   data-i18n-en="High temperature (up to 500°C)"
-                                   data-i18n-es="Alta temperatura (hasta 500°C)">
+                                <p class="product-summary" data-i18n data-i18n-pt="Alta temperatura (até 500°C)"
+                                    data-i18n-en="High temperature (up to 500°C)"
+                                    data-i18n-es="Alta temperatura (hasta 500°C)">
                                     Alta temperatura (até 500°C)
                                 </p>
                             </div>
@@ -382,27 +314,19 @@
                                 data-description="Junta de cabeçote para motor X10, construída em aço multicamadas, projetada para vedar câmaras de combustão, dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.">
                                 <div class="card-header">
                                     <span class="product-code">REF: X10</span>
-                                    <span class="product-status"
-                                          data-i18n
-                                          data-i18n-pt="Em estoque"
-                                          data-i18n-en="In stock"
-                                          data-i18n-es="En stock">
+                                    <span class="product-status" data-i18n data-i18n-pt="Em estoque"
+                                        data-i18n-en="In stock" data-i18n-es="En stock">
                                         <i class="fa-solid fa-circle"></i>
                                         Em estoque
                                     </span>
                                 </div>
-                                <h4 class="product-name"
-                                    data-i18n
-                                    data-i18n-pt="Junta de cabeçote X10"
-                                    data-i18n-en="Seal X10"
-                                    data-i18n-es="Sello X10">
+                                <h4 class="product-name" data-i18n data-i18n-pt="Junta de cabeçote X10"
+                                    data-i18n-en="Seal X10" data-i18n-es="Sello X10">
                                     Junta de cabeçote X10
                                 </h4>
-                                <p class="product-summary"
-                                   data-i18n
-                                   data-i18n-pt="Versão compacta e econômica"
-                                   data-i18n-en="Compact and cost-effective version"
-                                   data-i18n-es="Versión compacta y económica">
+                                <p class="product-summary" data-i18n data-i18n-pt="Versão compacta e econômica"
+                                    data-i18n-en="Compact and cost-effective version"
+                                    data-i18n-es="Versión compacta y económica">
                                     Versão compacta e econômica
                                 </p>
                             </div>
@@ -412,27 +336,20 @@
                                 data-description="Junta de cabeçote para motor D229, construída em aço multicamadas, projetada para vedar câmaras de combustão, dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.">
                                 <div class="card-header">
                                     <span class="product-code">REF: D229</span>
-                                    <span class="product-status"
-                                          data-i18n
-                                          data-i18n-pt="Em estoque"
-                                          data-i18n-en="In stock"
-                                          data-i18n-es="En stock">
+                                    <span class="product-status" data-i18n data-i18n-pt="Em estoque"
+                                        data-i18n-en="In stock" data-i18n-es="En stock">
                                         <i class="fa-solid fa-circle"></i>
                                         Em estoque
                                     </span>
                                 </div>
-                                <h4 class="product-name"
-                                    data-i18n
-                                    data-i18n-pt="Junta do Cabeçote D229"
-                                    data-i18n-en="Cylinder Head Gasket D229"
-                                    data-i18n-es="Empaque de culata D229">
+                                <h4 class="product-name" data-i18n data-i18n-pt="Junta do Cabeçote D229"
+                                    data-i18n-en="Cylinder Head Gasket D229" data-i18n-es="Empaque de culata D229">
                                     Junta do Cabeçote D229
                                 </h4>
-                                <p class="product-summary"
-                                   data-i18n
-                                   data-i18n-pt="Vedação de Alta Performance para Motores"
-                                   data-i18n-en="High-performance sealing for engines"
-                                   data-i18n-es="Sellado de alto rendimiento para motores">
+                                <p class="product-summary" data-i18n
+                                    data-i18n-pt="Vedação de Alta Performance para Motores"
+                                    data-i18n-en="High-performance sealing for engines"
+                                    data-i18n-es="Sellado de alto rendimiento para motores">
                                     Vedação de Alta Performance para Motores
                                 </p>
                             </div>
@@ -445,167 +362,99 @@
         </div>
     </main>
 
-    <!-- Indicador de Categoria Fixo -->
-    <div class="category-indicator">
-        <div class="indicator-content">
-            <span class="indicator-label"
-                  data-i18n
-                  data-i18n-pt="CATEGORIA:"
-                  data-i18n-en="CATEGORY:"
-                  data-i18n-es="CATEGORÍA:">
-                CATEGORIA:
-            </span>
-            <span class="indicator-value"
-                  data-i18n
-                  data-i18n-pt="Sistema de Vedação"
-                  data-i18n-en="Sealing System"
-                  data-i18n-es="Sistema de sellado">
-                Sistema de Vedação
-            </span>
-        </div>
-    </div>
-
     <!-- Rodapé -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <h3 data-i18n
-                    data-i18n-pt="Produtos"
-                    data-i18n-en="Products"
-                    data-i18n-es="Productos">
+                <h3 data-i18n data-i18n-pt="Produtos" data-i18n-en="Products" data-i18n-es="Productos">
                     Produtos
                 </h3>
                 <ul>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Junta do Cabeçote"
-                           data-i18n-en="Cylinder Head Gasket"
-                           data-i18n-es="Empaque de culata">
-                        Junta do Cabeçote
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Vedadores Especiais"
-                           data-i18n-en="Special seals"
-                           data-i18n-es="Sellos especiales">
-                        Vedadores Especiais
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Anéis O'ring"
-                           data-i18n-en="O-ring seals"
-                           data-i18n-es="Anillos O-ring">
-                        Anéis O'ring
-                    </a></li>
-                    <li><a href="#"
-                           data-i18n
-                           data-i18n-pt="Sistema de Vedação"
-                           data-i18n-en="Sealing System"
-                           data-i18n-es="Sistema de sellado">
-                        Sistema de Vedação
-                    </a></li>
+                    <li><a href="#" data-i18n data-i18n-pt="Junta do Cabeçote" data-i18n-en="Cylinder Head Gasket"
+                            data-i18n-es="Empaque de culata">
+                            Junta do Cabeçote
+                        </a></li>
+                    <li><a href="#" data-i18n data-i18n-pt="Vedadores Especiais" data-i18n-en="Special seals"
+                            data-i18n-es="Sellos especiales">
+                            Vedadores Especiais
+                        </a></li>
+                    <li><a href="#" data-i18n data-i18n-pt="Anéis O'ring" data-i18n-en="O-ring seals"
+                            data-i18n-es="Anillos O-ring">
+                            Anéis O'ring
+                        </a></li>
+                    <li><a href="#" data-i18n data-i18n-pt="Sistema de Vedação" data-i18n-en="Sealing System"
+                            data-i18n-es="Sistema de sellado">
+                            Sistema de Vedação
+                        </a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3 data-i18n
-                    data-i18n-pt="Empresa"
-                    data-i18n-en="Company"
-                    data-i18n-es="Empresa">
+                <h3 data-i18n data-i18n-pt="Empresa" data-i18n-en="Company" data-i18n-es="Empresa">
                     Empresa
                 </h3>
                 <ul>
-                    <li><a href="sobre.html"
-                           data-i18n
-                           data-i18n-pt="Sobre Nós"
-                           data-i18n-en="About Us"
-                           data-i18n-es="Sobre nosotros">
-                        Sobre Nós
-                    </a></li>
-                    <li><a href="contato.html"
-                           data-i18n
-                           data-i18n-pt="Contato"
-                           data-i18n-en="Contact"
-                           data-i18n-es="Contacto">
-                        Contato
-                    </a></li>
+                    <li><a href="sobre.html" data-i18n data-i18n-pt="Sobre Nós" data-i18n-en="About Us"
+                            data-i18n-es="Sobre nosotros">
+                            Sobre Nós
+                        </a></li>
+                    <li><a href="contato.html" data-i18n data-i18n-pt="Contato" data-i18n-en="Contact"
+                            data-i18n-es="Contacto">
+                            Contato
+                        </a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3 data-i18n
-                    data-i18n-pt="Catálogo"
-                    data-i18n-en="Catalog"
-                    data-i18n-es="Catálogo">
+                <h3 data-i18n data-i18n-pt="Catálogo" data-i18n-en="Catalog" data-i18n-es="Catálogo">
                     Catálogo
                 </h3>
                 <ul>
-                    <li><a href="catalog.html"
-                           data-i18n
-                           data-i18n-pt="Catálogo Web"
-                           data-i18n-en="Web Catalog"
-                           data-i18n-es="Catálogo web">
-                        Catálogo Web
-                    </a></li>
-                    <li><a href="catalog.html"
-                           data-i18n
-                           data-i18n-pt="Downloads"
-                           data-i18n-en="Downloads"
-                           data-i18n-es="Descargas">
-                        Downloads
-                    </a></li>
+                    <li><a href="catalog.html" data-i18n data-i18n-pt="Catálogo Web" data-i18n-en="Web Catalog"
+                            data-i18n-es="Catálogo web">
+                            Catálogo Web
+                        </a></li>
+                    <li><a href="catalog.html" data-i18n data-i18n-pt="Downloads" data-i18n-en="Downloads"
+                            data-i18n-es="Descargas">
+                            Downloads
+                        </a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3 data-i18n
-                    data-i18n-pt="Suporte"
-                    data-i18n-en="Support"
-                    data-i18n-es="Soporte">
+                <h3 data-i18n data-i18n-pt="Suporte" data-i18n-en="Support" data-i18n-es="Soporte">
                     Suporte
                 </h3>
                 <ul>
-                    <li><a href="contato.html"
-                           data-i18n
-                           data-i18n-pt="Contato"
-                           data-i18n-en="Contact"
-                           data-i18n-es="Contacto">
-                        Contato
-                    </a></li>
+                    <li><a href="contato.html" data-i18n data-i18n-pt="Contato" data-i18n-en="Contact"
+                            data-i18n-es="Contacto">
+                            Contato
+                        </a></li>
                 </ul>
             </div>
             <div class="footer-section">
-                <h3 data-i18n
-                    data-i18n-pt="Contato"
-                    data-i18n-en="Contact"
-                    data-i18n-es="Contacto">
+                <h3 data-i18n data-i18n-pt="Contato" data-i18n-en="Contact" data-i18n-es="Contacto">
                     Contato
                 </h3>
                 <ul>
                     <li><a href="tel:+551931160145" title="Telefone">
-                        <i class="fas fa-phone"></i>
-                        <span data-i18n
-                              data-i18n-pt="+55 (19) 3116 0145"
-                              data-i18n-en="+55 (19) 3116 0145"
-                              data-i18n-es="+55 (19) 3116 0145">
-                            +55 (19) 3116 0145
-                        </span>
-                    </a></li>
+                            <i class="fas fa-phone"></i>
+                            <span data-i18n data-i18n-pt="+55 (19) 3116 0145" data-i18n-en="+55 (19) 3116 0145"
+                                data-i18n-es="+55 (19) 3116 0145">
+                                +55 (19) 3116 0145
+                            </span>
+                        </a></li>
                     <li><a href="mailto:contato@abr.ind.br" title="Email">
-                        <i class="fas fa-envelope"></i>
-                        <span>contato@abr.ind.br</span>
-                    </a></li>
+                            <i class="fas fa-envelope"></i>
+                            <span>contato@abr.ind.br</span>
+                        </a></li>
                     <li><a href="#" title="Endereço">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span data-i18n
-                              data-i18n-pt="Hortolândia, SP"
-                              data-i18n-en="Hortolândia, SP"
-                              data-i18n-es="Hortolândia, SP">
-                            Hortolândia, SP
-                        </span>
-                    </a></li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span data-i18n data-i18n-pt="Hortolândia, SP" data-i18n-en="Hortolândia, SP"
+                                data-i18n-es="Hortolândia, SP">
+                                Hortolândia, SP
+                            </span>
+                        </a></li>
                     <li style="margin-top: 8px; font-size: 12px; color: #999;">
-                        <span data-i18n
-                              data-i18n-pt="Seg–Sex: 07h - 16:45"
-                              data-i18n-en="Mon–Fri: 7am - 16:45pm"
-                              data-i18n-es="Lun–Vie: 8:30 – 17:30">
+                        <span data-i18n data-i18n-pt="Seg–Sex: 07h - 16:45" data-i18n-en="Mon–Fri: 7am - 16:45pm"
+                            data-i18n-es="Lun–Vie: 8:30 – 17:30">
                             Seg–Sex: 07h - 16:45
                         </span>
                     </li>
@@ -613,10 +462,9 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p data-i18n
-               data-i18n-pt="© 2025 Empresa de Sistemas de Vedação. Todos os direitos reservados."
-               data-i18n-en="© 2025 Sealing Systems Company. All rights reserved."
-               data-i18n-es="© 2025 Empresa de Sistemas de Sellado. Todos los derechos reservados.">
+            <p data-i18n data-i18n-pt="© 2025 Empresa de Sistemas de Vedação. Todos os direitos reservados."
+                data-i18n-en="© 2025 Sealing Systems Company. All rights reserved."
+                data-i18n-es="© 2025 Empresa de Sistemas de Sellado. Todos los derechos reservados.">
                 &copy; 2025 Empresa de Sistemas de Vedação. Todos os direitos reservados.
             </p>
         </div>

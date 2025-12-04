@@ -268,7 +268,6 @@ class ProductManager {
     this.productImage = document.getElementById('productImage');
     this.titleEl = document.getElementById('productTitle');
     this.descEl = document.getElementById('productDescription');
-    this.indicatorValue = document.querySelector('.indicator-value');
     this.currentProductId = 'd229';
     this.animationInProgress = false;
     this.init();
@@ -355,9 +354,6 @@ class ProductManager {
     this.productImage.alt = newData.title;
     this.titleEl.textContent = newData.title;
     this.descEl.textContent = newData.description;
-
-    // Atualizar indicador de categoria
-    this.indicatorValue.textContent = newData.category.replace(/[⭕🔧]/g, '').trim();
 
     // Animação de entrada
     this.titleEl.classList.remove('text-transition-out');
