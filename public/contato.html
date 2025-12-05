@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- SEO essencial -->
+    <title>ABR Indústria e Comércio de Auto Peças | Juntas Automotivas e Vedação</title>
+    <meta name="description"
+        content="A ABR Indústria e Comércio de Auto Peças, em Hortolândia - SP, é especializada em juntas automotivas, juntas de cabeçote e kits de vedação para montadoras, reposição e lojas de autopeças." />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="ABR Indústria e Comércio de Auto Peças" />
+
+    <!-- URL principal do site (ajuste para o domínio real) -->
+    <link rel="canonical" href="https://abr.ind.br" />
+
+    <!-- Favicon simples (logo na aba) -->
+
+    <link rel="icon" type="image/png" href="../src/assets/favicon.png" />
+
+    <!-- Schema.org básico para o Google entender o que é o site (sem exagero) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoPartsStore",
+      "name": "ABR Indústria e Comércio de Auto Peças",
+      "url": "https://abr.ind.br",
+      "description": "Especializada em juntas automotivas e vedação para montadoras, reposição e lojas de autopeças em Hortolândia - SP.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Hortolândia",
+        "addressRegion": "SP",
+        "addressCountry": "BR"
+      }
+    }
+    </script>
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
+        crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="../src/styles/index.css" />
+    <link rel="stylesheet" href="../src/styles/contato.css" />
+</head>
+
+<body>
+    <header class="header" role="banner">
+        <div class="header-inner">
+            <div class="logo-container">
+                <img src="../src/assets/logo.png" class="logo" alt="Logo da Empresa" />
+                <span class="logo-text"
+                      data-i18n
+                      data-i18n-pt="Fale conosco"
+                      data-i18n-en="Contact us"
+                      data-i18n-es="Contáctenos">
+                    Fale conosco
+                </span>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="menu" id="navMenu"
+                 aria-label="Navegação principal"
+                 data-i18n-aria-label
+                 data-i18n-aria-label-pt="Navegação principal"
+                 data-i18n-aria-label-en="Main navigation"
+                 data-i18n-aria-label-es="Navegación principal">
+                <a href="sobre.html" class="nav-link"
+                   data-i18n
+                   data-i18n-pt="Sobre"
+                   data-i18n-en="About"
+                   data-i18n-es="Nosotros">
+                    Sobre
+                </a>
+                <a href="index.html" class="nav-link"
+                   data-i18n
+                   data-i18n-pt="Produtos"
+                   data-i18n-en="Products"
+                   data-i18n-es="Productos">
+                    Produtos
+                </a>
+                <a href="catalog.html" class="nav-link"
+                   data-i18n
+                   data-i18n-pt="Catálogo"
+                   data-i18n-en="Catalog"
+                   data-i18n-es="Catálogo">
+                    Catálogo
+                </a>
+                <a href="imprensa.html" class="nav-link"
+                   data-i18n
+                   data-i18n-pt="Imprensa"
+                   data-i18n-en="News"
+                   data-i18n-es="Prensa">
+                    Imprensa
+                </a>
+                <a href="contato.html" class="nav-link active"
+                   data-i18n
+                   data-i18n-pt="Contato"
+                   data-i18n-en="Contact"
+                   data-i18n-es="Contacto">
+                    Contato
+                </a>
+            </nav>
+
+            <div class="controls" role="group"
+                 aria-label="Controles do sistema"
+                 data-i18n-aria-label
+                 data-i18n-aria-label-pt="Controles do sistema"
+                 data-i18n-aria-label-en="System controls"
+                 data-i18n-aria-label-es="Controles del sistema">
+                <div class="controls-group">
+                    <div class="flags-container">
+                        <button id="flagToggle" class="flag-btn" aria-haspopup="true" aria-expanded="false"
+                            title="Selecionar idioma"
+                            data-i18n-title
+                            data-i18n-title-pt="Selecionar idioma"
+                            data-i18n-title-en="Select language"
+                            data-i18n-title-es="Seleccionar idioma">
+                            <span class="flag-icon flag-icon-br" aria-hidden="true"></span>
+                            <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+
+                        <div id="flagMenu" class="flag-dropdown hidden" role="menu" aria-hidden="true">
+                            <button class="flag-option" data-lang="pt" aria-label="Português">
+                                <span class="flag-icon flag-icon-br" aria-hidden="true"></span>
+                                Português
+                            </button>
+                            <button class="flag-option" data-lang="en" aria-label="English">
+                                <span class="flag-icon flag-icon-us" aria-hidden="true"></span>
+                                English
+                            </button>
+                            <button class="flag-option" data-lang="es" aria-label="Español">
+                                <span class="flag-icon flag-icon-es" aria-hidden="true"></span>
+                                Español
+                            </button>
+                        </div>
+                    </div>
+
+                    <button id="darkModeToggle" class="icon-btn" aria-pressed="false"
+                        title="Alternar modo escuro/claro"
+                        data-i18n-title
+                        data-i18n-title-pt="Alternar modo escuro/claro"
+                        data-i18n-title-en="Toggle dark/light mode"
+                        data-i18n-title-es="Alternar modo oscuro/claro"
+                        aria-label="Alternar modo escuro/claro"
+                        data-i18n-aria-label
+                        data-i18n-aria-label-pt="Alternar modo escuro/claro"
+                        data-i18n-aria-label-en="Toggle dark/light mode"
+                        data-i18n-aria-label-es="Alternar modo oscuro/claro">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main" role="main">
+        <section class="contact-hero" aria-labelledby="contact-title">
+            <h1 id="contact-title" class="page-title"
+                data-i18n
+                data-i18n-pt="Contato"
+                data-i18n-en="Contact"
+                data-i18n-es="Contacto">
+                Contato
+            </h1>
+            <div class="title-underline"></div>
+            <p class="subtitle"
+               data-i18n
+               data-i18n-pt="Fale conosco — responderemos em até 2 dias úteis"
+               data-i18n-en="Talk to us — we'll respond within 2 business days"
+               data-i18n-es="Hable con nosotros — responderemos en hasta 2 días hábiles">
+                Fale conosco — responderemos em até 2 dias úteis
+            </p>
+        </section>
+
+        <div class="contact-container"
+             role="region"
+             aria-label="Formulário de contato"
+             data-i18n-aria-label
+             data-i18n-aria-label-pt="Formulário de contato"
+             data-i18n-aria-label-en="Contact form"
+             data-i18n-aria-label-es="Formulario de contacto">
+            <div class="contact-card" aria-labelledby="form-title">
+                <h2 id="form-title"
+                    style="margin:0 0 10px; font-size:20px; color:var(--title);"
+                    data-i18n
+                    data-i18n-pt="Envie sua mensagem"
+                    data-i18n-en="Send your message"
+                    data-i18n-es="Envíe su mensaje">
+                    Envie sua mensagem
+                </h2>
+
+                <form id="contactForm" novalidate>
+                    <label for="nome" class="visually-hidden"
+                           data-i18n
+                           data-i18n-pt="Nome"
+                           data-i18n-en="Name"
+                           data-i18n-es="Nombre">
+                        Nome
+                    </label>
+                    <div class="row" style="margin-bottom:12px">
+                        <div class="field">
+                            <label for="nome"
+                                   data-i18n
+                                   data-i18n-pt="Nome"
+                                   data-i18n-en="Name"
+                                   data-i18n-es="Nombre">
+                                Nome
+                            </label>
+                            <input id="nome"
+                                   name="nome"
+                                   type="text"
+                                   placeholder="Seu nome completo"
+                                   required
+                                   maxlength="80"
+                                   data-i18n-placeholder
+                                   data-i18n-placeholder-pt="Seu nome completo"
+                                   data-i18n-placeholder-en="Your full name"
+                                   data-i18n-placeholder-es="Su nombre completo" />
+                        </div>
+
+                        <div class="field">
+                            <label for="email"
+                                   data-i18n
+                                   data-i18n-pt="Email"
+                                   data-i18n-en="Email"
+                                   data-i18n-es="Email">
+                                Email
+                            </label>
+                            <input id="email"
+                                   name="email"
+                                   type="email"
+                                   placeholder="seu@exemplo.com"
+                                   required
+                                   maxlength="120"
+                                   data-i18n-placeholder
+                                   data-i18n-placeholder-pt="seu@exemplo.com"
+                                   data-i18n-placeholder-en="your@example.com"
+                                   data-i18n-placeholder-es="su@ejemplo.com" />
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="assunto"
+                               data-i18n
+                               data-i18n-pt="Assunto"
+                               data-i18n-en="Subject"
+                               data-i18n-es="Asunto">
+                            Assunto
+                        </label>
+                        <input id="assunto"
+                               name="assunto"
+                               type="text"
+                               placeholder="Motivo do contato"
+                               required
+                               maxlength="120"
+                               data-i18n-placeholder
+                               data-i18n-placeholder-pt="Motivo do contato"
+                               data-i18n-placeholder-en="Reason for contact"
+                               data-i18n-placeholder-es="Motivo del contacto" />
+                    </div>
+
+                    <div class="field">
+                        <label for="mensagem"
+                               data-i18n
+                               data-i18n-pt="Mensagem"
+                               data-i18n-en="Message"
+                               data-i18n-es="Mensaje">
+                            Mensagem
+                        </label>
+                        <textarea id="mensagem"
+                                  name="mensagem"
+                                  placeholder="Digite sua mensagem aqui..."
+                                  required
+                                  maxlength="3000"
+                                  data-i18n-placeholder
+                                  data-i18n-placeholder-pt="Digite sua mensagem aqui..."
+                                  data-i18n-placeholder-en="Type your message here..."
+                                  data-i18n-placeholder-es="Escriba su mensaje aquí..."></textarea>
+                        <div class="helper-text" id="charCount">0 / 3000</div>
+                    </div>
+
+                    <div class="visually-hidden">
+                        <label for="website">Website</label>
+                        <input id="website" name="website" type="text" autocomplete="off" />
+                    </div>
+
+                    <div style="display:flex; gap:12px; align-items:center; margin-top:8px">
+                        <button id="submitBtn" class="btn" type="submit"
+                                data-i18n
+                                data-i18n-pt="Enviar mensagem"
+                                data-i18n-en="Send message"
+                                data-i18n-es="Enviar mensaje">
+                            Enviar mensagem
+                        </button>
+                        <div id="sending"
+                             class="helper-text"
+                             style="display:none"
+                             data-i18n
+                             data-i18n-pt="Enviando..."
+                             data-i18n-en="Sending..."
+                             data-i18n-es="Enviando...">
+                            Enviando...
+                        </div>
+                    </div>
+
+                    <div role="status" aria-live="polite" id="formAlert" class="alert success"></div>
+                    <div id="formError" class="alert error"></div>
+                </form>
+            </div>
+
+            <aside class="contact-info" aria-labelledby="info-title">
+                <h4 id="info-title"
+                    data-i18n
+                    data-i18n-pt="Nossos contatos"
+                    data-i18n-en="Our contacts"
+                    data-i18n-es="Nuestros contactos">
+                    Nossos contatos
+                </h4>
+                <p data-i18n
+                   data-i18n-pt="Atendimento comercial e imprensa. Para suporte técnico use o canal de Assistência Técnica no rodapé."
+                   data-i18n-en="Commercial and News service. For technical support, use the Technical Assistance channel in the footer."
+                   data-i18n-es="Atención comercial y de prensa. Para soporte técnico use el canal de Asistencia Técnica en el pie de página.">
+                    Atendimento comercial e imprensa. Para suporte técnico use o canal de Assistência Técnica no rodapé.
+                </p>
+
+                <p class="meta"><i class="fa-solid fa-phone"></i> +55 (19) 3116 0145</p>
+                <p class="meta"><i class="fa-solid fa-envelope"></i> contato@abr.ind.br</p>
+                <p class="meta"><i class="fa-solid fa-map-marker-alt"></i> Hortolândia, SP</p>
+
+                <hr style="border:none; border-top:1px solid #eef2f6; margin:14px 0">
+
+                <h4 style="margin:0 0 8px; color:var(--title)"
+                    data-i18n
+                    data-i18n-pt="Horário de atendimento"
+                    data-i18n-en="Service hours"
+                    data-i18n-es="Horario de atención">
+                    Horário de atendimento
+                </h4>
+                <p>Seg–Sex: 07h - 16:45</p>
+
+                <div style="margin-top:10px" class="helper-text"
+                     data-i18n
+                     data-i18n-pt="Ou envie sua mensagem pelo formulário — responderemos em até 2 dias úteis."
+                     data-i18n-en="Or send your message through the form — we will reply within 2 business days."
+                     data-i18n-es="O envíe su mensaje por el formulario — responderemos en hasta 2 días hábiles.">
+                    Ou envie sua mensagem pelo formulário — responderemos em até 2 dias úteis.
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 data-i18n
+                    data-i18n-pt="Sobre"
+                    data-i18n-en="About"
+                    data-i18n-es="Nosotros">
+                    Sobre
+                </h3>
+                <ul>
+                    <li><a href="sobre.html#nossa-historia"
+                           data-i18n
+                           data-i18n-pt="Nossa História"
+                           data-i18n-en="Our History"
+                           data-i18n-es="Nuestra historia">
+                        Nossa História
+                    </a></li>
+                    <li><a href="sobre.html#estrutura"
+                           data-i18n
+                           data-i18n-pt="Estrutura"
+                           data-i18n-en="Structure"
+                           data-i18n-es="Estructura">
+                        Estrutura
+                    </a></li>
+                    <li><a href="sobre.html#qualidade"
+                           data-i18n
+                           data-i18n-pt="Qualidade"
+                           data-i18n-en="Quality"
+                           data-i18n-es="Calidad">
+                        Qualidade
+                    </a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n
+                    data-i18n-pt="Produtos"
+                    data-i18n-en="Products"
+                    data-i18n-es="Productos">
+                    Produtos
+                </h3>
+                <ul>
+                    <li><a href="catalog.html"
+                           data-i18n
+                           data-i18n-pt="Catálogo"
+                           data-i18n-en="Catalog"
+                           data-i18n-es="Catálogo">
+                        Catálogo
+                    </a></li>
+                    <li><a href="catalog.html"
+                           data-i18n
+                           data-i18n-pt="Downloads"
+                           data-i18n-en="Downloads"
+                           data-i18n-es="Descargas">
+                        Downloads
+                    </a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n
+                    data-i18n-pt="Suporte"
+                    data-i18n-en="Support"
+                    data-i18n-es="Soporte">
+                    Suporte
+                </h3>
+                <ul>
+                    <li><a href="contato.html"
+                           data-i18n
+                           data-i18n-pt="Contato"
+                           data-i18n-en="Contact"
+                           data-i18n-es="Contacto">
+                        Contato
+                    </a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n
+                    data-i18n-pt="Contato"
+                    data-i18n-en="Contact"
+                    data-i18n-es="Contacto">
+                    Contato
+                </h3>
+                <ul>
+                    <li><a href="tel:+551931160145" title="Telefone">
+                        <i class="fas fa-phone"></i>
+                        <span data-i18n
+                              data-i18n-pt="+55 (19) 3116 0145"
+                              data-i18n-en="+55 (19) 3116 0145"
+                              data-i18n-es="+55 (19) 3116 0145">
+                            +55 (19) 3116 0145
+                        </span>
+                    </a></li>
+                    <li><a href="mailto:contato@abr.ind.br" title="Email">
+                        <i class="fas fa-envelope"></i>
+                        <span>contato@abr.ind.br</span>
+                    </a></li>
+                    <li><a href="#" title="Endereço">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span data-i18n
+                              data-i18n-pt="Hortolândia, SP"
+                              data-i18n-en="Hortolândia, SP"
+                              data-i18n-es="Hortolândia, SP">
+                            Hortolândia, SP
+                        </span>
+                    </a></li>
+                    <li style="margin-top: 8px; font-size: 12px; color: #999;">
+                        <span data-i18n
+                              data-i18n-pt="Seg–Sex: 07h - 16:45"
+                              data-i18n-en="Mon–Fri: 7am - 16:45pm"
+                              data-i18n-es="Lun–Vie: 8:30 – 17:30">
+                            Seg–Sex: 07h - 16:45
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-i18n
+               data-i18n-pt="© 2025 Empresa de Sistemas de Vedação. Todos os direitos reservados."
+               data-i18n-en="© 2025 Sealing Systems Company. All rights reserved."
+               data-i18n-es="© 2025 Empresa de Sistemas de Sellado. Todos los derechos reservados.">
+                &copy; 2025 Empresa de Sistemas de Vedação. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script src="../src/js/index.js"></script>
+</body>
+
+</html>
+
+

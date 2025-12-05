@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- SEO essencial -->
+    <title>ABR Indústria e Comércio de Auto Peças | Juntas Automotivas e Vedação</title>
+    <meta name="description"
+        content="A ABR Indústria e Comércio de Auto Peças, em Hortolândia - SP, é especializada em juntas automotivas, juntas de cabeçote e kits de vedação para montadoras, reposição e lojas de autopeças." />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="ABR Indústria e Comércio de Auto Peças" />
+
+    <!-- URL principal do site (ajuste para o domínio real) -->
+    <link rel="canonical" href="https://abr.ind.br" />
+
+    <!-- Favicon simples (logo na aba) -->
+
+    <link rel="icon" type="image/png" href="../src/assets/favicon.png" />
+
+    <!-- Schema.org básico para o Google entender o que é o site (sem exagero) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoPartsStore",
+      "name": "ABR Indústria e Comércio de Auto Peças",
+      "url": "https://abr.ind.br",
+      "description": "Especializada em juntas automotivas e vedação para montadoras, reposição e lojas de autopeças em Hortolândia - SP.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Hortolândia",
+        "addressRegion": "SP",
+        "addressCountry": "BR"
+      }
+    }
+    </script>
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
+        crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="../src/styles/index.css" />
+</head>
+
+<body>
+
+    <header class="header" role="banner">
+        <div class="header-inner">
+            <div class="logo-container">
+                <img src="../src/assets/logo.png" class="logo" alt="Logo da Empresa" />
+                <span class="logo-text" data-i18n data-i18n-pt="Sistemas de Vedação" data-i18n-en="Sealing Systems"
+                    data-i18n-es="Sistemas de Sellado">
+                    Sistemas de Vedação
+                </span>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="menu" id="navMenu" aria-label="Navegação principal" data-i18n-aria-label
+                data-i18n-aria-label-pt="Navegação principal" data-i18n-aria-label-en="Main navigation"
+                data-i18n-aria-label-es="Navegación principal">
+                <a href="sobre.html" class="nav-link" data-i18n data-i18n-pt="Sobre" data-i18n-en="About"
+                    data-i18n-es="Nosotros">
+                    Sobre
+                </a>
+                <a href="index.html" class="nav-link" data-i18n data-i18n-pt="Produtos" data-i18n-en="Products"
+                    data-i18n-es="Productos">
+                    Produtos
+                </a>
+                <a href="catalog.html" class="nav-link active" data-i18n data-i18n-pt="Catálogo" data-i18n-en="Catalog"
+                    data-i18n-es="Catálogo">
+                    Catálogo
+                </a>
+                <a href="imprensa.html" class="nav-link" data-i18n data-i18n-pt="Imprensa" data-i18n-en="News"
+                    data-i18n-es="Prensa">
+                    Imprensa
+                </a>
+                <a href="contato.html" class="nav-link" data-i18n data-i18n-pt="Contato" data-i18n-en="Contact"
+                    data-i18n-es="Contacto">
+                    Contato
+                </a>
+            </nav>
+
+            <div class="controls" role="group" aria-label="Controles do sistema" data-i18n-aria-label
+                data-i18n-aria-label-pt="Controles do sistema" data-i18n-aria-label-en="System controls"
+                data-i18n-aria-label-es="Controles del sistema">
+                <div class="controls-group">
+                    <div class="flags-container">
+                        <button id="flagToggle" class="flag-btn" aria-haspopup="true" aria-expanded="false"
+                            title="Selecionar idioma" data-i18n-title data-i18n-title-pt="Selecionar idioma"
+                            data-i18n-title-en="Select language" data-i18n-title-es="Seleccionar idioma">
+                            <span class="flag-icon flag-icon-br"></span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div id="flagMenu" class="flag-dropdown hidden" role="menu" aria-hidden="true">
+                            <button class="flag-option" data-lang="pt" aria-label="Português">
+                                <span class="flag-icon flag-icon-br"></span>
+                                Português
+                            </button>
+                            <button class="flag-option" data-lang="en" aria-label="English">
+                                <span class="flag-icon flag-icon-us"></span>
+                                English
+                            </button>
+                            <button class="flag-option" data-lang="es" aria-label="Español">
+                                <span class="flag-icon flag-icon-es"></span>
+                                Español
+                            </button>
+                        </div>
+                    </div>
+
+                    <button id="darkModeToggle" class="icon-btn" aria-pressed="false" title="Alternar modo escuro/claro"
+                        data-i18n-title data-i18n-title-pt="Alternar modo escuro/claro"
+                        data-i18n-title-en="Toggle dark/light mode" data-i18n-title-es="Alternar modo oscuro/claro"
+                        data-i18n-aria-label data-i18n-aria-label-pt="Alternar modo escuro/claro"
+                        data-i18n-aria-label-en="Toggle dark/light mode"
+                        data-i18n-aria-label-es="Alternar modo oscuro/claro" aria-label="Alternar modo escuro/claro">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="catalog-container">
+            <!-- Seção de Introdução do Catálogo -->
+            <section class="catalog-hero">
+                <div class="hero-content">
+                    <h1 class="catalog-title" data-i18n data-i18n-pt="Catálogo" data-i18n-en="Catalog"
+                        data-i18n-es="Catálogo">
+                        Catálogo
+                    </h1>
+                    <div class="title-underline"></div>
+
+                    <div class="catalog-description">
+                        <p data-i18n
+                            data-i18n-pt="Nosso catálogo visual contém todos nossos produtos disponíveis com descrição e fotos das peças. Faça o download ou acesse nosso catálogo web."
+                            data-i18n-en="Our visual catalog contains all our available products with descriptions and photos of the parts. Download it or access our web catalog."
+                            data-i18n-es="Nuestro catálogo visual contiene todos nuestros productos disponibles con descripciones y fotos de las piezas. Descárguelo o acceda a nuestro catálogo web.">
+                            Nosso catálogo visual contém todos nossos produtos disponíveis com descrição e fotos das
+                            peças. Faça o download ou acesse nosso catálogo web.
+                        </p>
+                    </div>
+
+                    <div class="catalog-actions">
+                        <div class="action-card">
+                            <div class="action-icon">
+                                <i class="fa-solid fa-globe"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3 data-i18n data-i18n-pt="Catálogo Digital" data-i18n-en="Digital Catalog"
+                                    data-i18n-es="Catálogo Digital">
+                                    Catálogo Digital
+                                </h3>
+                                <p data-i18n
+                                    data-i18n-pt="Navegue por todos os produtos online com busca avançada e filtros"
+                                    data-i18n-en="Browse all products online with advanced search and filters"
+                                    data-i18n-es="Navegue por todos los productos en línea con búsqueda avanzada y filtros">
+                                    Navegue por todos os produtos online com busca avançada e filtros
+                                </p>
+                                <div class="action-link">
+                                    <a href="https://abr.ind.br/catalogoeletronico/teste/" target="_blank" class="link-with-icon">
+                                        <span data-i18n data-i18n-pt="Catálogo Digital"
+                                            data-i18n-en="Digital Catalog" data-i18n-es="Catálogo Digital">
+                                            Catálogo Digital
+                                        </span>
+                                        <i class="fa-solid fa-external-link-alt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-card">
+                            <div class="action-icon">
+                                <i class="fa-solid fa-download"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3 data-i18n data-i18n-pt="Download App IDEIA" data-i18n-en="Download App IDEIA"
+                                    data-i18n-es="Descargar App IDEIA">
+                                    Download App IDEIA
+                                </h3>
+                                <p data-i18n data-i18n-pt="Aplicativo IDEIA para acesso rápido ao catálogo e informações técnicas."
+                                    data-i18n-en="IDEIA app for quick access to the catalog and technical information."
+                                    data-i18n-es="Aplicación IDEIA para acceso rápido al catálogo e información técnica.">
+                                    Aplicativo IDEIA para acesso rápido ao catálogo e informações técnicas.
+                                </p>
+                                <div class="action-link">
+                                    <a href="https://www.ideia2001.com.br/CatExp/AAAAD/InstalarCatalogoAbr.exe" target="_blank" class="link-with-icon">
+                                        <span data-i18n data-i18n-pt="App IDEIA"
+                                            data-i18n-en="App IDEIA" data-i18n-es="App IDEIA">
+                                            Download App IDEIA
+                                        </span>
+                                        <i class="fa-solid fa-download"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-card">
+                            <div class="action-icon">
+                                <i class="fa-solid fa-download"></i>
+                            </div>
+                            <div class="action-content">
+                                <h3 data-i18n data-i18n-pt="Download PDF" data-i18n-en="Download PDF"
+                                    data-i18n-es="Descargar PDF">
+                                    Download PDF
+                                </h3>
+                                <p data-i18n data-i18n-pt="Catálogo completo em PDF para consulta offline"
+                                    data-i18n-en="Full catalog in PDF for offline consultation"
+                                    data-i18n-es="Catálogo completo en PDF para consulta sin conexión">
+                                    Catálogo completo em PDF para consulta offline quando você quiser.
+                                </p>
+                                <div class="action-link">
+                                    <a href="#" id="downloadPdfBtn" class="link-with-icon">
+                                        <span data-i18n data-i18n-pt="Baixar PDF"
+                                            data-i18n-en="Download PDF" data-i18n-es="Descargar PDF">
+                                            Baixar PDF
+                                        </span>
+                                        <i class="fa-solid fa-download"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Formatos do Catálogo -->
+            <section class="catalog-formats">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n data-i18n-pt="Formatos Disponíveis"
+                        data-i18n-en="Available Formats" data-i18n-es="Formatos disponibles">
+                        Formatos Disponíveis
+                    </h2>
+                    <p class="section-subtitle" data-i18n
+                        data-i18n-pt="Escolha o formato que melhor atende suas necessidades"
+                        data-i18n-en="Choose the format that best fits your needs"
+                        data-i18n-es="Elija el formato que mejor se adapte a sus necesidades">
+                        Escolha o formato que melhor atende suas necessidades
+                    </p>
+                </div>
+
+                <div class="formats-grid">
+                    <div class="format-card">
+                        <div class="format-header">
+                            <div class="format-badge digital" data-i18n data-i18n-pt="Digital" data-i18n-en="Digital"
+                                data-i18n-es="Digital">
+                                Digital
+                            </div>
+                            <i class="format-icon fa-solid fa-external-link-alt"></i>
+                            <!-- <i class="format-icon fa-solid fa-mobile"></i> -->
+                        </div>
+                        <div class="format-body">
+                            <h3 data-i18n data-i18n-pt="Catálogo Web" data-i18n-en="Web Catalog"
+                                data-i18n-es="Catálogo web">
+                                Catálogo Web
+                            </h3>
+                            <ul class="format-features">
+                                <li data-i18n data-i18n-pt="<i class='fa-solid fa-check'></i> Busca em tempo real"
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Real-time search"
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Búsqueda en tiempo real">
+                                    <i class="fa-solid fa-check"></i> Busca em tempo real
+                                </li>
+                                <li data-i18n data-i18n-pt="<i class='fa-solid fa-check'></i> Filtros avançados"
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Advanced filters"
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Filtros avanzados">
+                                    <i class="fa-solid fa-check"></i> Filtros avançados
+                                </li>
+                                <li data-i18n data-i18n-pt="<i class='fa-solid fa-check'></i> Atualizações automáticas"
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Automatic updates"
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Actualizaciones automáticas">
+                                    <i class="fa-solid fa-check"></i> Atualizações automáticas
+                                </li>
+                                <li data-i18n
+                                    data-i18n-pt="<i class='fa-solid fa-check'></i> Acesso de qualquer dispositivo"
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Access from any device"
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Acceso desde cualquier dispositivo">
+                                    <i class="fa-solid fa-check"></i> Acesso de qualquer dispositivo
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="format-card">
+                        <div class="format-header">
+                            <div class="format-badge pdf" data-i18n data-i18n-pt="PDF" data-i18n-en="PDF"
+                                data-i18n-es="PDF">
+                                PDF
+                            </div>
+                            <i class="format-icon fa-solid fa-file-pdf"></i>
+                        </div>
+                        <div class="format-body">
+                            <h3 data-i18n data-i18n-pt="Download Completo" data-i18n-en="Full Download"
+                                data-i18n-es="Descarga completa">
+                                Download Completo
+                            </h3>
+                            <ul class="format-features">
+                                <li data-i18n data-i18n-pt="<i class='fa-solid fa-check'></i> Consulta offline"
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Offline viewing"
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Consulta sin conexión">
+                                    <i class="fa-solid fa-check"></i> Consulta offline
+                                </li>
+                                <li data-i18n data-i18n-pt="<i class='fa-solid fa-check'></i> Acesso a Linha Leve ou Linha Pesada."
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Access to Light or Heavy Line."
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Acceso a Línea Ligera o Línea Pesada.">
+                                    <i class="fa-solid fa-check"></i> Acesso a Linha Leve ou Linha Pesada.
+                                </li>
+                                <li data-i18n data-i18n-pt="<i class='fa-solid fa-check'></i> Índice detalhado"
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Detailed index"
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Índice detallado">
+                                    <i class="fa-solid fa-check"></i> Índice detalhado
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="format-card">
+                        <div class="format-header">
+                            <div class="format-badge print" data-i18n data-i18n-pt="Aplicativo" data-i18n-en="App"
+                                data-i18n-es="App">
+                                Aplicativo
+                            </div>
+                            <i class="format-icon fa-solid fa-laptop"></i>
+                        </div>
+                        <div class="format-body">
+                            <h3 data-i18n data-i18n-pt="App IDEIA" data-i18n-en="App IDEIA"
+                                data-i18n-es="App IDEIA">
+                                App IDEIA
+                            </h3>
+                            <ul class="format-features">
+                                <li data-i18n data-i18n-pt="<i class='fa-solid fa-check'></i> Acesso Total ao Catálogo."
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Full Catalog Access."
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Acceso total al catálogo.">
+                                    <i class="fa-solid fa-check"></i> Acesso Total ao Catálogo.
+                                </li>
+                                <li data-i18n data-i18n-pt="<i class='fa-solid fa-check'></i> Especificações técnicas."
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Technical specifications."
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Especificaciones técnicas.">
+                                    <i class="fa-solid fa-check"></i> Especificações técnicas.
+                                </li>
+                                <li data-i18n data-i18n-pt="<i class='fa-solid fa-check'></i> Filtros avançados."
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Advanced filters."
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Filtros avanzados.">
+                                    <i class="fa-solid fa-check"></i> Filtros avançados.
+                                </li>
+                                <li data-i18n data-i18n-pt="<i class='fa-solid fa-check'></i> Acesso somente Desktop."
+                                    data-i18n-en="<i class='fa-solid fa-check'></i> Desktop only access."
+                                    data-i18n-es="<i class='fa-solid fa-check'></i> Acceso solo para escritorio.">
+                                    <i class="fa-solid fa-check"></i> Acesso somente Desktop.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Produtos em Destaque -->
+            <section class="featured-products">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n data-i18n-pt="Produtos em Destaque"
+                        data-i18n-en="Featured Products" data-i18n-es="Productos destacados">
+                        Produtos em Destaque
+                    </h2>
+                    <p class="section-subtitle" data-i18n data-i18n-pt="Conheça alguns dos nossos principais produtos"
+                        data-i18n-en="Discover some of our main products"
+                        data-i18n-es="Conozca algunos de nuestros principales productos">
+                        Conheça alguns dos nossos principais produtos
+                    </p>
+                </div>
+
+                <div class="products-grid">
+                    <div class="product-card-large">
+                        <div class="product-image">
+                            <img src="../src/assets/D229.png" alt="Junta do Cabeçote D229">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category" data-i18n data-i18n-pt="Junta do Cabeçote"
+                                data-i18n-en="Cylinder Head Gasket" data-i18n-es="Junta de culata">
+                                Junta do Cabeçote
+                            </span>
+                            <h3>D229</h3>
+                            <p data-i18n data-i18n-pt="Junta de cabeçote para motor D229, construída em aço multicamadas com anéis de fogo reforçados, projetada para vedar câmaras de combustão,
+                             dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho."
+                                data-i18n-en="Cylinder head gasket for D229 engine, constructed of multi-layered steel with reinforced fire rings, designed to seal combustion chambers,
+                                oil ducts and cooling channels between block and cylinder head, withstanding high temperatures and working pressure."
+                                data-i18n-es="Junta de culata para motor D229, fabricada en acero multicapa con anillos de fuego reforzados, diseñada para sellar las cámaras de combustión,
+                                 los conductos de aceite y los canales de refrigeración entre el bloque y la culata, soportando altas temperaturas y presiones de trabajo.">
+                                Junta de cabeçote para motor D229, construída em aço multicamadas, projetada para vedar câmaras de combustão, 
+                                dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="product-card-large">
+                        <div class="product-image">
+                            <img src="../src/assets/VEDADOR_X12.png" alt="Vedador X12">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category" data-i18n data-i18n-pt="Vedador Especial"
+                                data-i18n-en="Special Seal" data-i18n-es="Sellador especial">
+                                Vedador X12
+                            </span>
+                            <h3>X12</h3>
+                            <p data-i18n
+                                data-i18n-pt="Vedador do conjunto X12 em elastômero, destinado à vedação de óleo/fluido em eixo ou alojamento,
+                                resistente a variações térmicas e à ação de derivados de petróleo, evitando vazamentos e contaminação do sistema."
+                                data-i18n-en="X12 assembly seal made of elastomer, designed for sealing oil/fluid in shafts or housings,
+                                resistant to thermal variations and the action of petroleum derivatives, preventing leaks and contamination of the system."
+                                data-i18n-es="Junta de montaje X12 fabricada en elastómero, diseñada para el sellado de aceite/fluido en ejes o carcasas,
+                                resistente a las variaciones térmicas y a la acción de los derivados del petróleo, previniendo fugas y contaminación del sistema.">
+                                Vedador do conjunto X12 em elastômero, destinado à vedação de óleo/fluido em eixo ou alojamento,
+                                resistente a variações térmicas e à ação de derivados de petróleo, evitando vazamentos e contaminação do sistema.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="product-card-large">
+                        <div class="product-image">
+                            <img src="../src/assets/x10.png" alt="">
+                        </div>
+                        <div class="product-info">
+                            <span class="product-category" data-i18n data-i18n-pt="Vedador Compacto"
+                                data-i18n-en="Compact Seal" data-i18n-es="Sellador compacto">
+                                Vedador X10
+                            </span>
+                            <h3>X10</h3>
+                            <p data-i18n
+                                data-i18n-pt="Junta de cabeçote para motor X10, construída em aço multicamadas, projetada para vedar câmaras de combustão, 
+                                dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho."
+                                data-i18n-en="Cylinder head gasket for X10 engine, constructed of multi-layered steel, designed to seal combustion chambers,
+                                oil ducts and cooling channels between the block and cylinder head, withstanding high temperatures and working pressure."
+                                data-i18n-es="Junta de culata para motor X10, construida en acero multicapa, diseñada para sellar cámaras de combustión, 
+                                conductos de aceite y canales de refrigeración entre el bloque y la culata, soportando altas temperaturas y presión de trabajo.">
+                                Junta de cabeçote para motor X10, construída em aço multicamadas, projetada para vedar câmaras de combustão, 
+                                dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Ajuda -->
+            <section class="catalog-help">
+                <div class="help-container">
+                    <div class="help-content">
+                        <h2 data-i18n data-i18n-pt="Precisa de Ajuda?" data-i18n-en="Need Help?"
+                            data-i18n-es="¿Necesita ayuda?">
+                            Precisa de Ajuda?
+                        </h2>
+                        <p data-i18n
+                            data-i18n-pt="Nossa equipe técnica está disponível para auxiliar na escolha do produto ideal para sua aplicação."
+                            data-i18n-en="Our technical team is available to help you choose the ideal product for your application."
+                            data-i18n-es="Nuestro equipo técnico está disponible para ayudarle a elegir el producto ideal para su aplicación.">
+                            Nossa equipe técnica está disponível para auxiliar na escolha do produto ideal para sua
+                            aplicação.
+                        </p>
+
+                        <div class="help-contacts">
+                            <div class="contact-item">
+                                <i class="fa-solid fa-phone"></i>
+                                <div>
+                                    <h4 data-i18n data-i18n-pt="Telefone" data-i18n-en="Phone" data-i18n-es="Teléfono">
+                                        Telefone
+                                    </h4>
+                                    <p>+55 (19) 3116 0145</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fa-solid fa-envelope"></i>
+                                <div>
+                                    <h4 data-i18n data-i18n-pt="E-mail" data-i18n-en="E-mail"
+                                        data-i18n-es="Correo electrónico">
+                                        E-mail
+                                    </h4>
+                                    <p>contato@abr.ind.br</p>
+                                </div>
+                            </div>
+                            <div class="contact-item">
+                                <i class="fa-solid fa-clock"></i>
+                                <div>
+                                    <h4 data-i18n data-i18n-pt="Horário" data-i18n-en="Opening hours"
+                                        data-i18n-es="Horario">
+                                        Horário
+                                    </h4>
+                                    <p data-i18n data-i18n-pt="Seg-Sex: 7h - 16:45h" data-i18n-en="Mon–Fri: 7am–4:45pm"
+                                        data-i18n-es="Lun–Vie: 7h–16:45h">
+                                        Seg-Sex: 7h - 16:45h
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-image">
+                        <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                            alt="Suporte Técnico">
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 data-i18n data-i18n-pt="Catálogo" data-i18n-en="Catalog" data-i18n-es="Catálogo">
+                    Catálogo
+                </h3>
+                <ul>
+                    <li><a href="catalog.html" data-i18n data-i18n-pt="Catálogo Web" data-i18n-en="Web Catalog"
+                            data-i18n-es="Catálogo web">
+                            Catálogo Web
+                        </a></li>
+                    <li><a href="catalog.html" data-i18n data-i18n-pt="Downloads" data-i18n-en="Downloads"
+                            data-i18n-es="Descargas">
+                            Downloads
+                        </a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n data-i18n-pt="Empresa" data-i18n-en="Company" data-i18n-es="Empresa">
+                    Empresa
+                </h3>
+                <ul>
+                    <li><a href="sobre.html" data-i18n data-i18n-pt="Sobre Nós" data-i18n-en="About Us"
+                            data-i18n-es="Sobre nosotros">
+                            Sobre Nós
+                        </a></li>
+                    <li><a href="contato.html" data-i18n data-i18n-pt="Contato" data-i18n-en="Contact"
+                            data-i18n-es="Contacto">
+                            Contato
+                        </a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n data-i18n-pt="Suporte" data-i18n-en="Support" data-i18n-es="Soporte">
+                    Suporte
+                </h3>
+                <ul>
+                    <li><a href="contato.html" data-i18n data-i18n-pt="Contato" data-i18n-en="Contact"
+                            data-i18n-es="Contacto">
+                            Contato
+                        </a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n data-i18n-pt="Contato" data-i18n-en="Contact" data-i18n-es="Contacto">
+                    Contato
+                </h3>
+                <ul>
+                    <li><a href="tel:+551931160145" title="Telefone">
+                            <i class="fas fa-phone"></i>
+                            <span data-i18n data-i18n-pt="+55 (19) 3116 0145" data-i18n-en="+55 (19) 3116 0145"
+                                data-i18n-es="+55 (19) 3116 0145">
+                                +55 (19) 3116 0145
+                            </span>
+                        </a></li>
+                    <li><a href="mailto:contato@abr.ind.br" title="Email">
+                            <i class="fas fa-envelope"></i>
+                            <span>contato@abr.ind.br</span>
+                        </a></li>
+                    <li><a href="#" title="Endereço">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span data-i18n data-i18n-pt="Hortolândia, SP" data-i18n-en="Hortolândia, SP"
+                                data-i18n-es="Hortolândia, SP">
+                                Hortolândia, SP
+                            </span>
+                        </a></li>
+                    <li style="margin-top: 8px; font-size: 12px; color: #999;">
+                        <span data-i18n data-i18n-pt="Seg–Sex: 07h - 16:45" data-i18n-en="Mon–Fri: 7am - 16:45pm"
+                            data-i18n-es="Lun–Vie: 8:30 – 17:30">
+                            Seg–Sex: 07h - 16:45
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-i18n data-i18n-pt="© 2025 Empresa de Sistemas de Vedação. Todos os direitos reservados."
+                data-i18n-en="© 2025 Sealing Systems Company. All rights reserved."
+                data-i18n-es="© 2025 Empresa de Sistemas de Sellado. Todos los derechos reservados.">
+                © 2025 Empresa de Sistemas de Vedação. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script src="../src/js/index.js"></script>
+</body>
+
+</html>
+

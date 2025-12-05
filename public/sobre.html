@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- SEO essencial -->
+    <title>ABR Indústria e Comércio de Auto Peças | Juntas Automotivas e Vedação</title>
+    <meta name="description"
+        content="A ABR Indústria e Comércio de Auto Peças, em Hortolândia - SP, é especializada em juntas automotivas, juntas de cabeçote e kits de vedação para montadoras, reposição e lojas de autopeças." />
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="ABR Indústria e Comércio de Auto Peças" />
+
+    <!-- URL principal do site (ajuste para o domínio real) -->
+    <link rel="canonical" href="https://abr.ind.br" />
+
+    <!-- Favicon simples (logo na aba) -->
+
+    <link rel="icon" type="image/png" href="../src/assets/favicon.png" />
+
+    <!-- Schema.org básico para o Google entender o que é o site (sem exagero) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoPartsStore",
+      "name": "ABR Indústria e Comércio de Auto Peças",
+      "url": "https://abr.ind.br",
+      "description": "Especializada em juntas automotivas e vedação para montadoras, reposição e lojas de autopeças em Hortolândia - SP.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Hortolândia",
+        "addressRegion": "SP",
+        "addressCountry": "BR"
+      }
+    }
+    </script>
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css"
+        crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="../src/styles/index.css" />
+</head>
+
+<body>
+
+    <header class="header" role="banner">
+        <div class="header-inner">
+            <div class="logo-container">
+                <img src="../src/assets/logo.png" class="logo" alt="Logo da Empresa" />
+                <span class="logo-text"
+                      data-i18n
+                      data-i18n-pt="Desde 1979"
+                      data-i18n-en="Since 1979"
+                      data-i18n-es="Desde 1979">
+                    Desde 1979
+                </span>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav class="menu" id="navMenu"
+                 aria-label="Navegação principal"
+                 data-i18n-aria-label
+                 data-i18n-aria-label-pt="Navegação principal"
+                 data-i18n-aria-label-en="Main navigation"
+                 data-i18n-aria-label-es="Navegación principal">
+                <a href="sobre.html" class="nav-link active"
+                   data-i18n
+                   data-i18n-pt="Sobre"
+                   data-i18n-en="About"
+                   data-i18n-es="Nosotros">
+                    Sobre
+                </a>
+                <a href="index.html" class="nav-link"
+                   data-i18n
+                   data-i18n-pt="Produtos"
+                   data-i18n-en="Products"
+                   data-i18n-es="Productos">
+                    Produtos
+                </a>
+                <a href="catalog.html" class="nav-link"
+                   data-i18n
+                   data-i18n-pt="Catálogo"
+                   data-i18n-en="Catalog"
+                   data-i18n-es="Catálogo">
+                    Catálogo
+                </a>
+                <a href="imprensa.html" class="nav-link"
+                   data-i18n
+                   data-i18n-pt="Imprensa"
+                   data-i18n-en="News"
+                   data-i18n-es="Prensa">
+                    Imprensa
+                </a>
+                <a href="contato.html" class="nav-link"
+                   data-i18n
+                   data-i18n-pt="Contato"
+                   data-i18n-en="Contact"
+                   data-i18n-es="Contacto">
+                    Contato
+                </a>
+            </nav>
+
+            <div class="controls" role="group"
+                 aria-label="Controles do sistema"
+                 data-i18n-aria-label
+                 data-i18n-aria-label-pt="Controles do sistema"
+                 data-i18n-aria-label-en="System controls"
+                 data-i18n-aria-label-es="Controles del sistema">
+                <div class="controls-group">
+                    <div class="flags-container">
+                        <button id="flagToggle" class="flag-btn" aria-haspopup="true" aria-expanded="false"
+                            title="Selecionar idioma"
+                            data-i18n-title
+                            data-i18n-title-pt="Selecionar idioma"
+                            data-i18n-title-en="Select language"
+                            data-i18n-title-es="Seleccionar idioma">
+                            <span class="flag-icon flag-icon-br"></span>
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
+
+                        <div id="flagMenu" class="flag-dropdown hidden" role="menu" aria-hidden="true">
+                            <button class="flag-option" data-lang="pt" aria-label="Português">
+                                <span class="flag-icon flag-icon-br"></span>
+                                Português
+                            </button>
+                            <button class="flag-option" data-lang="en" aria-label="English">
+                                <span class="flag-icon flag-icon-us"></span>
+                                English
+                            </button>
+                            <button class="flag-option" data-lang="es" aria-label="Español">
+                                <span class="flag-icon flag-icon-es"></span>
+                                Español
+                            </button>
+                        </div>
+                    </div>
+
+                    <button id="darkModeToggle" class="icon-btn" aria-pressed="false"
+                        title="Alternar modo escuro/claro"
+                        data-i18n-title
+                        data-i18n-title-pt="Alternar modo escuro/claro"
+                        data-i18n-title-en="Toggle dark/light mode"
+                        data-i18n-title-es="Alternar modo oscuro/claro"
+                        data-i18n-aria-label
+                        data-i18n-aria-label-pt="Alternar modo escuro/claro"
+                        data-i18n-aria-label-en="Toggle dark/light mode"
+                        data-i18n-aria-label-es="Alternar modo oscuro/claro"
+                        aria-label="Alternar modo escuro/claro">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="about-container">
+            <!-- Hero Section -->
+            <section class="about-hero">
+                <div class="hero-content">
+                    <h1 class="about-title"
+                        data-i18n
+                        data-i18n-pt="Sobre Nós"
+                        data-i18n-en="About Us"
+                        data-i18n-es="Sobre nosotros">
+                        Sobre Nós
+                    </h1>
+                    <div class="title-underline"></div>
+                    <p class="hero-subtitle"
+                       data-i18n
+                       data-i18n-pt="Mais de 40 anos de excelência em sistemas de vedação"
+                       data-i18n-en="Over 40 years of excellence in sealing systems"
+                       data-i18n-es="Más de 40 años de excelencia en sistemas de sellado">
+                        Mais de 40 anos de excelência em sistemas de vedação
+                    </p>
+                </div>
+            </section>
+
+            <!-- Nossa História -->
+            <section id="nossa-historia" class="about-section">
+                <div class="section-header">
+                    <h2 class="section-title"
+                        data-i18n
+                        data-i18n-pt="Nossa História"
+                        data-i18n-en="Our History"
+                        data-i18n-es="Nuestra historia">
+                        Nossa História
+                    </h2>
+                    <p class="section-subtitle"
+                       data-i18n
+                       data-i18n-pt="Uma jornada de inovação e qualidade desde 1979"
+                       data-i18n-en="A journey of innovation and quality since 1979"
+                       data-i18n-es="Una trayectoria de innovación y calidad desde 1979">
+                        Uma jornada de inovação e qualidade desde 1979
+                    </p>
+                </div>
+
+                <div class="history-timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-year">1979</div>
+                        <div class="timeline-content">
+                            <h3 data-i18n
+                                data-i18n-pt="Fundação"
+                                data-i18n-en="Foundation"
+                                data-i18n-es="Fundación">
+                                Fundação
+                            </h3>
+                            <p data-i18n
+                               data-i18n-pt="A empresa foi fundada com o objetivo de fornecer soluções de vedação para o mercado automotivo brasileiro."
+                               data-i18n-en="The company was founded with the goal of providing sealing solutions for the Brazilian automotive market."
+                               data-i18n-es="La empresa fue fundada con el objetivo de ofrecer soluciones de sellado para el mercado automotriz brasileño.">
+                                A empresa foi fundada com o objetivo de fornecer soluções de vedação para o mercado
+                                automotivo brasileiro.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">1990</div>
+                        <div class="timeline-content">
+                            <h3 data-i18n
+                                data-i18n-pt="Expansão"
+                                data-i18n-en="Expansion"
+                                data-i18n-es="Expansión">
+                                Expansão
+                            </h3>
+                            <p data-i18n
+                               data-i18n-pt="Início da exportação para mercados internacionais e expansão da linha de produtos."
+                               data-i18n-en="Start of exports to international markets and expansion of the product line."
+                               data-i18n-es="Inicio de las exportaciones a mercados internacionales y expansión de la línea de productos.">
+                                Início da exportação para mercados internacionais e expansão da linha de produtos.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2005</div>
+                        <div class="timeline-content">
+                            <h3 data-i18n
+                                data-i18n-pt="Tecnologia"
+                                data-i18n-en="Technology"
+                                data-i18n-es="Tecnología">
+                                Tecnologia
+                            </h3>
+                            <p data-i18n
+                               data-i18n-pt="Investimento em pesquisa e desenvolvimento de novos materiais e processos."
+                               data-i18n-en="Investment in research and development of new materials and processes."
+                               data-i18n-es="Inversión en investigación y desarrollo de nuevos materiales y procesos.">
+                                Investimento em pesquisa e desenvolvimento de novos materiais e processos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="history-description">
+                    <p data-i18n
+                       data-i18n-pt="Desde 1979, a ABR desenvolve sistemas de vedação automotiva, evoluindo de fabricante nacional para referência em OEM e reposição. Nossa trajetória é marcada por inovação constante e compromisso com a qualidade."
+                       data-i18n-en="Since 1979, ABR has been developing automotive sealing systems, evolving from a national manufacturer to a benchmark in OEM and aftermarket. Our journey is marked by constant innovation and commitment to quality."
+                       data-i18n-es="Desde 1979, ABR desarrolla sistemas de sellado automotriz, evolucionando de fabricante nacional a referencia en OEM y reposición. Nuestra trayectoria está marcada por la innovación constante y el compromiso con la calidad.">
+                        Desde 1979, a ABR desenvolve sistemas de vedação automotiva, evoluindo de fabricante nacional
+                        para referência em OEM e reposição. Nossa trajetória é marcada por inovação constante e
+                        compromisso com a qualidade.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Estrutura -->
+            <section id="estrutura" class="about-section structure-section">
+                <div class="section-header">
+                    <h2 class="section-title"
+                        data-i18n
+                        data-i18n-pt="Estrutura"
+                        data-i18n-en="Structure"
+                        data-i18n-es="Estructura">
+                        Estrutura
+                    </h2>
+                    <p class="section-subtitle"
+                       data-i18n
+                       data-i18n-pt="Infraestrutura de ponta para excelência na produção"
+                       data-i18n-en="State-of-the-art infrastructure for production excellence"
+                       data-i18n-es="Infraestructura de punta para la excelencia en producción">
+                        Infraestrutura de ponta para excelência na produção
+                    </p>
+                </div>
+
+                <div class="structure-grid">
+                    <div class="structure-card">
+                        <div class="structure-icon">
+                            <i class="fa-solid fa-industry"></i>
+                        </div>
+                        <h3 data-i18n
+                            data-i18n-pt="Planta Industrial"
+                            data-i18n-en="Industrial Plant"
+                            data-i18n-es="Planta industrial">
+                            Planta Industrial
+                        </h3>
+                        <p data-i18n
+                           data-i18n-pt="Mais de 200 colaboradores especializados em uma planta de 9.000 m², com processos automatizados e extenso controle de qualidade."
+                           data-i18n-en="Over 200 specialized employees in a 9,000 m² plant with automated processes and extensive quality control."
+                           data-i18n-es="Más de 200 colaboradores especializados en una planta de 9.000 m², con procesos automatizados y amplio control de calidad.">
+                            Mais de 200 colaboradores especializados em uma planta de 9.000 m², com processos
+                            automatizados e extenso controle de qualidade.
+                        </p>
+                    </div>
+                    <div class="structure-card">
+                        <div class="structure-icon">
+                            <i class="fa-solid fa-microscope"></i>
+                        </div>
+                        <h3 data-i18n
+                            data-i18n-pt="Laboratório"
+                            data-i18n-en="Laboratory"
+                            data-i18n-es="Laboratorio">
+                            Laboratório
+                        </h3>
+                        <p data-i18n
+                           data-i18n-pt="Laboratório de análise completo para testes de materiais e validação de produtos."
+                           data-i18n-en="Fully equipped analysis laboratory for material testing and product validation."
+                           data-i18n-es="Laboratorio de análisis completo para pruebas de materiales y validación de productos.">
+                            Laboratório de análise completo para testes de materiais e validação de produtos.
+                        </p>
+                    </div>
+                    <div class="structure-card">
+                        <div class="structure-icon">
+                            <i class="fa-solid fa-truck"></i>
+                        </div>
+                        <h3 data-i18n
+                            data-i18n-pt="Logística"
+                            data-i18n-en="Logistics"
+                            data-i18n-es="Logística">
+                            Logística
+                        </h3>
+                        <p data-i18n
+                           data-i18n-pt="Sistema logístico eficiente para atendimento nacional e internacional."
+                           data-i18n-en="Efficient logistics system for national and international service."
+                           data-i18n-es="Sistema logístico eficiente para atención nacional e internacional.">
+                            Sistema logístico eficiente para atendimento nacional e internacional.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mercados Atendidos -->
+            <section class="about-section markets-section">
+                <div class="section-header">
+                    <h2 class="section-title"
+                        data-i18n
+                        data-i18n-pt="Mercados Atendidos"
+                        data-i18n-en="Served Markets"
+                        data-i18n-es="Mercados atendidos">
+                        Mercados Atendidos
+                    </h2>
+                    <p class="section-subtitle"
+                       data-i18n
+                       data-i18n-pt="Presença em múltiplos setores industriais"
+                       data-i18n-en="Presence in multiple industrial sectors"
+                       data-i18n-es="Presencia en múltiples sectores industriales">
+                        Presença em múltiplos setores industriais
+                    </p>
+                </div>
+
+                <div class="markets-container">
+                    <div class="markets-content">
+                        <p data-i18n
+                           data-i18n-pt="Atendemos os segmentos automotivo leve, automotivo pesado e agrícola, com sistema de
+                            qualidade OEM que atende mercados no Brasil e exterior."
+                           data-i18n-en="We serve the light automotive, heavy automotive, and agricultural segments, with an OEM quality system that serves markets in Brazil and abroad."
+                           data-i18n-es="Atendemos los segmentos automotriz ligero, automotriz pesado y agrícola, con un sistema de calidad OEM que atiende mercados en Brasil y el exterior.">
+                            Atendemos os segmentos automotivo leve, automotivo pesado e agrícola, com sistema de
+                            qualidade OEM que atende mercados no Brasil e exterior.
+                        </p>
+
+                        <div class="markets-list">
+                            <div class="market-item">
+                                <i class="fa-solid fa-car"></i>
+                                <span data-i18n
+                                      data-i18n-pt="Automotivo"
+                                      data-i18n-en="Automotive"
+                                      data-i18n-es="Automotriz">
+                                    Automotivo
+                                </span>
+                            </div>
+                            <div class="market-item">
+                                <i class="fa-solid fa-tractor"></i>
+                                <span data-i18n
+                                      data-i18n-pt="Agrícola"
+                                      data-i18n-en="Agricultural"
+                                      data-i18n-es="Agrícola">
+                                    Agrícola
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="markets-image">
+                        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                            alt="Mercados Atendidos"
+                            data-i18n-alt
+                            data-i18n-alt-pt="Mercados atendidos"
+                            data-i18n-alt-en="Served markets"
+                            data-i18n-alt-es="Mercados atendidos">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Qualidade -->
+            <section class="about-section quality-section" id="qualidade">
+                <div class="section-header">
+                    <h2 class="section-title"
+                        data-i18n
+                        data-i18n-pt="Qualidade"
+                        data-i18n-en="Quality"
+                        data-i18n-es="Calidad">
+                        Qualidade
+                    </h2>
+                    <p class="section-subtitle"
+                       data-i18n
+                       data-i18n-pt="Compromisso com a excelência em cada produto"
+                       data-i18n-en="Commitment to excellence in every product"
+                       data-i18n-es="Compromiso con la excelencia en cada producto">
+                        Compromisso com a excelência em cada produto
+                    </p>
+                </div>
+
+                <div class="quality-cards">
+                    <div class="quality-card">
+                        <div class="quality-header">
+                            <i class="fa-solid fa-certificate"></i>
+                            <h3 data-i18n
+                                data-i18n-pt="Certificações"
+                                data-i18n-en="Certifications"
+                                data-i18n-es="Certificaciones">
+                                Certificações
+                            </h3>
+                        </div>
+                        <p data-i18n
+                           data-i18n-pt="Possuímos certificações internacionais que garantem a qualidade de nossos processos e produtos."
+                           data-i18n-en="We hold international certifications that guarantee the quality of our processes and products."
+                           data-i18n-es="Contamos con certificaciones internacionales que garantizan la calidad de nuestros procesos y productos.">
+                            Possuímos certificações internacionais que garantem a qualidade de nossos processos e
+                            produtos.
+                        </p>
+                        <ul class="certification-list">
+                            <li>ISO 9001:2015</li>
+                            <li>IATF 16949</li>
+                            <li>ISO 14001</li>
+                        </ul>
+                    </div>
+
+                    <div class="quality-card">
+                        <div class="quality-header">
+                            <i class="fa-solid fa-flask-vial"></i>
+                            <h3 data-i18n
+                                data-i18n-pt="Pesquisa &amp; Desenvolvimento"
+                                data-i18n-en="Research &amp; Development"
+                                data-i18n-es="Investigación &amp; Desarrollo">
+                                Pesquisa &amp; Desenvolvimento
+                            </h3>
+                        </div>
+                        <p data-i18n
+                           data-i18n-pt="Investimos continuamente em P&D para desenvolver novas tecnologias e materiais avançados."
+                           data-i18n-en="We continuously invest in R&amp;D to develop new technologies and advanced materials."
+                           data-i18n-es="Invertimos continuamente en I+D para desarrollar nuevas tecnologías y materiales avanzados.">
+                            Investimos continuamente em P&D para desenvolver novas tecnologias e materiais avançados.
+                        </p>
+                    </div>
+
+                    <div class="quality-card">
+                        <div class="quality-header">
+                            <i class="fa-solid fa-user-graduate"></i>
+                            <h3 data-i18n
+                                data-i18n-pt="Equipe Qualificada"
+                                data-i18n-en="Qualified Team"
+                                data-i18n-es="Equipo calificado">
+                                Equipe Qualificada
+                            </h3>
+                        </div>
+                        <p data-i18n
+                           data-i18n-pt="Nossa equipe é composta por engenheiros e técnicos especializados, com treinamento constante."
+                           data-i18n-en="Our team is made up of specialized engineers and technicians, with ongoing training."
+                           data-i18n-es="Nuestro equipo está compuesto por ingenieros y técnicos especializados, con formación continua.">
+                            Nossa equipe é composta por engenheiros e técnicos especializados, com treinamento constante.
+                        </p>
+                        <div class="team-stats">
+                            <div class="team-item">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                                <span data-i18n
+                                      data-i18n-pt="Engenheiros Especializados"
+                                      data-i18n-en="Specialized engineers"
+                                      data-i18n-es="Ingenieros especializados">
+                                    Engenheiros Especializados
+                                </span>
+                            </div>
+                            <div class="team-item">
+                                <i class="fa-solid fa-medal"></i>
+                                <span data-i18n
+                                      data-i18n-pt="Certificações Técnicas"
+                                      data-i18n-en="Technical certifications"
+                                      data-i18n-es="Certificaciones técnicas">
+                                    Certificações Técnicas
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Valores -->
+            <section class="about-section values-section">
+                <div class="section-header">
+                    <h2 class="section-title"
+                        data-i18n
+                        data-i18n-pt="Nossos Valores"
+                        data-i18n-en="Our Values"
+                        data-i18n-es="Nuestros valores">
+                        Nossos Valores
+                    </h2>
+                </div>
+
+                <div class="values-grid">
+                    <div class="value-item">
+                        <div class="value-icon">
+                            <i class="fa-solid fa-bullseye"></i>
+                        </div>
+                        <h3 data-i18n
+                            data-i18n-pt="Excelência"
+                            data-i18n-en="Excellence"
+                            data-i18n-es="Excelencia">
+                            Excelência
+                        </h3>
+                        <p data-i18n
+                           data-i18n-pt="Buscamos a perfeição em cada detalhe do nosso trabalho."
+                           data-i18n-en="We strive for perfection in every detail of our work."
+                           data-i18n-es="Buscamos la perfección en cada detalle de nuestro trabajo.">
+                            Buscamos a perfeição em cada detalhe do nosso trabalho.
+                        </p>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h3 data-i18n
+                            data-i18n-pt="Inovação"
+                            data-i18n-en="Innovation"
+                            data-i18n-es="Innovación">
+                            Inovação
+                        </h3>
+                        <p data-i18n
+                           data-i18n-pt="Investimos em novas tecnologias e soluções criativas."
+                           data-i18n-en="We invest in new technologies and creative solutions."
+                           data-i18n-es="Invertimos en nuevas tecnologías y soluciones creativas.">
+                            Investimos em novas tecnologias e soluções criativas.
+                        </p>
+                    </div>
+                    <div class="value-item">
+                        <div class="value-icon">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
+                        <h3 data-i18n
+                            data-i18n-pt="Parceria"
+                            data-i18n-en="Partnership"
+                            data-i18n-es="Alianza">
+                            Parceria
+                        </h3>
+                        <p data-i18n
+                           data-i18n-pt="Trabalhamos em conjunto com nossos clientes."
+                           data-i18n-en="We work closely together with our customers."
+                           data-i18n-es="Trabajamos en conjunto con nuestros clientes.">
+                            Trabalhamos em conjunto com nossos clientes.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- Rodapé -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 data-i18n
+                    data-i18n-pt="Sobre"
+                    data-i18n-en="About"
+                    data-i18n-es="Nosotros">
+                    Sobre
+                </h3>
+                <ul>
+                    <li><a href="#nossa-historia"
+                           data-i18n
+                           data-i18n-pt="Nossa História"
+                           data-i18n-en="Our History"
+                           data-i18n-es="Nuestra historia">
+                        Nossa História
+                    </a></li>
+                    <li><a href="#estrutura"
+                           data-i18n
+                           data-i18n-pt="Estrutura"
+                           data-i18n-en="Structure"
+                           data-i18n-es="Estructura">
+                        Estrutura
+                    </a></li>
+                    <li><a href="#qualidade"
+                           data-i18n
+                           data-i18n-pt="Qualidade"
+                           data-i18n-en="Quality"
+                           data-i18n-es="Calidad">
+                        Qualidade
+                    </a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n
+                    data-i18n-pt="Produtos"
+                    data-i18n-en="Products"
+                    data-i18n-es="Productos">
+                    Produtos
+                </h3>
+                <ul>
+                    <li><a href="catalog.html"
+                           data-i18n
+                           data-i18n-pt="Catálogo"
+                           data-i18n-en="Catalog"
+                           data-i18n-es="Catálogo">
+                        Catálogo
+                    </a></li>
+                    <li><a href="catalog.html"
+                           data-i18n
+                           data-i18n-pt="Downloads"
+                           data-i18n-en="Downloads"
+                           data-i18n-es="Descargas">
+                        Downloads
+                    </a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n
+                    data-i18n-pt="Suporte"
+                    data-i18n-en="Support"
+                    data-i18n-es="Soporte">
+                    Suporte
+                </h3>
+                <ul>
+                    <li><a href="contato.html"
+                           data-i18n
+                           data-i18n-pt="Contato"
+                           data-i18n-en="Contact"
+                           data-i18n-es="Contacto">
+                        Contato
+                    </a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n
+                    data-i18n-pt="Contato"
+                    data-i18n-en="Contact"
+                    data-i18n-es="Contacto">
+                    Contato
+                </h3>
+                <ul>
+                    <li><a href="tel:+551931160145" title="Telefone">
+                        <i class="fas fa-phone"></i>
+                        <span data-i18n
+                              data-i18n-pt="+55 (19) 3116 0145"
+                              data-i18n-en="+55 (19) 3116 0145"
+                              data-i18n-es="+55 (19) 3116 0145">
+                            +55 (19) 3116 0145
+                        </span>
+                    </a></li>
+                    <li><a href="mailto:contato@abr.ind.br" title="Email">
+                        <i class="fas fa-envelope"></i>
+                        <span>contato@abr.ind.br</span>
+                    </a></li>
+                    <li><a href="#" title="Endereço">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span data-i18n
+                              data-i18n-pt="Hortolândia, SP"
+                              data-i18n-en="Hortolândia, SP"
+                              data-i18n-es="Hortolândia, SP">
+                            Hortolândia, SP
+                        </span>
+                    </a></li>
+                    <li style="margin-top: 8px; font-size: 12px; color: #999;">
+                        <span data-i18n
+                              data-i18n-pt="Seg–Sex: 07h - 16:45"
+                              data-i18n-en="Mon–Fri: 7am - 16:45pm"
+                              data-i18n-es="Lun–Vie: 8:30 – 17:30">
+                            Seg–Sex: 07h - 16:45
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p data-i18n
+               data-i18n-pt="© 2025 Empresa de Sistemas de Vedação. Todos os direitos reservados."
+               data-i18n-en="© 2025 Sealing Systems Company. All rights reserved."
+               data-i18n-es="© 2025 Empresa de Sistemas de Sellado. Todos los derechos reservados.">
+                &copy; 2025 Empresa de Sistemas de Vedação. Todos os direitos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script src="../src/js/index.js"></script>
+</body>
+
+</html>
+
+

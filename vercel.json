@@ -1,9 +1,6 @@
 
 {
-
-    "buildCommand": "npm run build",
-    
-    "public": "src",
+    "public": "public",
     "rewrites": [
         {
             "source": "/sobre",
