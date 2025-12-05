@@ -1,0 +1,24 @@
+{
+    "rewrites": [
+        {
+            "source": "/sobre",
+            "destination": "/sobre.html"
+        },
+        {
+            "source": "/contato",
+            "destination": "/contato.html"
+        },
+        {
+            "source": "/index",
+            "destination": "/index.html"
+        },
+        {
+            "source": "/catalogo",
+            "destination": "/catalogo.html"
+        },
+        {
+            "source": "/imprensa",
+            "destination": "/imprensa.html"
+        }
+    ]
+}
