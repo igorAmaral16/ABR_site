@@ -1,11 +1,5 @@
-
 {
-    "public": "public",
     "rewrites": [
-        {
-            "source": "/",
-            "destination": "/index.html"
-        },
         {
             "source": "/sobre",
             "destination": "/sobre.html"
@@ -15,7 +9,7 @@
             "destination": "/contato.html"
         },
         {
-            "source": "/index", 
+            "source": "/index",
             "destination": "/index.html"
         },
         {
