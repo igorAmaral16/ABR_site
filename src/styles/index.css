@@ -2402,3 +2402,69 @@ body.dark-mode .menu-toggle span {
         grid-template-columns: 1fr;
     }
 }
+
+/* Modal styles (use CSS variables so theme switching updates automatically) */
+:root {
+    --modal-bg: var(--bg-white);
+    --modal-text: var(--text-primary);
+    --modal-border: var(--border-light);
+    --modal-shadow: var(--shadow-xl);
+}
+
+body.dark-mode {
+    --modal-bg: var(--dark-bg-secondary);
+    --modal-text: var(--dark-text-primary);
+    --modal-border: var(--dark-border);
+    --modal-shadow: var(--dark-shadow-xl);
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2,6,23,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 24px;
+    animation: fadeIn 220ms ease-out;
+}
+
+.modal-content {
+    background: var(--modal-bg);
+    color: var(--modal-text);
+    padding: 20px 22px;
+    border-radius: var(--radius-lg);
+    max-width: 560px;
+    width: 100%;
+    box-shadow: var(--modal-shadow);
+    border: 1px solid var(--modal-border);
+    animation: slideDown 240ms ease-out;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-content h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.2;
+}
+
+.modal-content p {
+    margin: 0;
+    color: var(--modal-text);
+    font-size: 0.95rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+@media (max-width: 520px) {
+    .modal-content { max-width: 460px; padding: 16px; }
+    .modal-actions { flex-direction: column-reverse; }
+}

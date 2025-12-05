@@ -1281,32 +1281,7 @@ function addDynamicStyles() {
       }
     }
     
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      animation: fadeIn 0.3s ease-out;
-    }
-    
-    .modal-content {
-      background: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-bg-secondary)' : 'white'};
-      padding: 32px;
-      border-radius: var(--radius-xl);
-      max-width: 400px;
-      width: 90%;
-      box-shadow: var(--shadow-xl);
-      animation: slideDown 0.3s ease-out;
-      border: 1px solid ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'var(--border-light)'};
-      color: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'var(--text-primary)'};
-    }
-    
+    /* Modal styles moved to CSS file (src/styles/index.css) to support dynamic theme changes */
     @keyframes fadeIn {
       from {
         opacity: 0;
