@@ -498,7 +498,7 @@ class LanguageManager {
     this.supportedLanguages = ['pt', 'en', 'es'];
     this.currentLanguage = 'pt';
 
-    
+
 
     this.init();
   }
@@ -561,24 +561,24 @@ class LanguageManager {
   }
 
   updateFlagButton(lang, langText) {
-  if (!this.flagToggle) return;
+    if (!this.flagToggle) return;
 
-  // Mapa correto: idioma → código de bandeira da flag-icon-css
-  const flagMap = {
-    pt: 'br', // português → Brasil
-    en: 'us', // inglês → EUA
-    es: 'es', // espanhol → Espanha (ou troca se quiser outro país)
-  };
+    // Mapa correto: idioma → código de bandeira da flag-icon-css
+    const flagMap = {
+      pt: 'br', // português → Brasil
+      en: 'us', // inglês → EUA
+      es: 'es', // espanhol → Espanha (ou troca se quiser outro país)
+    };
 
-  const flagCode = flagMap[lang] || 'br'; // fallback pra BR se vier algo estranho
-  const shortLabel = (langText || '').trim().split(' ')[0];
+    const flagCode = flagMap[lang] || 'br'; // fallback pra BR se vier algo estranho
+    const shortLabel = (langText || '').trim().split(' ')[0];
 
-  this.flagToggle.innerHTML = `
+    this.flagToggle.innerHTML = `
     <span class="flag-icon flag-icon-${flagCode}"></span>
     ${shortLabel}
     <i class="fa-solid fa-chevron-down"></i>
   `;
-}
+  }
 
 
   closeFlagMenu(e) {
@@ -594,26 +594,26 @@ class LanguageManager {
   }
 
   loadSavedLanguage() {
-  const savedLanguage = localStorage.getItem('language');
+    const savedLanguage = localStorage.getItem('language');
 
-  if (savedLanguage && this.supportedLanguages.includes(savedLanguage)) {
-    this.currentLanguage = savedLanguage;
-  } else {
-    this.currentLanguage = 'pt';
+    if (savedLanguage && this.supportedLanguages.includes(savedLanguage)) {
+      this.currentLanguage = savedLanguage;
+    } else {
+      this.currentLanguage = 'pt';
+    }
+
+    const flagOption = document.querySelector(
+      `[data-lang="${this.currentLanguage}"]`
+    );
+
+    if (flagOption) {
+      const langText = flagOption.textContent.trim();
+      this.updateFlagButton(this.currentLanguage, langText);
+    } else {
+      // fallback hardcoded se der ruim
+      this.updateFlagButton('pt', 'Português');
+    }
   }
-
-  const flagOption = document.querySelector(
-    `[data-lang="${this.currentLanguage}"]`
-  );
-
-  if (flagOption) {
-    const langText = flagOption.textContent.trim();
-    this.updateFlagButton(this.currentLanguage, langText);
-  } else {
-    // fallback hardcoded se der ruim
-    this.updateFlagButton('pt', 'Português');
-  }
-}
 
 
   applyLanguage(lang) {
@@ -695,156 +695,6 @@ class LanguageManager {
       notification.style.animation = 'slideOutRight 0.3s ease-out';
       setTimeout(() => notification.remove(), 300);
     }, 3000);
-  }
-}
-
-
-// ====================
-// SISTEMA DE BUSCA
-// ====================
-
-class SearchManager {
-  constructor() {
-    this.searchToggle = document.getElementById('searchToggle');
-    this.searchActive = false;
-    this.searchInput = null;
-
-    this.handleEscape = this.handleEscape.bind(this);
-    this.handleClickOutside = this.handleClickOutside.bind(this);
-
-    this.init();
-  }
-
-  init() {
-    this.setupEventListeners();
-  }
-
-  setupEventListeners() {
-    this.searchToggle?.addEventListener('click', (e) => {
-      e.stopPropagation();
-
-      if (this.searchActive) {
-        this.closeSearch();
-      } else {
-        this.showSearchInput();
-      }
-    });
-  }
-
-  showSearchInput() {
-    if (this.searchActive) return;
-
-    const searchInput = document.createElement('input');
-    searchInput.type = 'text';
-    searchInput.placeholder = 'Buscar produtos...';
-    searchInput.className = 'search-input';
-    searchInput.style.cssText = `
-      position: absolute;
-      right: 0;
-      top: 100%;
-      width: 300px;
-      padding: 12px 16px;
-      background: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'white'};
-      border: 2px solid var(--primary);
-      border-radius: var(--radius-md);
-      box-shadow: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
-      font-size: 14px;
-      z-index: 1000;
-      animation: slideDown 0.3s ease-out;
-      color: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'var(--text-primary)'};
-    `;
-
-    const controlsGroup = document.querySelector('.controls-group');
-    controlsGroup.appendChild(searchInput);
-    searchInput.focus();
-
-    this.searchInput = searchInput;
-    this.searchActive = true;
-
-    // Funcionalidade de busca
-    searchInput.addEventListener('input', (e) => {
-      this.performSearch(e.target.value.toLowerCase());
-    });
-
-    document.addEventListener('keydown', this.handleEscape);
-
-    setTimeout(() => {
-      document.addEventListener('click', this.handleClickOutside);
-    }, 100);
-  }
-
-  closeSearch() {
-    if (!this.searchActive) return;
-
-    if (this.searchInput) {
-      this.searchInput.remove();
-      this.searchInput = null;
-    }
-
-    this.searchActive = false;
-
-    document.removeEventListener('keydown', this.handleEscape);
-    document.removeEventListener('click', this.handleClickOutside);
-  }
-
-  handleEscape(e) {
-    if (e.key === 'Escape') {
-      this.closeSearch();
-    }
-  }
-
-  handleClickOutside(e) {
-    if (!this.searchInput) return;
-
-    const clickedOutside =
-      !this.searchInput.contains(e.target) &&
-      e.target !== this.searchToggle;
-
-    if (clickedOutside) {
-      this.closeSearch();
-    }
-  }
-
-  performSearch(searchTerm) {
-    const productCards = document.querySelectorAll('.product-card');
-
-    productCards.forEach(card => {
-      const productName = card.querySelector('.product-name').textContent.toLowerCase();
-      const productCode = card.querySelector('.product-code').textContent.toLowerCase();
-      const productSummary = card.querySelector('.product-summary').textContent.toLowerCase();
-
-      const match = productName.includes(searchTerm) ||
-        productCode.includes(searchTerm) ||
-        productSummary.includes(searchTerm);
-
-      card.style.display = match ? 'block' : 'none';
-
-      // Destacar termo de busca
-      if (searchTerm && match) {
-        this.highlightSearchTerm(card, searchTerm);
-      } else {
-        this.removeHighlights(card);
-      }
-    });
-  }
-
-  highlightSearchTerm(card, term) {
-    this.removeHighlights(card);
-
-    const elements = card.querySelectorAll('.product-name, .product-summary');
-    elements.forEach(element => {
-      const html = element.innerHTML;
-      const regex = new RegExp(`(${term})`, 'gi');
-      element.innerHTML = html.replace(regex, '<span class="search-highlight">$1</span>');
-    });
-  }
-
-  removeHighlights(card) {
-    const highlights = card.querySelectorAll('.search-highlight');
-    highlights.forEach(highlight => {
-      const parent = highlight.parentNode;
-      parent.replaceChild(document.createTextNode(highlight.textContent), highlight);
-    });
   }
 }
 

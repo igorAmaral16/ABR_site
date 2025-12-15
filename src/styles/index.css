@@ -10,7 +10,7 @@
     --bg-light: #f8fafc;
     --bg-white: #ffffff;
     --text-primary: #1e293b;
-    --text-secondary: #64748b;
+    --text-secondary: #000000;
     --text-muted: #94a3b8;
     --border-light: #e2e8f0;
     --border-medium: #cbd5e1;
@@ -23,8 +23,8 @@
     --dark-surface-hover: #2d3038;
     --dark-border: #3a3d47;
     --dark-border-light: #2d3038;
-    --dark-text-primary: #f0f2f5;
-    --dark-text-secondary: #c8ccd2;
+    --dark-text-primary: #ffffff;
+    --dark-text-secondary: #ffffff;
     --dark-text-muted: #8c9099;
     --dark-primary: #4da6ff;
     --dark-primary-hover: #66b3ff;
@@ -487,7 +487,7 @@ svg {
     transform: translateX(-50%);
     width: 60%;
     height: 38px;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0.18) 0%, rgba(0,0,0,0.04) 80%, transparent 100%);
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.04) 80%, transparent 100%);
     filter: blur(8px);
     z-index: 1;
     pointer-events: none;
@@ -516,7 +516,7 @@ svg {
     background: none !important;
     box-shadow: none !important;
     border: none !important;
-    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     z-index: 2;
 }
@@ -706,7 +706,7 @@ svg {
 .product-status {
     font-size: 11px;
     font-weight: 600;
-    color: #059669;
+    color: #006b49;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -2421,7 +2421,7 @@ body.dark-mode {
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(2,6,23,0.6);
+    background: rgba(2, 6, 23, 0.6);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2465,6 +2465,12 @@ body.dark-mode {
 }
 
 @media (max-width: 520px) {
-    .modal-content { max-width: 460px; padding: 16px; }
-    .modal-actions { flex-direction: column-reverse; }
+    .modal-content {
+        max-width: 460px;
+        padding: 16px;
+    }
+
+    .modal-actions {
+        flex-direction: column-reverse;
+    }
 }
