@@ -176,7 +176,12 @@
                     Envie sua mensagem
                 </h2>
 
-                <form id="contactForm" novalidate>
+                <form id="contactForm" action="https://formsubmit.co/suporteti.abr@gmail.com" method="POST" novalidate>
+                    <!-- Campos obrigatórios para FormSubmit -->
+                    <input type="hidden" name="_next" value="https://abr.ind.br/contato.html?enviado=1">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_subject" value="Contato do site ABR">
                     <label for="nome" class="visually-hidden" data-i18n data-i18n-pt="Nome" data-i18n-en="Name"
                         data-i18n-es="Nombre">
                         Nome
@@ -186,7 +191,7 @@
                             <label for="nome" data-i18n data-i18n-pt="Nome" data-i18n-en="Name" data-i18n-es="Nombre">
                                 Nome
                             </label>
-                            <input id="nome" name="nome" type="text" placeholder="Seu nome completo" required
+                            <input id="nome" name="name" type="text" placeholder="Seu nome completo" required
                                 maxlength="80" data-i18n-placeholder data-i18n-placeholder-pt="Seu nome completo"
                                 data-i18n-placeholder-en="Your full name"
                                 data-i18n-placeholder-es="Su nombre completo" />
@@ -196,7 +201,7 @@
                             <label for="email" data-i18n data-i18n-pt="Email" data-i18n-en="Email" data-i18n-es="Email">
                                 Email
                             </label>
-                            <input id="email" name="email" type="email" placeholder="seu@exemplo.com" required
+                            <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com" required
                                 maxlength="120" data-i18n-placeholder data-i18n-placeholder-pt="seu@exemplo.com"
                                 data-i18n-placeholder-en="your@example.com" data-i18n-placeholder-es="su@ejemplo.com" />
                         </div>
@@ -207,7 +212,7 @@
                             data-i18n-es="Asunto">
                             Assunto
                         </label>
-                        <input id="assunto" name="assunto" type="text" placeholder="Motivo do contato" required
+                        <input id="assunto" name="_subject" type="text" placeholder="Motivo do contato" required
                             maxlength="120" data-i18n-placeholder data-i18n-placeholder-pt="Motivo do contato"
                             data-i18n-placeholder-en="Reason for contact"
                             data-i18n-placeholder-es="Motivo del contacto" />
@@ -218,7 +223,7 @@
                             data-i18n-es="Mensaje">
                             Mensagem
                         </label>
-                        <textarea id="mensagem" name="mensagem" placeholder="Digite sua mensagem aqui..." required
+                        <textarea id="mensagem" name="message" placeholder="Digite sua mensagem aqui..." required
                             maxlength="3000" data-i18n-placeholder
                             data-i18n-placeholder-pt="Digite sua mensagem aqui..."
                             data-i18n-placeholder-en="Type your message here..."

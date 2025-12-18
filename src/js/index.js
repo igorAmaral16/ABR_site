@@ -1318,9 +1318,14 @@ document.addEventListener('DOMContentLoaded', () => {
   window.productManager = productManager;
   window.languageManager = languageManager;
 
-  // Log inicial
-  console.log(`Página atual: ${currentPage}`);
-  console.log(`Tema: ${themeManager.getCurrentTheme()}`);
+  // Verificar se voltou da página de sucesso do FormSubmit
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('enviado') === '1') {
+    alertEl.textContent = 'Mensagem enviada com sucesso! Obrigado pelo contato.';
+    alertEl.style.display = 'block';
+    // Limpar a URL
+    window.history.replaceState(null, null, window.location.pathname);
+  }
 
   // Inicializar form de contato
   const form = document.getElementById('contactForm');
@@ -1339,150 +1344,143 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (form) {
     form.addEventListener('submit', (e) => {
-      e.preventDefault();
       alertEl.style.display = 'none';
       errorEl.style.display = 'none';
 
       const formData = new FormData(form);
       if (formData.get('website')) { // honeypot
+        e.preventDefault();
         return;
       }
 
       if (!form.checkValidity()) {
+        e.preventDefault();
         form.reportValidity();
         return;
       }
 
+      // Validação passou, permitir envio para FormSubmit.co
       submitBtn.disabled = true;
       sending.style.display = 'block';
-
-      // Simulação de envio (substitua por fetch para integrar ao backend)
-      setTimeout(() => {
-        submitBtn.disabled = false;
-        sending.style.display = 'none';
-        form.reset();
-        charCount.textContent = '0 / 3000';
-        alertEl.textContent = 'Mensagem enviada com sucesso. Obrigado pelo contato.';
-        alertEl.style.display = 'block';
-      }, 900);
-
-      // Exemplo de fetch (descomente e ajuste a URL se integrar com backend)
-      /*
-      fetch('/api/contact', {
-        method: 'POST',
-        body: formData
-      }).then(r => {
-        // tratar resposta
-      }).catch(err => {
-        errorEl.textContent = 'Erro ao enviar. Tente novamente mais tarde.';
-        errorEl.style.display = 'block';
-      }).finally(() => {
-        submitBtn.disabled = false;
-        sending.style.display = 'none';
-      });
-      */
+      // Não chamar e.preventDefault() para permitir o submit
     });
   }
-
-  // Footer link / deep-hash handling: smooth scroll on same-page anchors and scroll-on-load for deep links
-  function smoothScrollToId(id) {
-    if (!id) return;
-    const el = document.getElementById(id) || document.querySelector(`[id="#${id}"]`);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  // Intercept footer links that are same-page anchors (e.g., href="#qualidade")
-  document.querySelectorAll('.footer a[href^="#"]').forEach(link => {
-    const href = link.getAttribute('href');
-    if (!href || href === '#') return;
-    link.addEventListener('click', (e) => {
-      // If the link is a pure hash and we're on any page, try smooth scroll
-      e.preventDefault();
-      const id = href.slice(1);
-      smoothScrollToId(id);
-      // update URL without reloading
-      history.replaceState(null, '', '#' + id);
-    });
+  /*
+  fetch('/api/contact', {
+    method: 'POST',
+    body: formData
+  }).then(r => {
+    // tratar resposta
+  }).catch(err => {
+    errorEl.textContent = 'Erro ao enviar. Tente novamente mais tarde.';
+    errorEl.style.display = 'block';
+  }).finally(() => {
+    submitBtn.disabled = false;
+    sending.style.display = 'none';
   });
+  */
+});
+  }
 
-  // For footer links that point to another page with a hash (e.g., sobre.html#qualidade)
-  // store the target hash so the destination page can smooth-scroll after navigation.
-  document.querySelectorAll('.footer a[href*="#"]').forEach(link => {
-    const href = link.getAttribute('href');
-    if (!href || href.indexOf('#') === -1) return;
-    // skip pure-hash links (already handled above)
-    if (href.startsWith('#')) return;
-    link.addEventListener('click', () => {
-      try {
-        const url = new URL(href, window.location.href);
-        const hash = url.hash.replace('#', '');
-        if (hash) {
-          sessionStorage.setItem('scrollTarget', hash);
-        }
-      } catch (err) {
-        // ignore malformed urls
+// Footer link / deep-hash handling: smooth scroll on same-page anchors and scroll-on-load for deep links
+function smoothScrollToId(id) {
+  if (!id) return;
+  const el = document.getElementById(id) || document.querySelector(`[id="#${id}"]`);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Intercept footer links that are same-page anchors (e.g., href="#qualidade")
+document.querySelectorAll('.footer a[href^="#"]').forEach(link => {
+  const href = link.getAttribute('href');
+  if (!href || href === '#') return;
+  link.addEventListener('click', (e) => {
+    // If the link is a pure hash and we're on any page, try smooth scroll
+    e.preventDefault();
+    const id = href.slice(1);
+    smoothScrollToId(id);
+    // update URL without reloading
+    history.replaceState(null, '', '#' + id);
+  });
+});
+
+// For footer links that point to another page with a hash (e.g., sobre.html#qualidade)
+// store the target hash so the destination page can smooth-scroll after navigation.
+document.querySelectorAll('.footer a[href*="#"]').forEach(link => {
+  const href = link.getAttribute('href');
+  if (!href || href.indexOf('#') === -1) return;
+  // skip pure-hash links (already handled above)
+  if (href.startsWith('#')) return;
+  link.addEventListener('click', () => {
+    try {
+      const url = new URL(href, window.location.href);
+      const hash = url.hash.replace('#', '');
+      if (hash) {
+        sessionStorage.setItem('scrollTarget', hash);
       }
-    });
+    } catch (err) {
+      // ignore malformed urls
+    }
   });
+});
 
-  // On load, first check for sessionStorage handoff (set when clicking a footer link that navigates)
-  const pendingHash = sessionStorage.getItem('scrollTarget');
-  if (pendingHash) {
-    setTimeout(() => {
-      smoothScrollToId(pendingHash);
-      sessionStorage.removeItem('scrollTarget');
-    }, 80);
-  } else if (window.location.hash) {
-    const hashId = window.location.hash.replace('#', '');
-    setTimeout(() => smoothScrollToId(hashId), 60);
-  }
+// On load, first check for sessionStorage handoff (set when clicking a footer link that navigates)
+const pendingHash = sessionStorage.getItem('scrollTarget');
+if (pendingHash) {
+  setTimeout(() => {
+    smoothScrollToId(pendingHash);
+    sessionStorage.removeItem('scrollTarget');
+  }, 80);
+} else if (window.location.hash) {
+  const hashId = window.location.hash.replace('#', '');
+  setTimeout(() => smoothScrollToId(hashId), 60);
+}
 
-  // --------- Download PDF modal (Catalog page) ---------
-  const downloadPdfBtn = document.getElementById('downloadPdfBtn');
-  if (downloadPdfBtn) {
-    downloadPdfBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      openDownloadModal();
-    });
-  }
+// --------- Download PDF modal (Catalog page) ---------
+const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+if (downloadPdfBtn) {
+  downloadPdfBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    openDownloadModal();
+  });
+}
 
-  function openDownloadModal() {
-    // Dados com links reais
-    const leveOptions = [
-      { label: 'Catálogo Completo Linha Leve', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20LEVE.pdf' },
-      { label: 'Linha FIAT', url: 'https://abr.ind.br/catalogos/pb/2%20-%20FIAT%202019.pdf' },
-      { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/3%20-%20FORD%202019%20site.pdf' },
-      { label: 'Linha GM', url: 'https://abr.ind.br/catalogos/pb/4%20-%20GM%202019.pdf' },
-      { label: 'Linha Honda', url: 'https://abr.ind.br/catalogos/pb/5%20-%20HONDA%202019.pdf' },
-      { label: 'Linha HYNDAI / MITSUBISHI', url: 'https://abr.ind.br/catalogos/pb/6%20-%20HYUNDAI-MITSUBISHI%202019.pdf' },
-      { label: 'Linha ASIA-KIA', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ASIA-KIA%202019.pdf' },
-      { label: 'Linha NISSAN', url: 'https://abr.ind.br/catalogos/pb/8%20-%20NISSAN%202019.pdf' },
-      { label: 'Linha PEUGEOT / CITROEN', url: 'https://abr.ind.br/catalogos/pb/9%20-%20PEUGEOT-CITROEN%202019.pdf' },
-      { label: 'Linha RENAULT', url: 'https://abr.ind.br/catalogos/pb/10%20-%20RENAULT%202019.pdf' },
-      { label: 'Linha SUZUKI', url: 'https://abr.ind.br/catalogos/pb/11%20-%20SUZUKI%202019.pdf' },
-      { label: 'Linha TOYOTA', url: 'https://abr.ind.br/catalogos/pb/12%20-%20TOYOTA%202019.pdf' },
-      { label: 'Linha VOLKSWAGEN', url: 'https://abr.ind.br/catalogos/pb/13%20-%20VOLKSWAGEN%202019.pdf' }
-    ];
+function openDownloadModal() {
+  // Dados com links reais
+  const leveOptions = [
+    { label: 'Catálogo Completo Linha Leve', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20LEVE.pdf' },
+    { label: 'Linha FIAT', url: 'https://abr.ind.br/catalogos/pb/2%20-%20FIAT%202019.pdf' },
+    { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/3%20-%20FORD%202019%20site.pdf' },
+    { label: 'Linha GM', url: 'https://abr.ind.br/catalogos/pb/4%20-%20GM%202019.pdf' },
+    { label: 'Linha Honda', url: 'https://abr.ind.br/catalogos/pb/5%20-%20HONDA%202019.pdf' },
+    { label: 'Linha HYNDAI / MITSUBISHI', url: 'https://abr.ind.br/catalogos/pb/6%20-%20HYUNDAI-MITSUBISHI%202019.pdf' },
+    { label: 'Linha ASIA-KIA', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ASIA-KIA%202019.pdf' },
+    { label: 'Linha NISSAN', url: 'https://abr.ind.br/catalogos/pb/8%20-%20NISSAN%202019.pdf' },
+    { label: 'Linha PEUGEOT / CITROEN', url: 'https://abr.ind.br/catalogos/pb/9%20-%20PEUGEOT-CITROEN%202019.pdf' },
+    { label: 'Linha RENAULT', url: 'https://abr.ind.br/catalogos/pb/10%20-%20RENAULT%202019.pdf' },
+    { label: 'Linha SUZUKI', url: 'https://abr.ind.br/catalogos/pb/11%20-%20SUZUKI%202019.pdf' },
+    { label: 'Linha TOYOTA', url: 'https://abr.ind.br/catalogos/pb/12%20-%20TOYOTA%202019.pdf' },
+    { label: 'Linha VOLKSWAGEN', url: 'https://abr.ind.br/catalogos/pb/13%20-%20VOLKSWAGEN%202019.pdf' }
+  ];
 
-    const pesadaOptions = [
-      { label: 'Catálogo Completo Linha Pesada', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20PESADA.pdf' },
-      { label: 'Linha CUMMINS', url: 'https://abr.ind.br/catalogos/pb/1%20-%20ABR%20Catalogo%20CUMMINS.pdf' },
-      { label: 'Linha Mercedes', url: 'https://abr.ind.br/catalogos/pb/2%20-%20ABR%20Catalogo%20MERCEDES.pdf' },
-      { label: 'Linha MWM', url: 'https://abr.ind.br/catalogos/pb/3%20-%20ABR%20Catalogo%20MWM.pdf' },
-      { label: 'Linha MAXION / PERKINS', url: 'https://abr.ind.br/catalogos/pb/4%20-%20ABR%20Catalogo%20MAXION%20PERKINS.pdf' },
-      { label: 'Linha IVECO', url: 'https://abr.ind.br/catalogos/pb/5%20-%20ABR%20Catalogo%20IVECO.pdf' },
-      { label: 'Linha SCANIA', url: 'https://abr.ind.br/catalogos/pb/6%20-%20ABR%20Catalogo%20SCANIA.pdf' },
-      { label: 'Linha JOHN DEERE', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ABR%20Catalogo%20JOHN%20DEERE.pdf' },
-      { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/8%20-%20ABR%20Catalogo%20FORD.pdf' },
-      { label: 'Linha VALTRA', url: 'https://abr.ind.br/catalogos/pb/9%20-%20ABR%20Catalogo%20VALTRA.pdf' }
-    ];
+  const pesadaOptions = [
+    { label: 'Catálogo Completo Linha Pesada', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20PESADA.pdf' },
+    { label: 'Linha CUMMINS', url: 'https://abr.ind.br/catalogos/pb/1%20-%20ABR%20Catalogo%20CUMMINS.pdf' },
+    { label: 'Linha Mercedes', url: 'https://abr.ind.br/catalogos/pb/2%20-%20ABR%20Catalogo%20MERCEDES.pdf' },
+    { label: 'Linha MWM', url: 'https://abr.ind.br/catalogos/pb/3%20-%20ABR%20Catalogo%20MWM.pdf' },
+    { label: 'Linha MAXION / PERKINS', url: 'https://abr.ind.br/catalogos/pb/4%20-%20ABR%20Catalogo%20MAXION%20PERKINS.pdf' },
+    { label: 'Linha IVECO', url: 'https://abr.ind.br/catalogos/pb/5%20-%20ABR%20Catalogo%20IVECO.pdf' },
+    { label: 'Linha SCANIA', url: 'https://abr.ind.br/catalogos/pb/6%20-%20ABR%20Catalogo%20SCANIA.pdf' },
+    { label: 'Linha JOHN DEERE', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ABR%20Catalogo%20JOHN%20DEERE.pdf' },
+    { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/8%20-%20ABR%20Catalogo%20FORD.pdf' },
+    { label: 'Linha VALTRA', url: 'https://abr.ind.br/catalogos/pb/9%20-%20ABR%20Catalogo%20VALTRA.pdf' }
+  ];
 
-    // Modal structure com estilo profissional
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay download-modal-overlay';
-    overlay.style.cssText = `
+  // Modal structure com estilo profissional
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay download-modal-overlay';
+  overlay.style.cssText = `
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.5);
@@ -1494,9 +1492,9 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: fadeIn 0.3s ease-out;
     `;
 
-    const modal = document.createElement('div');
-    modal.className = 'download-modal-content';
-    modal.style.cssText = `
+  const modal = document.createElement('div');
+  modal.className = 'download-modal-content';
+  modal.style.cssText = `
       width: 100%;
       max-width: 520px;
       background: var(--bg-white);
@@ -1507,7 +1505,7 @@ document.addEventListener('DOMContentLoaded', () => {
       animation: slideDown 0.3s ease-out;
     `;
 
-    modal.innerHTML = `
+  modal.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border-light); padding-bottom: 16px">
         <h2 style="margin: 0; font-size: 20px; font-weight: 600">Catálogos em PDF</h2>
         <button class="close-download-modal" aria-label="Fechar" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary); transition: color 0.2s">✕</button>
@@ -1549,85 +1547,85 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
-    overlay.appendChild(modal);
-    document.body.appendChild(overlay);
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
 
-    const leveSelect = modal.querySelector('#leveSelect');
-    leveOptions.forEach(opt => {
-      const o = document.createElement('option');
-      o.value = opt.url;
-      o.textContent = opt.label;
-      leveSelect.appendChild(o);
-    });
+  const leveSelect = modal.querySelector('#leveSelect');
+  leveOptions.forEach(opt => {
+    const o = document.createElement('option');
+    o.value = opt.url;
+    o.textContent = opt.label;
+    leveSelect.appendChild(o);
+  });
 
-    const pesadaSelect = modal.querySelector('#pesadaSelect');
-    pesadaOptions.forEach(opt => {
-      const o = document.createElement('option');
-      o.value = opt.url;
-      o.textContent = opt.label;
-      pesadaSelect.appendChild(o);
-    });
+  const pesadaSelect = modal.querySelector('#pesadaSelect');
+  pesadaOptions.forEach(opt => {
+    const o = document.createElement('option');
+    o.value = opt.url;
+    o.textContent = opt.label;
+    pesadaSelect.appendChild(o);
+  });
 
-    const updateVisibility = () => {
-      const val = modal.querySelector('input[name="downloadType"]:checked').value;
-      modal.querySelector('#leve-select-container').style.display = val === 'leve' ? 'block' : 'none';
-      modal.querySelector('#pesada-select-container').style.display = val === 'pesada' ? 'block' : 'none';
-    };
+  const updateVisibility = () => {
+    const val = modal.querySelector('input[name="downloadType"]:checked').value;
+    modal.querySelector('#leve-select-container').style.display = val === 'leve' ? 'block' : 'none';
+    modal.querySelector('#pesada-select-container').style.display = val === 'pesada' ? 'block' : 'none';
+  };
 
-    modal.querySelectorAll('input[name="downloadType"]').forEach(r => r.addEventListener('change', updateVisibility));
+  modal.querySelectorAll('input[name="downloadType"]').forEach(r => r.addEventListener('change', updateVisibility));
 
-    // close handlers
-    modal.querySelector('.close-download-modal').addEventListener('click', closeModal);
-    modal.querySelector('.cancel-download').addEventListener('click', closeModal);
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeModal();
-    });
+  // close handlers
+  modal.querySelector('.close-download-modal').addEventListener('click', closeModal);
+  modal.querySelector('.cancel-download').addEventListener('click', closeModal);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal();
+  });
 
-    function closeModal() {
-      overlay.style.animation = 'fadeOut 0.2s ease-out';
-      setTimeout(() => overlay.remove(), 200);
+  function closeModal() {
+    overlay.style.animation = 'fadeOut 0.2s ease-out';
+    setTimeout(() => overlay.remove(), 200);
+  }
+
+  modal.querySelector('.confirm-download').addEventListener('click', () => {
+    const type = modal.querySelector('input[name="downloadType"]:checked').value;
+    if (type === 'complete') {
+      const url = 'https://abr.ind.br/catalogos/pb/ABR_CATALOGO_COMPLETO_2022.pdf';
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.click();
+      closeModal();
+      return;
     }
 
-    modal.querySelector('.confirm-download').addEventListener('click', () => {
-      const type = modal.querySelector('input[name="downloadType"]:checked').value;
-      if (type === 'complete') {
-        const url = 'https://abr.ind.br/catalogos/pb/ABR_CATALOGO_COMPLETO_2022.pdf';
+    if (type === 'leve') {
+      const link = modal.querySelector('#leveSelect').value;
+      if (link) {
         const a = document.createElement('a');
-        a.href = url;
+        a.href = link;
         a.target = '_blank';
         a.rel = 'noopener';
         a.click();
         closeModal();
-        return;
       }
+      return;
+    }
 
-      if (type === 'leve') {
-        const link = modal.querySelector('#leveSelect').value;
-        if (link) {
-          const a = document.createElement('a');
-          a.href = link;
-          a.target = '_blank';
-          a.rel = 'noopener';
-          a.click();
-          closeModal();
-        }
-        return;
+    if (type === 'pesada') {
+      const link = modal.querySelector('#pesadaSelect').value;
+      if (link) {
+        const a = document.createElement('a');
+        a.href = link;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.click();
+        closeModal();
       }
-
-      if (type === 'pesada') {
-        const link = modal.querySelector('#pesadaSelect').value;
-        if (link) {
-          const a = document.createElement('a');
-          a.href = link;
-          a.target = '_blank';
-          a.rel = 'noopener';
-          a.click();
-          closeModal();
-        }
-        return;
-      }
-    });
-  }
+      return;
+    }
+  });
+}
 });
 
 // ====================
