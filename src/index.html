@@ -716,58 +716,195 @@
                             Envie sua mensagem
                         </h2>
 
-                        <form id="contactForm" action="https://formsubmit.co/suporteti.abr@gmail.com" method="POST"
-                            novalidate>
-                            <!-- Campos obrigatórios para FormSubmit -->
-                            <input type="hidden" name="_next" value="https://abr.ind.br/contato.html?enviado=1">
-                            <input type="hidden" name="_captcha" value="false">
-                            <input type="hidden" name="_template" value="table">
-                            <input type="hidden" name="_subject" value="Contato do site ABR">
-                            <label for="nome" class="visually-hidden">Nome</label>
-                            <div class="row" style="margin-bottom:12px">
+                        <form id="contactForm" action="https://formspree.io/f/xaqygwgr" method="POST" novalidate>
+                            <!-- Campos do Formspree -->
+                            <input type="hidden" name="_language" value="pt" />
+                            <input type="hidden" name="_subject" value="Novo contato do site ABR" />
+                            <input type="hidden" name="_template" value="table" />
+                            <input type="hidden" name="_next"
+                                value="https://abr.ind.br/contato.html?enviado=1#success" />
+                            <input type="hidden" name="_replyto" value="" id="replyTo" />
+
+                            <!-- Honeypot para spam -->
+                            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+
+                            <!-- Seção de informações do contato -->
+                            <div class="contact-section"
+                                style="margin-bottom: 24px; padding: 20px; background: var(--primary-light); border-radius: var(--radius-md);">
+                                <h3
+                                    style="margin-bottom: 16px; color: var(--primary); font-size: 16px; font-weight: 600;">
+                                    <i class="fas fa-user-circle" style="margin-right: 8px;"></i>Informações de Contato
+                                </h3>
+
+                                <div class="row" style="margin-bottom: 16px;">
+                                    <div class="field">
+                                        <label for="nome">
+                                            <i class="fas fa-user"
+                                                style="margin-right: 6px; color: var(--primary);"></i>
+                                            Nome completo *
+                                        </label>
+                                        <input id="nome" name="name" type="text" placeholder="Digite seu nome completo"
+                                            required maxlength="80" aria-required="true" pattern="[A-Za-zÀ-ÿ\s]{2,}"
+                                            title="Por favor, digite um nome válido (mínimo 2 caracteres)" />
+                                        <div class="error-message" id="nome-error" aria-live="polite"></div>
+                                    </div>
+
+                                    <div class="field">
+                                        <label for="email">
+                                            <i class="fas fa-envelope"
+                                                style="margin-right: 6px; color: var(--primary);"></i>
+                                            E-mail *
+                                        </label>
+                                        <input id="email" name="email" type="email" placeholder="seu@email.com" required
+                                            maxlength="120" aria-required="true"
+                                            pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" />
+                                        <div class="error-message" id="email-error" aria-live="polite"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="field">
+                                        <label for="telefone">
+                                            <i class="fas fa-phone"
+                                                style="margin-right: 6px; color: var(--primary);"></i>
+                                            Telefone (Opcional)
+                                        </label>
+                                        <input id="telefone" name="telefone" type="tel" placeholder="(11) 99999-9999"
+                                            maxlength="20" pattern="\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}"
+                                            title="Formato: (11) 99999-9999" />
+                                        <div class="helper-text">Formato: (11) 99999-9999</div>
+                                    </div>
+
+                                    <div class="field">
+                                        <label for="empresa">
+                                            <i class="fas fa-building"
+                                                style="margin-right: 6px; color: var(--primary);"></i>
+                                            Empresa (Opcional)
+                                        </label>
+                                        <input id="empresa" name="empresa" type="text" placeholder="Nome da sua empresa"
+                                            maxlength="100" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Seção da mensagem -->
+                            <div class="message-section" style="margin-bottom: 24px;">
                                 <div class="field">
-                                    <label for="nome">Nome</label>
-                                    <input id="nome" name="name" type="text" placeholder="Seu nome completo" required
-                                        maxlength="80" />
+                                    <label for="assunto">
+                                        <i class="fas fa-tag" style="margin-right: 6px; color: var(--primary);"></i>
+                                        Assunto *
+                                    </label>
+                                    <select id="assunto" name="assunto" required aria-required="true">
+                                        <option value="" selected disabled>Selecione um assunto...</option>
+                                        <option value="Orçamento de produtos">Orçamento de produtos</option>
+                                        <option value="Suporte técnico">Suporte técnico</option>
+                                        <option value="Informações comerciais">Informações comerciais</option>
+                                        <option value="Parcerias">Parcerias</option>
+                                        <option value="Trabalhe conosco">Trabalhe conosco</option>
+                                        <option value="Outros">Outros</option>
+                                    </select>
+                                    <div class="error-message" id="assunto-error" aria-live="polite"></div>
                                 </div>
 
                                 <div class="field">
-                                    <label for="email">Email</label>
-                                    <input id="email" name="email" type="email" placeholder="seuemail@exemplo.com"
-                                        required maxlength="120" />
+                                    <label for="mensagem">
+                                        <i class="fas fa-comment-alt"
+                                            style="margin-right: 6px; color: var(--primary);"></i>
+                                        Mensagem *
+                                    </label>
+                                    <textarea id="mensagem" name="message" placeholder="Descreva sua mensagem aqui..."
+                                        required maxlength="2000" rows="6" aria-required="true"></textarea>
+                                    <div class="char-counter">
+                                        <span id="charCount">0</span> / 2000 caracteres
+                                        <span id="charWarning"
+                                            style="color: #dc3545; display: none; margin-left: 10px;">
+                                            <i class="fas fa-exclamation-triangle"></i> Limite próximo
+                                        </span>
+                                    </div>
+                                    <div class="error-message" id="mensagem-error" aria-live="polite"></div>
                                 </div>
                             </div>
 
-                            <div class="field">
-                                <label for="assunto">Assunto</label>
-                                <input id="assunto" name="_subject" type="text" placeholder="Motivo do contato" required
-                                    maxlength="120" />
+                            <!-- Honeypot avançado -->
+                            <div class="honeypot" style="position: absolute; left: -9999px; opacity: 0;">
+                                <label for="url">URL</label>
+                                <input type="url" id="url" name="url" tabindex="-1" autocomplete="off" />
+                                <label for="timestamp">Timestamp</label>
+                                <input type="text" id="timestamp" name="timestamp" value="" tabindex="-1" />
                             </div>
 
-                            <div class="field">
-                                <label for="mensagem">Mensagem</label>
-                                <textarea id="mensagem" name="message" placeholder="Digite sua mensagem aqui..."
-                                    required maxlength="3000"></textarea>
-                                <div class="helper-text" id="charCount">0 / 3000</div>
+                            <!-- Consenteimento e envio -->
+                            <div class="privacy-section"
+                                style="margin: 24px 0; padding: 16px; background: var(--bg-light); border-radius: var(--radius-md);">
+                                <div class="privacy-checkbox"
+                                    style="display: flex; align-items: flex-start; gap: 12px;">
+                                    <input type="checkbox" id="privacy" name="privacy" required aria-required="true"
+                                        style="margin-top: 3px;" />
+                                    <label for="privacy" style="font-size: 14px; line-height: 1.4;">
+                                        Concordo com a
+                                        <a href="/privacidade.html" target="_blank"
+                                            style="color: var(--primary); text-decoration: underline;">
+                                            Política de Privacidade
+                                        </a>
+                                        e autorizo o tratamento dos meus dados pessoais para os fins relacionados ao
+                                        contato. *
+                                    </label>
+                                </div>
+                                <div class="error-message" id="privacy-error" style="margin-top: 8px;"></div>
                             </div>
 
-                            <div class="visually-hidden">
-                                <label for="website">Website</label>
-                                <input id="website" name="website" type="text" autocomplete="off" />
-                            </div>
-
-                            <div style="display:flex; gap:12px; align-items:center; margin-top:8px">
-                                <button id="submitBtn" class="btn" type="submit">
-                                    Enviar mensagem
+                            <!-- Botões de ação -->
+                            <div class="form-actions"
+                                style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                                <button id="submitBtn" class="btn" type="submit"
+                                    style="display: flex; align-items: center; gap: 8px;" aria-label="Enviar mensagem">
+                                    <span id="submitText">Enviar mensagem</span>
+                                    <span id="sending" style="display: none; align-items: center; gap: 8px;">
+                                        <span class="spinner" style="display: inline-block;"></span>
+                                        Enviando...
+                                    </span>
                                 </button>
-                                <div id="sending" class="helper-text" style="display:none">
-                                    Enviando...
+
+                                <button type="button" id="clearBtn" class="btn-secondary"
+                                    style="background: transparent; border: 1px solid var(--border-medium); color: var(--text-secondary);">
+                                    <i class="fas fa-times" style="margin-right: 6px;"></i>
+                                    Limpar formulário
+                                </button>
+
+                                <div class="helper-text"
+                                    style="margin-left: auto; font-size: 13px; color: var(--text-muted);">
+                                    <i class="fas fa-info-circle" style="margin-right: 4px;"></i>
+                                    * Campos obrigatórios
                                 </div>
                             </div>
 
-                            <div role="status" aria-live="polite" id="formAlert" class="alert success"></div>
-                            <div id="formError" class="alert error"></div>
+                            <!-- Mensagens de status -->
+                            <div role="status" aria-live="assertive" aria-atomic="true">
+                                <div id="formSuccess" class="alert success" style="display: none; margin-top: 20px;">
+                                    <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+                                    <strong>Mensagem enviada com sucesso!</strong>
+                                    <p style="margin: 8px 0 0 0; font-weight: normal;">Em breve entraremos em contato.
+                                    </p>
+                                </div>
+
+                                <div id="formError" class="alert error" style="display: none; margin-top: 20px;">
+                                    <i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>
+                                    <strong id="errorTitle">Erro ao enviar mensagem</strong>
+                                    <p id="errorMessage" style="margin: 8px 0 0 0; font-weight: normal;"></p>
+                                </div>
+                            </div>
                         </form>
+
+                        <!-- Link para o dashboard do Formspree (visível apenas em desenvolvimento) -->
+                        <div class="formspree-info"
+                            style="margin-top: 20px; padding: 12px; background: #f8f9fa; border-radius: var(--radius-md); border-left: 4px solid var(--primary); font-size: 13px; color: var(--text-muted);">
+                            <i class="fas fa-external-link-alt" style="margin-right: 6px;"></i>
+                            <strong>Formspree Dashboard:</strong>
+                            <a href="https://formspree.io/forms/xaqygwgr/submissions" target="_blank"
+                                style="color: var(--primary); text-decoration: underline;">
+                                Ver mensagens recebidas
+                            </a>
+                        </div>
                     </div>
 
                     <aside class="contact-info" aria-labelledby="info-title">

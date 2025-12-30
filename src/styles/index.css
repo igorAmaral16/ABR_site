@@ -209,7 +209,7 @@ svg {
 
 .back-to-top:focus {
     outline: none;
-    box-shadow: 0 0 0 4px rgba(0,0,0,0.08);
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.08);
 }
 
 body.dark-mode .back-to-top {
@@ -235,7 +235,8 @@ body.dark-mode .back-to-top {
 
 /* Ajuste para scroll ancorado: garantir que a seção apareça abaixo do header */
 section[id] {
-    scroll-margin-top: 84px; /* header 72px + 12px spacing */
+    scroll-margin-top: 84px;
+    /* header 72px + 12px spacing */
 }
 
 .nav-link {
@@ -2747,4 +2748,217 @@ body.dark-mode .menu-toggle span {
         padding: 12px 20px;
         font-size: 14px;
     }
+}
+
+/* Estilos específicos do formulário Formspree */
+.contact-section,
+.message-section {
+    background: var(--bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 20px;
+    transition: all var(--theme-transition) ease;
+}
+
+.contact-section {
+    border-left: 4px solid var(--primary);
+}
+
+.message-section {
+    border-left: 4px solid var(--secondary);
+}
+
+.field {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.field label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field select,
+.field textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    color: var(--text-primary);
+    background: var(--bg-white);
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 12px;
+    padding-right: 40px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.field input:invalid:not(:focus):not(:placeholder-shown),
+.field textarea:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: #dc3545;
+}
+
+.field input:valid:not(:placeholder-shown),
+.field textarea:valid:not(:placeholder-shown) {
+    border-color: #28a745;
+}
+
+.error-message {
+    font-size: 12px;
+    color: #dc3545;
+    margin-top: 6px;
+    display: none;
+}
+
+.char-counter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+.helper-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+.privacy-section {
+    border: 1px solid var(--border-light);
+}
+
+.privacy-section a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.privacy-section a:hover {
+    text-decoration: underline;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Alertas */
+.alert {
+    padding: 16px;
+    border-radius: var(--radius-md);
+    margin: 16px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.alert.success {
+    background: #ecf9f1;
+    color: #066a33;
+    border: 1px solid rgba(6, 106, 51, 0.2);
+}
+
+.alert.error {
+    background: #fff3f2;
+    color: #8a1f16;
+    border: 1px solid rgba(138, 31, 22, 0.2);
+}
+
+/* Formspree info */
+.formspree-info {
+    background: var(--bg-light);
+    border-left: 4px solid var(--primary);
+}
+
+/* Modo noturno */
+body.dark-mode .contact-section,
+body.dark-mode .message-section {
+    background: var(--dark-surface);
+    border-color: var(--dark-border);
+}
+
+body.dark-mode .contact-section {
+    border-left-color: var(--dark-primary);
+}
+
+body.dark-mode .message-section {
+    border-left-color: var(--dark-accent);
+}
+
+body.dark-mode .field input[type="text"],
+body.dark-mode .field input[type="email"],
+body.dark-mode .field input[type="tel"],
+body.dark-mode .field select,
+body.dark-mode .field textarea {
+    background: var(--dark-surface);
+    border-color: var(--dark-border);
+    color: var(--dark-text-primary);
+}
+
+body.dark-mode .field input:focus,
+body.dark-mode .field select:focus,
+body.dark-mode .field textarea:focus {
+    border-color: var(--dark-primary);
+    box-shadow: 0 0 0 3px rgba(77, 166, 255, 0.1);
+}
+
+body.dark-mode .privacy-section {
+    background: var(--dark-bg-secondary);
+    border-color: var(--dark-border);
+}
+
+body.dark-mode .alert.success {
+    background: rgba(76, 217, 100, 0.1);
+    color: var(--dark-success);
+    border-color: rgba(76, 217, 100, 0.2);
+}
+
+body.dark-mode .alert.error {
+    background: rgba(255, 140, 102, 0.1);
+    color: var(--dark-accent);
+    border-color: rgba(255, 140, 102, 0.2);
+}
+
+body.dark-mode .formspree-info {
+    background: var(--dark-bg-secondary);
+    border-left-color: var(--dark-primary);
+}
+
+body.dark-mode .spinner {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--dark-text-primary);
 }

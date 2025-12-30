@@ -1097,6 +1097,296 @@ Atendemos montadoras, reposição e lojas de autopeças.`;
   }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('contactForm');
+  const formId = 'xaqygwgr'; // Substitua pelo seu Form ID
+
+  // Elementos
+  const nome = document.getElementById('nome');
+  const email = document.getElementById('email');
+  const telefone = document.getElementById('telefone');
+  const assunto = document.getElementById('assunto');
+  const mensagem = document.getElementById('mensagem');
+  const charCount = document.getElementById('charCount');
+  const charWarning = document.getElementById('charWarning');
+  const privacy = document.getElementById('privacy');
+  const submitBtn = document.getElementById('submitBtn');
+  const submitText = document.getElementById('submitText');
+  const sending = document.getElementById('sending');
+  const clearBtn = document.getElementById('clearBtn');
+  const formSuccess = document.getElementById('formSuccess');
+  const formError = document.getElementById('formError');
+  const errorMessage = document.getElementById('errorMessage');
+  const replyTo = document.getElementById('replyTo');
+  const timestamp = document.getElementById('timestamp');
+
+  // Inicialização
+  updateCharCount();
+  timestamp.value = new Date().toISOString();
+
+  // Event Listeners
+  mensagem.addEventListener('input', updateCharCount);
+  telefone.addEventListener('input', formatPhone);
+  clearBtn.addEventListener('click', clearForm);
+  form.addEventListener('submit', handleSubmit);
+
+  // Validação em tempo real
+  [nome, email, assunto, mensagem].forEach(field => {
+    field.addEventListener('blur', () => validateField(field));
+    field.addEventListener('input', () => clearFieldError(field));
+  });
+
+  privacy.addEventListener('change', () => clearFieldError(privacy));
+
+  // Funções
+  function updateCharCount() {
+    const count = mensagem.value.length;
+    charCount.textContent = count;
+
+    if (count > 1800) {
+      charCount.style.color = '#dc3545';
+      charCount.style.fontWeight = 'bold';
+      charWarning.style.display = 'inline';
+    } else if (count > 1500) {
+      charCount.style.color = '#ffc107';
+      charCount.style.fontWeight = 'bold';
+      charWarning.style.display = 'none';
+    } else {
+      charCount.style.color = 'var(--text-muted)';
+      charCount.style.fontWeight = 'normal';
+      charWarning.style.display = 'none';
+    }
+  }
+
+  function formatPhone(e) {
+    let value = e.target.value.replace(/\D/g, '');
+
+    if (value.length > 10) {
+      value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+    } else if (value.length > 6) {
+      value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+    } else if (value.length > 2) {
+      value = value.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+    } else if (value.length > 0) {
+      value = value.replace(/^(\d{0,2})/, '($1');
+    }
+
+    e.target.value = value;
+  }
+
+  function validateField(field) {
+    let isValid = true;
+    let error = '';
+
+    if (field === privacy) {
+      if (!field.checked) {
+        error = 'É necessário aceitar a política de privacidade';
+        isValid = false;
+      }
+    } else if (field.value.trim() === '') {
+      error = 'Este campo é obrigatório';
+      isValid = false;
+    } else if (field.type === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(field.value)) {
+        error = 'Por favor, digite um e-mail válido';
+        isValid = false;
+      }
+    } else if (field === nome && field.value.length < 2) {
+      error = 'O nome deve ter pelo menos 2 caracteres';
+      isValid = false;
+    } else if (field === mensagem && field.value.length < 10) {
+      error = 'A mensagem deve ter pelo menos 10 caracteres';
+      isValid = false;
+    }
+
+    if (!isValid) {
+      showFieldError(field, error);
+    } else {
+      clearFieldError(field);
+    }
+
+    return isValid;
+  }
+
+  function showFieldError(field, message) {
+    const errorId = field.id + '-error';
+    const errorElement = document.getElementById(errorId);
+
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      field.style.borderColor = '#dc3545';
+    }
+  }
+
+  function clearFieldError(field) {
+    const errorId = field.id + '-error';
+    const errorElement = document.getElementById(errorId);
+
+    if (errorElement) {
+      errorElement.style.display = 'none';
+      field.style.borderColor = '';
+    }
+  }
+
+  function validateForm() {
+    let isValid = true;
+
+    [nome, email, assunto, mensagem].forEach(field => {
+      if (!validateField(field)) {
+        isValid = false;
+      }
+    });
+
+    if (!validateField(privacy)) {
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    // Resetar mensagens
+    hideMessages();
+
+    // Validar formulário
+    if (!validateForm()) {
+      showError('Por favor, corrija os erros no formulário.');
+      return;
+    }
+
+    // Preparar para envio
+    replyTo.value = email.value;
+    timestamp.value = new Date().toISOString();
+
+    // Atualizar estado do botão
+    setLoadingState(true);
+
+    try {
+      // Enviar via Formspree
+      const formData = new FormData(form);
+
+      const response = await fetch(`https://formspree.io/f/${formId}`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        showSuccess();
+        clearForm();
+
+        // Tracking de sucesso (opcional)
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'contact_form_submit', {
+            'event_category': 'Contact',
+            'event_label': 'Form Submitted'
+          });
+        }
+      } else {
+        throw new Error(result.error || 'Erro ao enviar formulário');
+      }
+    } catch (error) {
+      console.error('Erro no envio:', error);
+
+      // Tentar fallback se for erro de CORS
+      if (error.name === 'TypeError') {
+        showError('Erro de conexão. Tente novamente mais tarde.');
+      } else {
+        showError(error.message || 'Ocorreu um erro ao enviar sua mensagem.');
+      }
+    } finally {
+      setLoadingState(false);
+    }
+  }
+
+  function setLoadingState(isLoading) {
+    if (isLoading) {
+      submitBtn.disabled = true;
+      submitText.style.display = 'none';
+      sending.style.display = 'flex';
+    } else {
+      submitBtn.disabled = false;
+      submitText.style.display = 'inline';
+      sending.style.display = 'none';
+    }
+  }
+
+  function showSuccess() {
+    formSuccess.style.display = 'flex';
+    formError.style.display = 'none';
+
+    // Scroll para a mensagem
+    formSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Auto-ocultar após 10 segundos
+    setTimeout(() => {
+      formSuccess.style.display = 'none';
+    }, 10000);
+  }
+
+  function showError(message) {
+    formSuccess.style.display = 'none';
+    formError.style.display = 'flex';
+    errorMessage.textContent = message;
+
+    // Scroll para o erro
+    formError.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function hideMessages() {
+    formSuccess.style.display = 'none';
+    formError.style.display = 'none';
+  }
+
+  function clearForm() {
+    form.reset();
+    updateCharCount();
+    hideMessages();
+
+    // Limpar erros
+    [nome, email, telefone, assunto, mensagem, privacy].forEach(clearFieldError);
+
+    // Resetar cores
+    [nome, email, telefone, assunto, mensagem].forEach(field => {
+      field.style.borderColor = '';
+    });
+  }
+
+  // Inicializar máscaras e validações
+  function initForm() {
+    // Adicionar máscara para telefone
+    if (window.IMask) {
+      new IMask(telefone, {
+        mask: '(00) 00000-0000'
+      });
+    }
+
+    // Preencher automaticamente se houver dados na URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('nome')) {
+      nome.value = urlParams.get('nome');
+    }
+    if (urlParams.has('email')) {
+      email.value = urlParams.get('email');
+    }
+    if (urlParams.has('assunto')) {
+      assunto.value = urlParams.get('assunto');
+    }
+  }
+
+  initForm();
+});
+
+
+
 // ====================
 // INICIALIZAÇÃO
 // ====================
