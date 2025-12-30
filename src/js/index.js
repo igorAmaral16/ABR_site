@@ -98,426 +98,675 @@ class ThemeManager {
     images.forEach(img => {
       if (this.theme === 'dark') {
         // Ajustar contraste para modo escuro
-        img.style.filter = 'brightness(0.95) contrast(1.05)';
+        img.style.filter = 'brightness(0.9) contrast(1.1)';
       } else {
-        // Remover ajustes no modo claro
         img.style.filter = 'none';
       }
     });
   }
 
   setupEventListeners() {
+    // Botão de toggle do tema
     const toggleBtn = document.getElementById('darkModeToggle');
     if (toggleBtn) {
       toggleBtn.addEventListener('click', () => this.toggleTheme());
-
-      // Tooltip avançado
-      toggleBtn.addEventListener('mouseenter', () => {
-        this.showThemeTooltip(toggleBtn);
-      });
-
-      toggleBtn.addEventListener('mouseleave', () => {
-        this.hideThemeTooltip(toggleBtn);
-      });
     }
 
-    // Ouvir mudanças do sistema
+    // Listener para mudanças na preferência do sistema
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (!localStorage.getItem('theme')) {
         this.theme = e.matches ? 'dark' : 'light';
         this.applyTheme();
       }
     });
-
-    // Atalho de teclado
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey && e.altKey && e.key === 'T') {
-        e.preventDefault();
-        this.toggleTheme();
-        this.showThemeChangeFeedback();
-      }
-    });
   }
 
   setupTransition() {
-    // As transições já estão definidas no CSS através da variável --theme-transition
-    // Este método garante que a variável esteja definida
-    document.documentElement.style.setProperty('--theme-transition', `${this.transitionDuration}ms`);
+    const style = document.createElement('style');
+    style.textContent = `
+      .theme-loading * {
+        transition: background-color var(--theme-transition, 300ms) ease,
+                    color var(--theme-transition, 300ms) ease,
+                    border-color var(--theme-transition, 300ms) ease,
+                    box-shadow var(--theme-transition, 300ms) ease !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  setupThemePreferences() {
+    // Aplicar tema salvo no localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      this.theme = savedTheme;
+      this.applyTheme();
+    }
+  }
+
+  addDarkModeUtilities() {
+    // Adicionar utilitários CSS para modo escuro
+    const style = document.createElement('style');
+    style.textContent = `
+      [data-theme="dark"] {
+        --bg-primary: var(--dark-bg-primary);
+        --bg-secondary: var(--dark-bg-secondary);
+        --bg-tertiary: var(--dark-bg-tertiary);
+        --surface: var(--dark-surface);
+        --surface-hover: var(--dark-surface-hover);
+        --border: var(--dark-border);
+        --border-light: var(--dark-border-light);
+        --text-primary: var(--dark-text-primary);
+        --text-secondary: var(--dark-text-secondary);
+        --text-muted: var(--dark-text-muted);
+        --primary: var(--dark-primary);
+        --primary-hover: var(--dark-primary-hover);
+        --accent: var(--dark-accent);
+        --success: var(--dark-success);
+        --warning: var(--dark-warning);
+        --shadow-sm: var(--dark-shadow-sm);
+        --shadow-md: var(--dark-shadow-md);
+        --shadow-lg: var(--dark-shadow-lg);
+        --shadow-xl: var(--dark-shadow-xl);
+        --shadow-blue: var(--dark-shadow-blue);
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  monitorThemePerformance() {
+    // Monitorar performance das mudanças de tema
+    let themeChangeCount = 0;
+    const originalApplyTheme = this.applyTheme;
+    this.applyTheme = function () {
+      themeChangeCount++;
+      const startTime = Date.now();
+      originalApplyTheme.call(this);
+      const duration = Date.now() - startTime;
+      console.log(`Tema alterado ${themeChangeCount} vezes. Duração: ${duration}ms`);
+    };
   }
 
   provideHapticFeedback() {
+    // Feedback tátil se disponível
     if (navigator.vibrate) {
-      navigator.vibrate(10);
-    }
-
-    const toggleBtn = document.getElementById('darkModeToggle');
-    if (toggleBtn) {
-      toggleBtn.style.transform = 'scale(0.95)';
-      setTimeout(() => {
-        toggleBtn.style.transform = '';
-      }, 150);
+      navigator.vibrate(50);
     }
   }
 
   trackThemeUsage() {
-    console.log(`Tema alterado para: ${this.theme}`);
-    // Implemente sua análise de uso aqui
-  }
-
-  setupThemePreferences() {
-    const savedPreferences = JSON.parse(localStorage.getItem('themePreferences') || '{}');
-    const preferences = {
-      autoSwitch: true,
-      schedule: null,
-      contrast: 'normal',
-      reducedMotion: false,
-      ...savedPreferences
-    };
-
-    if (preferences.reducedMotion) {
-      document.documentElement.style.setProperty('--theme-transition', '0ms');
-    }
-
-    if (preferences.contrast === 'high') {
-      document.body.classList.add('high-contrast');
-    }
-
-    document.addEventListener('themechange', (e) => {
-      preferences.lastTheme = e.detail.theme;
-      localStorage.setItem('themePreferences', JSON.stringify(preferences));
-    });
-  }
-
-  addDarkModeUtilities() {
-    // Utilitários já estão no CSS
-    console.log('Utilitários de tema carregados');
-  }
-
-  monitorThemePerformance() {
-    let themeChangeStart = 0;
-
-    document.addEventListener('themechange', () => {
-      const changeTime = Date.now() - themeChangeStart;
-      if (changeTime > 100) {
-        console.warn(`Troca de tema pode estar lenta: ${changeTime}ms`);
-      }
-    });
-
-    document.addEventListener('click', (e) => {
-      if (e.target.id === 'darkModeToggle' || e.target.closest('#darkModeToggle')) {
-        themeChangeStart = Date.now();
-      }
-    });
-  }
-
-  showThemeTooltip(button) {
-    const tooltip = document.createElement('div');
-    tooltip.className = 'theme-tooltip';
-    tooltip.textContent = this.theme === 'dark'
-      ? 'Clique para modo claro'
-      : 'Clique para modo escuro';
-    tooltip.style.cssText = `
-      position: absolute;
-      top: -40px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: ${this.theme === 'dark' ? 'var(--dark-surface)' : 'var(--bg-white)'};
-      color: ${this.theme === 'dark' ? 'var(--dark-text-primary)' : 'var(--text-primary)'};
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 12px;
-      white-space: nowrap;
-      z-index: 1000;
-      box-shadow: ${this.theme === 'dark' ? 'var(--dark-shadow-md)' : 'var(--shadow-md)'};
-      border: 1px solid ${this.theme === 'dark' ? 'var(--dark-border)' : 'var(--border-light)'};
-    `;
-    button.appendChild(tooltip);
-  }
-
-  hideThemeTooltip(button) {
-    const tooltip = button.querySelector('.theme-tooltip');
-    if (tooltip) tooltip.remove();
-  }
-
-  showThemeChangeFeedback() {
-    document.body.style.boxShadow = '0 0 0 3px var(--primary)';
-    setTimeout(() => {
-      document.body.style.boxShadow = '';
-    }, 300);
-  }
-
-  getCurrentTheme() {
-    return this.theme;
-  }
-
-  setTheme(theme) {
-    if (['light', 'dark'].includes(theme)) {
-      this.theme = theme;
-      this.applyTheme();
-    }
+    // Rastrear uso do tema para analytics
+    const themeUsage = JSON.parse(localStorage.getItem('themeUsage') || '{}');
+    themeUsage[this.theme] = (themeUsage[this.theme] || 0) + 1;
+    localStorage.setItem('themeUsage', JSON.stringify(themeUsage));
   }
 }
 
 // ====================
-// SISTEMA DE PRODUTOS
+// GERENCIADOR DE PRODUTOS
 // ====================
 
 class ProductManager {
   constructor() {
-    this.productCards = document.querySelectorAll('.product-card');
-    this.productImage = document.getElementById('productImage');
-    this.titleEl = document.getElementById('productTitle');
-    this.descEl = document.getElementById('productDescription');
-    this.currentProductId = 'd229';
-    this.animationInProgress = false;
+    this.products = [
+      {
+        id: 'oring',
+        title: 'Anéis O\'Ring',
+        titlePt: 'Anéis O\'Ring',
+        titleEn: 'O-Ring Seals',
+        titleEs: 'Anillos O-Ring',
+        description: 'Vedação circular em elastômero para aplicações diversas em sistemas hidráulicos e pneumáticos.',
+        descriptionPt: 'Vedação circular em elastômero para aplicações diversas em sistemas hidráulicos e pneumáticos.',
+        descriptionEn: 'Circular seal made of elastomer for various applications in hydraulic and pneumatic systems.',
+        descriptionEs: 'Sello circular fabricado en elastómero para diversas aplicaciones en sistemas hidráulicos y neumáticos.',
+        image: 'assets/ANEL_ORING.webp',
+        category: 'Vedadores Especiais',
+        categoryPt: 'Vedadores Especiais',
+        categoryEn: 'Special Seals',
+        categoryEs: 'Sellos Especiales'
+      },
+      {
+        id: 'd229',
+        title: 'Junta do Cabeçote D229',
+        titlePt: 'Junta do Cabeçote D229',
+        titleEn: 'Cylinder Head Gasket D229',
+        titleEs: 'Empaque de Culata D229',
+        description: 'Junta de cabeçote para motor D229, construída em aço multicamadas, projetada para vedar câmaras de combustão, dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.',
+        descriptionPt: 'Junta de cabeçote para motor D229, construída em aço multicamadas, projetada para vedar câmaras de combustão, dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.',
+        descriptionEn: 'Cylinder head gasket for D229 engine, constructed of multi-layered steel, designed to seal combustion chambers, oil ducts and cooling channels between block and cylinder head, withstanding high temperatures and working pressure.',
+        descriptionEs: 'Empaque de culata para motor D229, construido en acero multicapa, diseñado para sellar cámaras de combustión, conductos de aceite y canales de enfriamiento entre bloque y culata, soportando altas temperaturas y presión de trabajo.',
+        image: 'assets/D229.webp',
+        category: 'Junta do Cabeçote',
+        categoryPt: 'Junta do Cabeçote',
+        categoryEn: 'Cylinder Head Gasket',
+        categoryEs: 'Empaque de Culata'
+      },
+      {
+        id: 'x10',
+        title: 'Junta do Cabeçote X10',
+        titlePt: 'Junta do Cabeçote X10',
+        titleEn: 'Cylinder Head Gasket X10',
+        titleEs: 'Empaque de Culata X10',
+        description: 'Junta de cabeçote para motor X10, construída em aço multicamadas, projetada para vedar câmaras de combustão, dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.',
+        descriptionPt: 'Junta de cabeçote para motor X10, construída em aço multicamadas, projetada para vedar câmaras de combustão, dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.',
+        descriptionEn: 'Cylinder head gasket for X10 engine, constructed of multi-layered steel, designed to seal combustion chambers, oil ducts and cooling channels between block and cylinder head, withstanding high temperatures and working pressure.',
+        descriptionEs: 'Empaque de culata para motor X10, construido en acero multicapa, diseñado para sellar cámaras de combustión, conductos de aceite y canales de enfriamiento entre bloque y culata, soportando altas temperaturas y presión de trabajo.',
+        image: 'assets/x10.webp',
+        category: 'Junta do Cabeçote',
+        categoryPt: 'Junta do Cabeçote',
+        categoryEn: 'Cylinder Head Gasket',
+        categoryEs: 'Empaque de Culata'
+      },
+      {
+        id: 'x12',
+        title: 'Vedador X12',
+        titlePt: 'Vedador X12',
+        titleEn: 'Seal X12',
+        titleEs: 'Sello X12',
+        description: 'Vedador do conjunto X12 em elastômero, destinado à vedação de óleo/fluido em eixo ou alojamento, resistente a variações térmicas e à ação de derivados de petróleo, evitando vazamentos e contaminação do sistema.',
+        descriptionPt: 'Vedador do conjunto X12 em elastômero, destinado à vedação de óleo/fluido em eixo ou alojamento, resistente a variações térmicas e à ação de derivados de petróleo, evitando vazamentos e contaminação do sistema.',
+        descriptionEn: 'X12 assembly seal made of elastomer, designed for sealing oil or fluid in shafts or housings. Resistant to thermal variations and petroleum derivatives, preventing leaks and system contamination.',
+        descriptionEs: 'Sello del conjunto X12 fabricado en elastómero, destinado a la estanqueidad de aceite o fluido en ejes o alojamientos. Resistente a variaciones térmicas y a derivados del petróleo, evitando fugas y contaminación del sistema.',
+        image: 'assets/VEDADOR_X12.webp',
+        category: 'Vedadores Especiais',
+        categoryPt: 'Vedadores Especiais',
+        categoryEn: 'Special Seals',
+        categoryEs: 'Sellos Especiales'
+      }
+    ];
+
+    this.currentProductIndex = 0;
     this.init();
   }
 
   init() {
     this.setupEventListeners();
-    this.setupProductObservers();
+    this.updateProductDisplay();
   }
 
   setupEventListeners() {
-    this.productCards.forEach(card => {
-      card.addEventListener('click', () => this.switchProduct(card));
+    // Botões de navegação de produtos
+    const prevBtn = document.getElementById('prevProduct');
+    const nextBtn = document.getElementById('nextProduct');
 
-      card.addEventListener('mouseenter', () => {
-        if (!card.classList.contains('active')) {
-          card.style.transform = 'translateY(-4px)';
-        }
-      });
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => this.showPreviousProduct());
+    }
 
-      card.addEventListener('mouseleave', () => {
-        if (!card.classList.contains('active')) {
-          card.style.transform = '';
-        }
-      });
-    });
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => this.showNextProduct());
+    }
 
-    // Botões de ação
-    document.querySelector('.btn-primary')?.addEventListener('click', () => {
-      this.showQuoteModal();
-    });
-
-    document.querySelector('.btn-secondary')?.addEventListener('click', () => {
-      this.downloadSpecSheet();
-    });
-
-    // Controles de imagem
-    document.querySelectorAll('.image-btn').forEach(btn => {
-      btn.addEventListener('click', function () {
-        const action = this.querySelector('i').className;
-        if (action.includes('magnifying-glass-plus')) {
-          this.handleZoom();
-        } else if (action.includes('rotate-right')) {
-          this.handleRotate();
-        } else if (action.includes('cube')) {
-          this.show3DView();
-        }
-      }.bind(this));
+    // Indicadores de produto
+    const indicators = document.querySelectorAll('.product-indicator');
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => this.showProduct(index));
     });
   }
 
-  async switchProduct(card) {
-    if (this.animationInProgress) return;
+  showProduct(index) {
+    this.currentProductIndex = index;
+    this.updateProductDisplay();
+  }
 
-    const productId = card.dataset.id;
-    if (productId === this.currentProductId) return;
+  showNextProduct() {
+    this.currentProductIndex = (this.currentProductIndex + 1) % this.products.length;
+    this.updateProductDisplay();
+  }
 
-    this.animationInProgress = true;
+  showPreviousProduct() {
+    this.currentProductIndex = (this.currentProductIndex - 1 + this.products.length) % this.products.length;
+    this.updateProductDisplay();
+  }
 
-    // Remover estado ativo anterior
-    document.querySelector('.product-card.active')?.classList.remove('active');
+  updateProductDisplay() {
+    const product = this.products[this.currentProductIndex];
+    const titleElement = document.getElementById('productTitle');
+    const descriptionElement = document.getElementById('productDescription');
+    const imageElement = document.getElementById('productImage');
 
-    // Adicionar estado ativo ao novo card
-    card.classList.add('active');
+    if (titleElement) {
+      titleElement.textContent = product.titlePt;
+      titleElement.setAttribute('data-i18n', product.title);
+      titleElement.setAttribute('data-i18n-pt', product.titlePt);
+      titleElement.setAttribute('data-i18n-en', product.titleEn);
+      titleElement.setAttribute('data-i18n-es', product.titleEs);
+    }
 
-    // Buscar idioma atual
-    let lang = 'pt';
-    if (window.languageManager && window.languageManager.currentLanguage) {
-      lang = window.languageManager.currentLanguage;
-    } else if (typeof languageManager !== 'undefined' && languageManager.currentLanguage) {
-      lang = languageManager.currentLanguage;
+    if (descriptionElement) {
+      descriptionElement.textContent = product.descriptionPt;
+      descriptionElement.setAttribute('data-i18n', product.description);
+      descriptionElement.setAttribute('data-i18n-pt', product.descriptionPt);
+      descriptionElement.setAttribute('data-i18n-en', product.descriptionEn);
+      descriptionElement.setAttribute('data-i18n-es', product.descriptionEs);
+    }
+
+    if (imageElement) {
+      imageElement.src = product.image;
+      imageElement.alt = product.titlePt;
+      imageElement.setAttribute('data-i18n-alt', product.title);
+      imageElement.setAttribute('data-i18n-alt-pt', product.titlePt);
+      imageElement.setAttribute('data-i18n-alt-en', product.titleEn);
+      imageElement.setAttribute('data-i18n-alt-es', product.titleEs);
+    }
+
+    // Atualizar indicadores
+    this.updateIndicators();
+  }
+
+  updateIndicators() {
+    const indicators = document.querySelectorAll('.product-indicator');
+    indicators.forEach((indicator, index) => {
+      if (index === this.currentProductIndex) {
+        indicator.classList.add('active');
+      } else {
+        indicator.classList.remove('active');
+      }
+    });
+  }
+
+  getCurrentProduct() {
+    return this.products[this.currentProductIndex];
+  }
+}
+
+// ====================
+// SISTEMA DE BUSCA
+// ====================
+
+class SearchManager {
+  constructor() {
+    this.searchInput = document.getElementById('searchInput');
+    this.searchResults = document.getElementById('searchResults');
+    this.searchTimeout = null;
+    this.init();
+  }
+
+  init() {
+    this.setupEventListeners();
+  }
+
+  setupEventListeners() {
+    if (this.searchInput) {
+      this.searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
+      this.searchInput.addEventListener('focus', () => this.showSearchResults());
+      this.searchInput.addEventListener('blur', () => setTimeout(() => this.hideSearchResults(), 200));
+    }
+  }
+
+  handleSearch(query) {
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      if (query.length > 2) {
+        this.performSearch(query);
+      } else {
+        this.clearSearchResults();
+      }
+    }, 300);
+  }
+
+  performSearch(query) {
+    const results = this.searchContent(query);
+    this.displaySearchResults(results);
+  }
+
+  searchContent(query) {
+    const results = [];
+    const sections = document.querySelectorAll('section[id]');
+
+    sections.forEach(section => {
+      const title = section.querySelector('h2, h3');
+      const content = section.textContent.toLowerCase();
+      const searchTerm = query.toLowerCase();
+
+      if (content.includes(searchTerm)) {
+        results.push({
+          id: section.id,
+          title: title ? title.textContent : section.id,
+          snippet: this.getSnippet(content, searchTerm)
+        });
+      }
+    });
+
+    return results;
+  }
+
+  getSnippet(text, searchTerm) {
+    const index = text.indexOf(searchTerm);
+    const start = Math.max(0, index - 50);
+    const end = Math.min(text.length, index + searchTerm.length + 50);
+    let snippet = text.substring(start, end);
+
+    if (start > 0) snippet = '...' + snippet;
+    if (end < text.length) snippet = snippet + '...';
+
+    return snippet;
+  }
+
+  displaySearchResults(results) {
+    if (!this.searchResults) return;
+
+    if (results.length === 0) {
+      this.searchResults.innerHTML = '<div class="search-no-results">Nenhum resultado encontrado</div>';
     } else {
-      lang = document.documentElement.getAttribute('lang') || 'pt';
+      const html = results.map(result => `
+        <div class="search-result-item" data-section="${result.id}">
+          <h4>${result.title}</h4>
+          <p>${result.snippet}</p>
+        </div>
+      `).join('');
+
+      this.searchResults.innerHTML = html;
+
+      // Adicionar event listeners para os resultados
+      this.searchResults.querySelectorAll('.search-result-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const sectionId = item.getAttribute('data-section');
+          this.scrollToSection(sectionId);
+          this.hideSearchResults();
+        });
+      });
     }
 
-    // Buscar descrição correta do card
-    let description = card.getAttribute('data-i18n-' + lang) || card.dataset.description || '';
-    let title = card.getAttribute('data-title-' + lang) || card.dataset.title || '';
-    let img = card.dataset.img || '';
+    this.showSearchResults();
+  }
 
-    // Animação de saída
-    this.titleEl.classList.add('text-transition-out');
-    this.descEl.classList.add('text-transition-out');
-    this.productImage.classList.add('img-fade-out');
-
-    // Esperar animação de saída
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    // Atualizar conteúdo
-    this.productImage.src = img;
-    this.productImage.alt = title;
-    this.titleEl.textContent = title;
-    this.descEl.textContent = description;
-
-    // Animação de entrada
-    this.titleEl.classList.remove('text-transition-out');
-    this.descEl.classList.remove('text-transition-out');
-    this.productImage.classList.remove('img-fade-out');
-
-    this.titleEl.classList.add('text-transition-in');
-    this.descEl.classList.add('text-transition-in');
-    this.productImage.classList.add('img-fade-in');
-
-    // Atualizar estado
-    this.currentProductId = productId;
-
-    // Ajustar imagem para o tema atual
-    if (themeManager.getCurrentTheme() === 'dark') {
-      this.productImage.style.filter = 'brightness(0.95) contrast(1.05)';
+  scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-
-    // Remover classes de animação após conclusão
-    setTimeout(() => {
-      this.titleEl.classList.remove('text-transition-in');
-      this.descEl.classList.remove('text-transition-in');
-      this.productImage.classList.remove('img-fade-in');
-      this.animationInProgress = false;
-    }, 500);
-
-    // Feedback visual
-    card.style.transform = 'scale(0.98)';
-    setTimeout(() => {
-      card.style.transform = '';
-    }, 200);
   }
 
-  handleZoom() {
-    this.productImage.style.transform = this.productImage.style.transform === 'scale(1.5)'
-      ? 'scale(1)'
-      : 'scale(1.5)';
-  }
-
-  handleRotate() {
-    const currentRotate = parseInt(this.productImage.style.transform.replace(/[^0-9]/g, '')) || 0;
-    this.productImage.style.transform = `rotate(${currentRotate + 90}deg)`;
-  }
-
-  show3DView() {
-    this.showNotification('Visualização 3D em desenvolvimento');
-  }
-
-  showQuoteModal() {
-    let lang = 'pt';
-    if (window.languageManager && window.languageManager.currentLanguage) {
-      lang = window.languageManager.currentLanguage;
-    } else if (typeof languageManager !== 'undefined' && languageManager.currentLanguage) {
-      lang = languageManager.currentLanguage;
+  clearSearchResults() {
+    if (this.searchResults) {
+      this.searchResults.innerHTML = '';
     }
+  }
 
-    const translations = {
-      pt: { title: 'Solicitar Orçamento', message: 'Formulário de orçamento será aberto em breve.', close: 'Fechar' },
-      en: { title: 'Request Quote', message: 'Quote form will open soon.', close: 'Close' },
-      es: { title: 'Solicitar Presupuesto', message: 'El formulario de presupuesto se abrirá pronto.', close: 'Cerrar' }
-    };
+  showSearchResults() {
+    if (this.searchResults) {
+      this.searchResults.style.display = 'block';
+    }
+  }
 
-    const t = translations[lang] || translations.pt;
+  hideSearchResults() {
+    if (this.searchResults) {
+      this.searchResults.style.display = 'none';
+    }
+  }
+}
 
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `
-      <div class="modal-content">
-        <h3>${t.title}</h3>
-        <p>${t.message}</p>
-        <button type="button" class="btn btn-primary close-modal">${t.close}</button>
-      </div>
-    `;
+// ====================
+// SISTEMA DE NAVEGAÇÃO
+// ====================
 
-    const closeModal = () => {
-      modal.remove();
-      document.removeEventListener('keydown', handleEscape);
-    };
+class NavigationManager {
+  constructor() {
+    this.navLinks = document.querySelectorAll('.nav-link');
+    this.sections = document.querySelectorAll('section[id]');
+    this.currentSection = '';
+    this.init();
+  }
 
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') {
-        closeModal();
-      }
-    };
+  init() {
+    this.setupEventListeners();
+    this.setupScrollSpy();
+    this.handleInitialHash();
+  }
 
-    modal.querySelector('.close-modal').addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeModal();
+  setupEventListeners() {
+    // Links de navegação
+    this.navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        this.scrollToSection(targetId);
+      });
     });
 
-    modal.addEventListener('click', (e) => {
-      if (!e.target.closest('.modal-content')) {
-        closeModal();
-      }
-    });
-
-    document.addEventListener('keydown', handleEscape);
-
-    document.body.appendChild(modal);
+    // Botão de menu mobile
+    const menuToggle = document.getElementById('menuToggle');
+    if (menuToggle) {
+      menuToggle.addEventListener('click', () => this.toggleMobileMenu());
+    }
   }
 
-  downloadSpecSheet() {
-    let lang = 'pt';
-    if (window.languageManager && window.languageManager.currentLanguage) {
-      lang = window.languageManager.currentLanguage;
-    } else if (typeof languageManager !== 'undefined' && languageManager.currentLanguage) {
-      lang = languageManager.currentLanguage;
-    }
-
-    const translations = {
-      pt: 'Ficha técnica sendo baixada...',
-      en: 'Technical sheet being downloaded...',
-      es: 'Ficha técnica siendo descargada...'
+  setupScrollSpy() {
+    const observerOptions = {
+      root: null,
+      rootMargin: '-50% 0px -50% 0px',
+      threshold: 0
     };
 
-    const message = translations[lang] || translations.pt;
-    this.showNotification(message);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.updateActiveNavLink(entry.target.id);
+        }
+      });
+    }, observerOptions);
+
+    this.sections.forEach(section => {
+      observer.observe(section);
+    });
   }
 
-  setupProductObservers() {
-    // Observar mudanças no DOM para aplicar tema a novos elementos
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.addedNodes.length > 0) {
-          // Reconfigurar event listeners para novos elementos
-          this.setupEventListeners();
+  updateActiveNavLink(sectionId) {
+    this.navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${sectionId}`) {
+        link.classList.add('active');
+      }
+    });
+    this.currentSection = sectionId;
+  }
+
+  scrollToSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const headerHeight = document.querySelector('.header').offsetHeight;
+      const offsetTop = section.offsetTop - headerHeight;
+
+      window.scrollTo({
+        top: offsetTop,
+        behavior: 'smooth'
+      });
+    }
+  }
+
+  toggleMobileMenu() {
+    const nav = document.querySelector('.nav');
+    const menuToggle = document.getElementById('menuToggle');
+
+    if (nav && menuToggle) {
+      nav.classList.toggle('mobile-open');
+      menuToggle.classList.toggle('active');
+    }
+  }
+
+  handleInitialHash() {
+    if (window.location.hash) {
+      const sectionId = window.location.hash.substring(1);
+      setTimeout(() => this.scrollToSection(sectionId), 100);
+    }
+  }
+
+  getCurrentPage() {
+    const path = window.location.pathname;
+    const page = path.split('/').pop().split('.')[0];
+    return page || 'index';
+  }
+}
+
+// ====================
+// RECURSOS DO CATÁLOGO
+// ====================
+
+class CatalogFeatures {
+  constructor() {
+    this.init();
+  }
+
+  init() {
+    this.setupFilters();
+    this.setupProductCards();
+  }
+
+  setupFilters() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const filter = button.getAttribute('data-filter');
+        this.filterProducts(filter);
+        this.updateActiveFilter(button);
+      });
+    });
+  }
+
+  filterProducts(filter) {
+    const products = document.querySelectorAll('.product-card');
+    products.forEach(product => {
+      if (filter === 'all' || product.getAttribute('data-category') === filter) {
+        product.style.display = 'block';
+      } else {
+        product.style.display = 'none';
+      }
+    });
+  }
+
+  updateActiveFilter(activeButton) {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(button => {
+      button.classList.remove('active');
+    });
+    activeButton.classList.add('active');
+  }
+
+  setupProductCards() {
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const productId = card.getAttribute('data-product');
+        this.showProductModal(productId);
+      });
+    });
+  }
+
+  showProductModal(productId) {
+    // Implementar modal de produto
+    console.log('Mostrar modal para produto:', productId);
+  }
+}
+
+// ====================
+// RECURSOS DA PÁGINA SOBRE
+// ====================
+
+class AboutFeatures {
+  constructor() {
+    this.init();
+  }
+
+  init() {
+    this.setupTimeline();
+    this.setupStats();
+  }
+
+  setupTimeline() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
         }
       });
     });
 
-    observer.observe(document.body, { childList: true, subtree: true });
+    timelineItems.forEach(item => {
+      observer.observe(item);
+    });
   }
 
-  showNotification(message) {
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.textContent = message;
-    notification.style.cssText = `
-      position: fixed;
-      top: 100px;
-      right: 32px;
-      background: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
-      color: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
-      padding: 16px 24px;
-      border-radius: var(--radius-lg);
-      box-shadow: ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
-      z-index: 2000;
-      animation: slideInRight 0.3s ease-out;
-      border: 1px solid ${themeManager.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
-    `;
+  setupStats() {
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.animateNumber(entry.target);
+        }
+      });
+    });
 
-    document.body.appendChild(notification);
+    statNumbers.forEach(stat => {
+      observer.observe(stat);
+    });
+  }
 
-    setTimeout(() => {
-      notification.style.animation = 'slideOutRight 0.3s ease-out';
-      setTimeout(() => notification.remove(), 300);
-    }, 3000);
+  animateNumber(element) {
+    const target = parseInt(element.getAttribute('data-target'));
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      element.textContent = Math.floor(current);
+    }, 16);
+  }
+}
+
+// ====================
+// TOGGLE DO MENU MOBILE
+// ====================
+
+class MenuToggle {
+  constructor() {
+    this.menuToggle = document.getElementById('menuToggle');
+    this.nav = document.querySelector('.nav');
+    this.init();
+  }
+
+  init() {
+    if (this.menuToggle && this.nav) {
+      this.setupEventListeners();
+    }
+  }
+
+  setupEventListeners() {
+    this.menuToggle.addEventListener('click', () => this.toggleMenu());
+    document.addEventListener('click', (e) => this.closeMenuOnOutsideClick(e));
+    window.addEventListener('resize', () => this.handleResize());
+  }
+
+  toggleMenu() {
+    this.nav.classList.toggle('mobile-open');
+    this.menuToggle.classList.toggle('active');
+
+    // Atualizar aria-expanded
+    const isOpen = this.nav.classList.contains('mobile-open');
+    this.menuToggle.setAttribute('aria-expanded', isOpen);
+  }
+
+  closeMenuOnOutsideClick(e) {
+    if (!this.menuToggle.contains(e.target) && !this.nav.contains(e.target)) {
+      this.closeMenu();
+    }
+  }
+
+  closeMenu() {
+    this.nav.classList.remove('mobile-open');
+    this.menuToggle.classList.remove('active');
+    this.menuToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  handleResize() {
+    if (window.innerWidth > 768) {
+      this.closeMenu();
+    }
   }
 }
 
@@ -527,1093 +776,467 @@ class ProductManager {
 
 class LanguageManager {
   constructor() {
-    this.flagToggle = document.getElementById('flagToggle');
-    this.flagMenu = document.getElementById('flagMenu');
-
-    // idiomas que você suporta
-    this.supportedLanguages = ['pt', 'en', 'es'];
-    this.currentLanguage = 'pt';
-
-
-
+    this.currentLang = localStorage.getItem('language') || 'pt';
+    this.translations = {};
     this.init();
   }
 
   init() {
+    this.loadTranslations();
     this.setupEventListeners();
-    this.loadSavedLanguage();         // define this.currentLanguage
-    this.applyLanguage(this.currentLanguage); // aplica textos na página
+    this.applyLanguage();
+  }
+
+  loadTranslations() {
+    // Carregar traduções dos elementos data-i18n
+    this.translations = {
+      pt: {},
+      en: {},
+      es: {}
+    };
   }
 
   setupEventListeners() {
-    this.flagToggle?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.toggleFlagMenu();
-    });
+    // Toggle do dropdown de idioma
+    const flagToggle = document.getElementById('flagToggle');
+    const flagMenu = document.getElementById('flagMenu');
 
-    // Usar delegação de eventos para .flag-option — mais robusto caso o DOM mude
-    document.addEventListener('click', (e) => {
-      const opt = e.target.closest && e.target.closest('.flag-option');
-      if (opt) {
+    if (flagToggle && flagMenu) {
+      flagToggle.addEventListener('click', (e) => {
         e.stopPropagation();
-        this.selectLanguage(opt);
-        return;
-      }
+        this.toggleDropdown();
+      });
 
-      // fechamento do menu ao clicar fora
-      this.closeFlagMenu(e);
-    });
-  }
-
-  toggleFlagMenu() {
-    const expanded = this.flagToggle.getAttribute('aria-expanded') === 'true';
-    this.flagMenu.classList.toggle('hidden');
-    this.flagToggle.setAttribute('aria-expanded', String(!expanded));
-    this.flagMenu.setAttribute('aria-hidden', String(expanded));
-  }
-
-  selectLanguage(button) {
-    const lang = button.dataset.lang || 'pt';
-    const langText = button.textContent.trim();
-
-    this.currentLanguage = lang;
-
-    // Atualizar botão de bandeira
-    this.updateFlagButton(lang, langText);
-
-    // Fechar menu
-    this.flagMenu.classList.add('hidden');
-    this.flagToggle.setAttribute('aria-expanded', 'false');
-    this.flagMenu.setAttribute('aria-hidden', 'true');
-
-    // Aplicar linguagem na página
-    this.applyLanguage(lang);
-
-    // Feedback
-    this.showNotification(this.getLanguageChangeMessage(lang, langText));
-
-    // Salvar preferência
-    localStorage.setItem('language', lang);
-  }
-
-  updateFlagButton(lang, langText) {
-    if (!this.flagToggle) return;
-
-    // Mapa correto: idioma → código de bandeira da flag-icon-css
-    const flagMap = {
-      pt: 'br', // português → Brasil
-      en: 'us', // inglês → EUA
-      es: 'es', // espanhol → Espanha (ou troca se quiser outro país)
-    };
-
-    const flagCode = flagMap[lang] || 'br'; // fallback pra BR se vier algo estranho
-    const shortLabel = (langText || '').trim().split(' ')[0];
-
-    this.flagToggle.innerHTML = `
-    <span class="flag-icon flag-icon-${flagCode}"></span>
-    ${shortLabel}
-    <i class="fa-solid fa-chevron-down"></i>
-  `;
-  }
-
-
-  closeFlagMenu(e) {
-    if (
-      !this.flagMenu.classList.contains('hidden') &&
-      !this.flagToggle.contains(e.target) &&
-      !this.flagMenu.contains(e.target)
-    ) {
-      this.flagMenu.classList.add('hidden');
-      this.flagToggle.setAttribute('aria-expanded', 'false');
-      this.flagMenu.setAttribute('aria-hidden', 'true');
-    }
-  }
-
-  loadSavedLanguage() {
-    const savedLanguage = localStorage.getItem('language');
-
-    if (savedLanguage && this.supportedLanguages.includes(savedLanguage)) {
-      this.currentLanguage = savedLanguage;
-    } else {
-      this.currentLanguage = 'pt';
-    }
-
-    const flagOption = document.querySelector(
-      `[data-lang="${this.currentLanguage}"]`
-    );
-
-    if (flagOption) {
-      const langText = flagOption.textContent.trim();
-      this.updateFlagButton(this.currentLanguage, langText);
-    } else {
-      // fallback hardcoded se der ruim
-      this.updateFlagButton('pt', 'Português');
-    }
-  }
-
-
-  applyLanguage(lang) {
-    // <html lang="pt">
-    document.documentElement.setAttribute('lang', lang);
-
-    // Textos/HTML: elementos com data-i18n + data-i18n-pt / data-i18n-en / etc.
-    document.querySelectorAll('[data-i18n]').forEach((el) => {
-      const attrName = `data-i18n-${lang}`;
-      const translation = el.getAttribute(attrName);
-
-      if (!translation) return;
-
-      const tag = el.tagName.toLowerCase();
-
-      if (tag === 'input' || tag === 'textarea') {
-        // placeholder ou valor
-        if (el.hasAttribute('placeholder')) {
-          el.placeholder = translation;
-        } else {
-          el.value = translation;
+      // Fechar dropdown ao clicar fora
+      document.addEventListener('click', (e) => {
+        if (!flagToggle.contains(e.target) && !flagMenu.contains(e.target)) {
+          this.closeDropdown();
         }
-      } else if (tag === 'p') {
-        // Para parágrafos, usar textContent para preservar apenas o texto
-        el.textContent = translation;
+      });
+
+      // Opções de idioma
+      const flagOptions = flagMenu.querySelectorAll('.flag-option');
+      flagOptions.forEach(option => {
+        option.addEventListener('click', (e) => {
+          const lang = e.currentTarget.getAttribute('data-lang');
+          this.changeLanguage(lang);
+          this.closeDropdown();
+        });
+      });
+    }
+  }
+
+  toggleDropdown() {
+    const flagMenu = document.getElementById('flagMenu');
+    const flagToggle = document.getElementById('flagToggle');
+
+    if (flagMenu && flagToggle) {
+      const isOpen = flagMenu.classList.contains('show');
+      if (isOpen) {
+        this.closeDropdown();
       } else {
-        el.innerHTML = translation;
+        this.openDropdown();
       }
-    });
-
-    // title: elementos com data-i18n-title / data-i18n-title-pt / data-i18n-title-en
-    document.querySelectorAll('[data-i18n-title]').forEach((el) => {
-      const attrName = `data-i18n-title-${lang}`;
-      const translation = el.getAttribute(attrName);
-      if (translation) el.title = translation;
-    });
-
-    // aria-label: elementos com data-i18n-aria-label / data-i18n-aria-label-pt / etc.
-    document.querySelectorAll('[data-i18n-aria-label]').forEach((el) => {
-      const attrName = `data-i18n-aria-label-${lang}`;
-      const translation = el.getAttribute(attrName);
-      if (translation) el.setAttribute('aria-label', translation);
-    });
+    }
   }
 
-  getLanguageChangeMessage(lang, langText) {
-    const map = {
-      pt: `Idioma alterado para ${langText}`,
-      en: `Language changed to ${langText}`,
-      es: `Idioma cambiado a ${langText}`,
-    };
-    return map[lang] || map.pt;
+  openDropdown() {
+    const flagMenu = document.getElementById('flagMenu');
+    const flagToggle = document.getElementById('flagToggle');
+
+    if (flagMenu && flagToggle) {
+      flagMenu.classList.remove('hidden');
+      flagMenu.classList.add('show');
+      flagToggle.setAttribute('aria-expanded', 'true');
+      flagMenu.setAttribute('aria-hidden', 'false');
+    }
   }
 
-  showNotification(message) {
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.textContent = message;
+  closeDropdown() {
+    const flagMenu = document.getElementById('flagMenu');
+    const flagToggle = document.getElementById('flagToggle');
 
-    const isDark =
-      typeof themeManager !== 'undefined' &&
-      themeManager.getCurrentTheme &&
-      themeManager.getCurrentTheme() === 'dark';
-
-    notification.style.cssText = `
-      position: fixed;
-      top: 100px;
-      right: 32px;
-      background: ${isDark ? 'var(--dark-surface)' : 'var(--primary)'};
-      color: ${isDark ? 'var(--dark-text-primary)' : 'white'};
-      padding: 16px 24px;
-      border-radius: var(--radius-lg);
-      box-shadow: ${isDark ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
-      z-index: 2000;
-      animation: slideInRight 0.3s ease-out;
-      border: 1px solid ${isDark ? 'var(--dark-border)' : 'transparent'};
-    `;
-
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-      notification.style.animation = 'slideOutRight 0.3s ease-out';
-      setTimeout(() => notification.remove(), 300);
-    }, 3000);
-  }
-}
-
-// ====================
-// INICIALIZAÇÃO (variáveis globais de instância)
-// ====================
-
-let themeManager, productManager, languageManager, searchManager;
-
-// ====================
-// SISTEMA DE NAVEGAÇÃO ENTRE PÁGINAS
-// ====================
-
-class NavigationManager {
-  constructor() {
-    this.currentPage = this.getCurrentPage();
-    this.init();
+    if (flagMenu && flagToggle) {
+      flagMenu.classList.remove('show');
+      flagMenu.classList.add('hidden');
+      flagToggle.setAttribute('aria-expanded', 'false');
+      flagMenu.setAttribute('aria-hidden', 'true');
+    }
   }
 
-  init() {
-    this.highlightCurrentPage();
-    this.setupNavigation();
+  changeLanguage(lang) {
+    this.currentLang = lang;
+    localStorage.setItem('language', lang);
+    this.applyLanguage();
+    this.updateFlagIcon();
   }
 
-  getCurrentPage() {
-    const path = window.location.pathname;
-    if (path.includes('catalog.html')) return 'catalog';
-    if (path.includes('sobre.html')) return 'sobre';
-    if (path.includes('imprensa.html')) return 'imprensa';
-    if (path.includes('contato.html')) return 'contato';
-    return 'index';
-  }
+  updateFlagIcon() {
+    const flagToggle = document.getElementById('flagToggle');
+    if (flagToggle) {
+      const flagIcon = flagToggle.querySelector('.flag-icon');
+      if (flagIcon) {
+        // Remover todas as classes de bandeira
+        flagIcon.className = 'flag-icon';
 
-  highlightCurrentPage() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-
-      const href = link.getAttribute('href');
-      if (!href) return;
-
-      if ((this.currentPage === 'index' && href.includes('index.html')) ||
-        (this.currentPage === 'catalog' && href.includes('catalog.html')) ||
-        (this.currentPage === 'sobre' && href.includes('sobre.html')) ||
-        (this.currentPage === 'imprensa' && href.includes('imprensa.html')) ||
-        (this.currentPage === 'contato' && href.includes('contato.html'))) {
-        link.classList.add('active');
+        // Adicionar a bandeira correta
+        switch (this.currentLang) {
+          case 'pt':
+            flagIcon.classList.add('flag-icon-br');
+            break;
+          case 'en':
+            flagIcon.classList.add('flag-icon-us');
+            break;
+          case 'es':
+            flagIcon.classList.add('flag-icon-es');
+            break;
+        }
       }
-    });
+    }
   }
 
-  setupNavigation() {
-    const navLinks = document.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        const href = link.getAttribute('href');
-        if (href && !href.startsWith('#')) {
-          // Se não for link externo, permitir navegação normal
-          if (!href.includes('http') && !href.includes('www.')) {
-            e.preventDefault();
-            window.location.href = href;
+  applyLanguage() {
+    const elements = document.querySelectorAll('[data-i18n]');
+
+    elements.forEach(element => {
+      const key = element.getAttribute('data-i18n');
+      if (key) {
+        const translation = element.getAttribute(`data-i18n-${this.currentLang}`);
+        if (translation) {
+          // Para elementos de texto simples
+          if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+            element.placeholder = translation;
+          } else if (element.tagName === 'IMG') {
+            element.alt = translation;
+          } else {
+            element.textContent = translation;
           }
         }
-      });
+      }
+
+      // Traduzir atributos especiais
+      this.translateAttributes(element);
     });
+
+    // Atualizar título da página
+    this.updatePageTitle();
+
+    // Disparar evento de mudança de idioma
+    document.dispatchEvent(new CustomEvent('languagechange', {
+      detail: { language: this.currentLang }
+    }));
+  }
+
+  translateAttributes(element) {
+    // Traduzir aria-label
+    const ariaLabel = element.getAttribute(`data-i18n-aria-label-${this.currentLang}`);
+    if (ariaLabel) {
+      element.setAttribute('aria-label', ariaLabel);
+    }
+
+    // Traduzir title
+    const title = element.getAttribute(`data-i18n-title-${this.currentLang}`);
+    if (title) {
+      element.setAttribute('title', title);
+    }
+
+    // Traduzir alt de imagens
+    const alt = element.getAttribute(`data-i18n-alt-${this.currentLang}`);
+    if (alt) {
+      element.setAttribute('alt', alt);
+    }
+  }
+
+  updatePageTitle() {
+    const titleElement = document.querySelector('title');
+    if (titleElement) {
+      const title = titleElement.getAttribute(`data-i18n-${this.currentLang}`) ||
+        'ABR Indústria e Comércio de Auto Peças';
+      document.title = title;
+    }
   }
 }
 
 // ====================
-// FUNCIONALIDADES ESPECÍFICAS DO CATÁLOGO
+// CARROSSEL DE PRODUTOS (APENAS ROTACÃO AUTOMÁTICA)
 // ====================
 
-class CatalogFeatures {
+class ProductCarousel {
   constructor() {
-    if (document.querySelector('.catalog-container')) {
-      this.init();
-    }
-  }
-
-  init() {
-    this.setupDownloadButtons();
-    this.setupCopyLinks();
-    this.setupCatalogSearch();
-  }
-
-  setupDownloadButtons() {
-    const downloadButtons = document.querySelectorAll('[href*="download"]');
-    downloadButtons.forEach(button => {
-      button.addEventListener('click', (e) => {
-        if (!button.href.includes('http')) {
-          e.preventDefault();
-          this.showDownloadModal();
-        }
-      });
-    });
-  }
-
-  setupCopyLinks() {
-    const copyButtons = document.querySelectorAll('.action-link a');
-    copyButtons.forEach(button => {
-      button.addEventListener('click', (e) => {
-        if (!button.href.includes('http')) {
-          e.preventDefault();
-          const textToCopy = button.querySelector('span')?.textContent || button.textContent;
-          this.copyToClipboard(textToCopy);
-        }
-      });
-    });
-  }
-
-  setupCatalogSearch() {
-    const searchInput = document.getElementById('catalogSearch');
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        this.filterCatalogItems(e.target.value);
-      });
-    }
-  }
-
-  showDownloadModal() {
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `
-      <div class="modal-content">
-        <h3>Download do Catálogo</h3>
-        <p>O download do catálogo em PDF será iniciado automaticamente.</p>
-        <p>Tamanho do arquivo: 45 MB</p>
-        <div class="modal-actions">
-          <button type="button" class="btn btn-primary download-confirm">Continuar Download</button>
-          <button type="button" class="btn btn-secondary cancel-download">Cancelar</button>
-        </div>
-      </div>
-    `;
-
-    const closeModal = () => {
-      modal.remove();
-      document.removeEventListener('keydown', handleEscape);
-    };
-
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') {
-        closeModal();
+    this.products = [
+      {
+        id: 'oring',
+        title: 'Anéis O\'Ring',
+        titlePt: 'Anéis O\'Ring',
+        titleEn: 'O-Ring Seals',
+        titleEs: 'Anillos O-Ring',
+        description: 'Vedação circular em elastômero para aplicações diversas em sistemas hidráulicos e pneumáticos.',
+        descriptionPt: 'Vedação circular em elastômero para aplicações diversas em sistemas hidráulicos e pneumáticos.',
+        descriptionEn: 'Circular seal made of elastomer for various applications in hydraulic and pneumatic systems.',
+        descriptionEs: 'Sello circular fabricado en elastómero para diversas aplicaciones en sistemas hidráulicos y neumáticos.',
+        image: 'assets/ANEL_ORING.webp',
+        category: 'Vedadores Especiais',
+        categoryPt: 'Vedadores Especiais',
+        categoryEn: 'Special Seals',
+        categoryEs: 'Sellos Especiales'
+      },
+      {
+        id: 'd229',
+        title: 'Junta do Cabeçote D229',
+        titlePt: 'Junta do Cabeçote D229',
+        titleEn: 'Cylinder Head Gasket D229',
+        titleEs: 'Empaque de Culata D229',
+        description: 'Junta de cabeçote para motor D229, construída em aço multicamadas, projetada para vedar câmaras de combustão, dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.',
+        descriptionPt: 'Junta de cabeçote para motor D229, construída em aço multicamadas, projetada para vedar câmaras de combustão, dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.',
+        descriptionEn: 'Cylinder head gasket for D229 engine, constructed of multi-layered steel, designed to seal combustion chambers, oil ducts and cooling channels between block and cylinder head, withstanding high temperatures and working pressure.',
+        descriptionEs: 'Empaque de culata para motor D229, construido en acero multicapa, diseñado para sellar cámaras de combustión, conductos de aceite y canales de enfriamiento entre bloque y culata, soportando altas temperaturas y presión de trabajo.',
+        image: 'assets/D229.webp',
+        category: 'Junta do Cabeçote',
+        categoryPt: 'Junta do Cabeçote',
+        categoryEn: 'Cylinder Head Gasket',
+        categoryEs: 'Empaque de Culata'
+      },
+      {
+        id: 'x10',
+        title: 'Junta do Cabeçote X10',
+        titlePt: 'Junta do Cabeçote X10',
+        titleEn: 'Cylinder Head Gasket X10',
+        titleEs: 'Empaque de Culata X10',
+        description: 'Junta de cabeçote para motor X10, construída em aço multicamadas, projetada para vedar câmaras de combustão, dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.',
+        descriptionPt: 'Junta de cabeçote para motor X10, construída em aço multicamadas, projetada para vedar câmaras de combustão, dutos de óleo e canais de arrefecimento entre bloco e cabeçote, suportando altas temperaturas e pressão de trabalho.',
+        descriptionEn: 'Cylinder head gasket for X10 engine, constructed of multi-layered steel, designed to seal combustion chambers, oil ducts and cooling channels between block and cylinder head, withstanding high temperatures and working pressure.',
+        descriptionEs: 'Empaque de culata para motor X10, construido en acero multicapa, diseñado para sellar cámaras de combustión, conductos de aceite y canales de enfriamiento entre bloque y culata, soportando altas temperaturas y presión de trabalho.',
+        image: 'assets/x10.webp',
+        category: 'Junta do Cabeçote',
+        categoryPt: 'Junta do Cabeçote',
+        categoryEn: 'Cylinder Head Gasket',
+        categoryEs: 'Empaque de Culata'
+      },
+      {
+        id: 'x12',
+        title: 'Vedador X12',
+        titlePt: 'Vedador X12',
+        titleEn: 'Seal X12',
+        titleEs: 'Sello X12',
+        description: 'Vedador do conjunto X12 em elastômero, destinado à vedação de óleo/fluido em eixo ou alojamento, resistente a variações térmicas e à ação de derivados de petróleo, evitando vazamentos e contaminação do sistema.',
+        descriptionPt: 'Vedador do conjunto X12 em elastômero, destinado à vedação de óleo/fluido em eixo ou alojamento, resistente a variações térmicas e à ação de derivados de petróleo, evitando vazamentos e contaminação do sistema.',
+        descriptionEn: 'X12 assembly seal made of elastomer, designed for sealing oil or fluid in shafts or housings. Resistant to thermal variations and petroleum derivatives, preventing leaks and system contamination.',
+        descriptionEs: 'Sello del conjunto X12 fabricado en elastómero, destinado a la estanqueidad de aceite o fluido en ejes o alojamientos. Resistente a variaciones térmicas y a derivados del petróleo, evitando fugas y contaminación del sistema.',
+        image: 'assets/VEDADOR_X12.webp',
+        category: 'Vedadores Especiais',
+        categoryPt: 'Vedadores Especiais',
+        categoryEn: 'Special Seals',
+        categoryEs: 'Sellos Especiales'
       }
-    };
+    ];
 
-    modal.querySelector('.download-confirm').addEventListener('click', () => {
-      this.simulateDownload();
-      closeModal();
-    });
-
-    modal.querySelector('.cancel-download').addEventListener('click', () => {
-      closeModal();
-    });
-
-    modal.addEventListener('click', (e) => {
-      if (!e.target.closest('.modal-content')) {
-        closeModal();
-      }
-    });
-
-    document.addEventListener('keydown', handleEscape);
-
-    document.body.appendChild(modal);
-  }
-
-  simulateDownload() {
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.textContent = 'Download iniciado! O arquivo será salvo em seu dispositivo.';
-    notification.style.cssText = `
-      position: fixed;
-      top: 100px;
-      right: 32px;
-      background: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
-      color: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
-      padding: 16px 24px;
-      border-radius: var(--radius-lg);
-      box-shadow: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
-      z-index: 2000;
-      animation: slideInRight 0.3s ease-out;
-      border: 1px solid ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
-    `;
-
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-      notification.style.animation = 'slideOutRight 0.3s ease-out';
-      setTimeout(() => notification.remove(), 300);
-    }, 3000);
-  }
-
-  copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-      this.showNotification('Link copiado para a área de transferência!');
-    }).catch(err => {
-      console.error('Erro ao copiar: ', err);
-      this.showNotification('Erro ao copiar o link.');
-    });
-  }
-
-  filterCatalogItems(searchTerm) {
-    const items = document.querySelectorAll('.format-card, .product-card-large');
-    items.forEach(item => {
-      const text = item.textContent.toLowerCase();
-      if (text.includes(searchTerm.toLowerCase())) {
-        item.style.display = 'block';
-        item.style.animation = 'fadeIn 0.3s ease';
-      } else {
-        item.style.display = 'none';
-      }
-    });
-  }
-
-  showNotification(message) {
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.textContent = message;
-    notification.style.cssText = `
-      position: fixed;
-      top: 100px;
-      right: 32px;
-      background: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-surface)' : 'var(--primary)'};
-      color: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-text-primary)' : 'white'};
-      padding: 16px 24px;
-      border-radius: var(--radius-lg);
-      box-shadow: ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-shadow-lg)' : 'var(--shadow-lg)'};
-      z-index: 2000;
-      animation: slideInRight 0.3s ease-out;
-      border: 1px solid ${themeManager?.getCurrentTheme() === 'dark' ? 'var(--dark-border)' : 'transparent'};
-    `;
-
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-      notification.style.animation = 'slideOutRight 0.3s ease-out';
-      setTimeout(() => notification.remove(), 300);
-    }, 3000);
-  }
-}
-
-// ====================
-// FUNCIONALIDADES ESPECÍFICAS DA PÁGINA SOBRE
-// ====================
-
-class AboutFeatures {
-  constructor() {
-    if (document.querySelector('.about-container')) {
-      this.init();
-    }
-  }
-
-  init() {
-    this.setupTimelineAnimation();
-    this.setupTeamCards();
-    this.setupCertificationModal();
-  }
-
-  setupTimelineAnimation() {
-    const timelineItems = document.querySelectorAll('.timeline-item');
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateX(0)';
-        }
-      });
-    }, { threshold: 0.5 });
-
-    timelineItems.forEach((item, index) => {
-      item.style.opacity = '0';
-      item.style.transform = 'translateX(-20px)';
-      item.style.transition = `opacity 0.5s ease ${index * 0.2}s, transform 0.5s ease ${index * 0.2}s`;
-      observer.observe(item);
-    });
-  }
-
-  setupTeamCards() {
-    const teamCards = document.querySelectorAll('.team-card');
-    teamCards.forEach(card => {
-      card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-10px) scale(1.05)';
-      });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0) scale(1)';
-      });
-    });
-  }
-
-  setupCertificationModal() {
-    const certificationItems = document.querySelectorAll('.certification-list li');
-    certificationItems.forEach(item => {
-      item.style.cursor = 'pointer';
-      item.addEventListener('click', () => {
-        this.showCertificationDetails(item.textContent);
-      });
-    });
-  }
-
-  showCertificationDetails(certification) {
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay';
-    modal.innerHTML = `
-      <div class="modal-content">
-        <h3>${certification}</h3>
-        <p>Esta certificação garante que nossos processos atendem aos mais altos padrões internacionais de qualidade.</p>
-        <p><strong>Validade:</strong> Perpétua (com auditorias anuais)</p>
-        <p><strong>Escopo:</strong> Desenvolvimento e fabricação de sistemas de vedação</p>
-        <button type="button" class="btn btn-primary close-modal">Fechar</button>
-      </div>
-    `;
-
-    const closeModal = () => {
-      modal.remove();
-      document.removeEventListener('keydown', handleEscape);
-    };
-
-    const handleEscape = (e) => {
-      if (e.key === 'Escape') {
-        closeModal();
-      }
-    };
-
-    modal.querySelector('.close-modal').addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeModal();
-    });
-
-    modal.addEventListener('click', (e) => {
-      if (!e.target.closest('.modal-content')) {
-        closeModal();
-      }
-    });
-
-    document.addEventListener('keydown', handleEscape);
-
-    document.body.appendChild(modal);
-  }
-}
-
-// ====================
-// FUNÇÕES GLOBAIS ADICIONAIS
-// ====================
-
-// Adicionar estilos dinâmicos para novas funcionalidades
-function addAdditionalStyles(currentPage) {
-  const style = document.createElement('style');
-  style.textContent = `
-    .modal-actions {
-      display: flex;
-      gap: 15px;
-      margin-top: 25px;
-      flex-wrap: wrap;
-    }
-    
-    .modal-actions .btn {
-      flex: 1;
-      min-width: 140px;
-    }
-    
-    .team-card {
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-    
-    /* Estilos para página específica */
-    .page-indicator {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: var(--primary);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      z-index: 100;
-    }
-    
-    body.dark-mode .page-indicator {
-      background: var(--dark-primary);
-    }
-  `;
-  document.head.appendChild(style);
-
-  // Adicionar indicador de página (apenas para desenvolvimento)
-  // (Removed page indicator insertion - no visual dev balloon shown)
-}
-
-// Adicionar estilos dinâmicos
-function addDynamicStyles() {
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes slideInRight {
-      from {
-        opacity: 0;
-        transform: translateX(100%);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-    
-    @keyframes slideOutRight {
-      from {
-        opacity: 1;
-        transform: translateX(0);
-      }
-      to {
-        opacity: 0;
-        transform: translateX(100%);
-      }
-    }
-    
-    /* Modal styles moved to CSS file (src/styles/index.css) to support dynamic theme changes */
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-    
-    .search-highlight {
-      background: ${themeManager?.getCurrentTheme() === 'dark' ? 'rgba(255, 204, 0, 0.3)' : 'rgba(255, 204, 0, 0.5)'};
-      padding: 1px 3px;
-      border-radius: 2px;
-      font-weight: bold;
-    }
-    
-    /* Efeito de transição suave para todo o site */
-    .theme-transition {
-      transition: all 0.3s ease !important;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-// ====================
-// MENU HAMBURGUER
-// ====================
-
-class MenuToggle {
-  constructor() {
-    this.menuToggle = document.getElementById('menuToggle');
-    this.navMenu = document.getElementById('navMenu');
+    this.currentIndex = -1; // Começar com -1 para mostrar a intro primeiro
+    this.autoPlayInterval = null;
+    this.autoPlayDelay = 13000; // 13 segundos entre produtos
+    this.introShown = false;
     this.init();
   }
 
   init() {
-    if (!this.menuToggle || !this.navMenu) return;
-
-    this.setupEventListeners();
-    this.closeMenuOnResize();
+    this.setupProductCardListeners();
+    this.showSplashScreen();
   }
 
-  setupEventListeners() {
-    // Clicar no botão hamburguer
-    this.menuToggle.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.toggleMenu();
-    });
-
-    // Clicar em um link do menu
-    this.navMenu.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        this.closeMenu();
+  setupProductCardListeners() {
+    const productCards = document.querySelectorAll('.product-card');
+    productCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const productId = card.getAttribute('data-id');
+        if (productId) {
+          this.goToProduct(productId);
+        }
       });
     });
-
-    // Clicar fora do menu para fechar
-    document.addEventListener('click', (e) => {
-      if (!this.menuToggle.contains(e.target) && !this.navMenu.contains(e.target)) {
-        this.closeMenu();
-      }
-    });
-
-    // Fechar ao pressionar ESC
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        this.closeMenu();
-      }
-    });
   }
 
-  toggleMenu() {
-    const isActive = this.navMenu.classList.contains('active');
-    if (isActive) {
-      this.closeMenu();
+  showSplashScreen() {
+    const productPanel = document.querySelector('.product-panel');
+    const titleElement = document.getElementById('productTitle');
+    const descriptionElement = document.getElementById('productDescription');
+    const imageElement = document.getElementById('productImage');
+
+    if (productPanel) {
+      productPanel.classList.add('abr-intro');
+    }
+
+    if (titleElement) {
+      titleElement.textContent = 'ABR Ind. e Com. de Auto Peças';
+      titleElement.removeAttribute('data-i18n');
+      titleElement.removeAttribute('data-i18n-pt');
+      titleElement.removeAttribute('data-i18n-en');
+      titleElement.removeAttribute('data-i18n-es');
+    }
+
+    if (descriptionElement) {
+      descriptionElement.textContent = `A ABR ind. e Comércio é especialista em soluções de vedação automotiva de alta performance.
+Desenvolvemos juntas de cabeçote, anéis O'ring e vedadores especiais para motores.
+Nossos produtos garantem durabilidade, segurança e eficiência em todas as aplicações.
+Atendemos montadoras, reposição e lojas de autopeças.`;
+      descriptionElement.removeAttribute('data-i18n');
+      descriptionElement.removeAttribute('data-i18n-pt');
+      descriptionElement.removeAttribute('data-i18n-en');
+      descriptionElement.removeAttribute('data-i18n-es');
+    }
+
+    if (imageElement) {
+      imageElement.src = 'assets/logo_apresentacao.webp';
+      imageElement.alt = 'ABR';
+      imageElement.classList.add('abr-logo');
+      imageElement.removeAttribute('data-i18n-alt');
+      imageElement.removeAttribute('data-i18n-alt-pt');
+      imageElement.removeAttribute('data-i18n-alt-en');
+      imageElement.removeAttribute('data-i18n-alt-es');
+    }
+
+    setTimeout(() => {
+      this.startCarousel();
+    }, 20000); // 20 segundos para a tela inicial
+  }
+
+  startCarousel() {
+    this.introShown = true;
+    this.currentIndex = 0; // Começar com o primeiro produto
+    this.updateProduct();
+    this.startAutoPlay();
+  }
+
+  updateProduct(direction = 'none') {
+    const productPanel = document.querySelector('.product-panel');
+    if (!productPanel) return;
+
+    // Remover classe de intro se ainda estiver presente
+    productPanel.classList.remove('abr-intro');
+
+    const product = this.products[this.currentIndex];
+    const titleElement = document.getElementById('productTitle');
+    const descriptionElement = document.getElementById('productDescription');
+    const imageElement = document.getElementById('productImage');
+
+    // Aplicar efeito de fade-out baseado na direção
+    if (direction === 'down') {
+      productPanel.classList.add('fade-out-down');
+    } else if (direction === 'up') {
+      productPanel.classList.add('fade-out-up');
     } else {
-      this.openMenu();
+      productPanel.classList.add('fade-out');
+    }
+
+    // Aguardar o fade-out completar antes de atualizar o conteúdo
+    setTimeout(() => {
+      if (titleElement) {
+        titleElement.textContent = product.titlePt;
+        titleElement.setAttribute('data-i18n', product.title);
+        titleElement.setAttribute('data-i18n-pt', product.titlePt);
+        titleElement.setAttribute('data-i18n-en', product.titleEn);
+        titleElement.setAttribute('data-i18n-es', product.titleEs);
+      }
+
+      if (descriptionElement) {
+        descriptionElement.textContent = product.descriptionPt;
+        descriptionElement.setAttribute('data-i18n', product.description);
+        descriptionElement.setAttribute('data-i18n-pt', product.descriptionPt);
+        descriptionElement.setAttribute('data-i18n-en', product.descriptionEn);
+        descriptionElement.setAttribute('data-i18n-es', product.descriptionEs);
+      }
+
+      if (imageElement) {
+        imageElement.src = product.image;
+        imageElement.alt = product.titlePt;
+        imageElement.classList.remove('abr-logo');
+        imageElement.setAttribute('data-i18n-alt', product.title);
+        imageElement.setAttribute('data-i18n-alt-pt', product.titlePt);
+        imageElement.setAttribute('data-i18n-alt-en', product.titleEn);
+        imageElement.setAttribute('data-i18n-alt-es', product.titleEs);
+      }
+
+      // Remover fade-out e aplicar fade-in
+      productPanel.classList.remove('fade-out-up', 'fade-out-down', 'fade-out');
+      if (direction === 'down') {
+        productPanel.classList.add('fade-in-down');
+      } else if (direction === 'up') {
+        productPanel.classList.add('fade-in-up');
+      } else {
+        productPanel.classList.add('fade-in');
+      }
+
+      // Limpar a classe fade-in após a transição
+      setTimeout(() => {
+        productPanel.classList.remove('fade-in-down', 'fade-in-up', 'fade-in');
+      }, 600);
+    }, 300);
+  }
+
+  nextProduct() {
+    const previousIndex = this.currentIndex;
+    this.currentIndex = (this.currentIndex + 1) % this.products.length;
+
+    // Determinar direção baseada na posição no array
+    let direction = 'none';
+    if (previousIndex !== -1) {
+      if (this.currentIndex > previousIndex) {
+        direction = 'down'; // Indo para baixo no array
+      } else if (this.currentIndex < previousIndex) {
+        direction = 'up'; // Indo para cima (loop)
+      }
+    }
+
+    this.updateProduct(direction);
+  }
+
+  previousProduct() {
+    this.currentIndex = this.currentIndex === 0 ? this.products.length - 1 : this.currentIndex - 1;
+    this.updateProduct('prev');
+  }
+
+  startAutoPlay() {
+    this.stopAutoPlay();
+    this.autoPlayInterval = setInterval(() => {
+      this.nextProduct();
+    }, this.autoPlayDelay);
+  }
+
+  stopAutoPlay() {
+    if (this.autoPlayInterval) {
+      clearInterval(this.autoPlayInterval);
+      this.autoPlayInterval = null;
     }
   }
 
-  openMenu() {
-    this.navMenu.classList.add('active');
-    this.menuToggle.classList.add('active');
-    this.menuToggle.setAttribute('aria-expanded', 'true');
-  }
-
-  closeMenu() {
-    this.navMenu.classList.remove('active');
-    this.menuToggle.classList.remove('active');
-    this.menuToggle.setAttribute('aria-expanded', 'false');
-  }
-
-  closeMenuOnResize() {
-    window.addEventListener('resize', () => {
-      // Fechar menu quando sair do modo mobile
-      if (window.innerWidth > 768) {
-        this.closeMenu();
+  goToProduct(productId) {
+    const index = this.products.findIndex(product => product.id === productId);
+    if (index !== -1) {
+      if (!this.introShown) {
+        this.introShown = true;
       }
-    });
+      this.currentIndex = index;
+      this.updateProduct();
+      // Restart autoplay from this product
+      this.startAutoPlay();
+    }
   }
 }
 
 // ====================
-// INICIALIZAÇÃO COMPLETA
+// INICIALIZAÇÃO
 // ====================
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded fired');
-  // Inicializar gerenciador de tema
-  themeManager = new ThemeManager();
-  console.log('ThemeManager initialized:', themeManager);
-
-  // Inicializar menu hamburguer
-  const menuToggle = new MenuToggle();
-
-  // Inicializar navegação
-  const navigationManager = new NavigationManager();
-  const currentPage = navigationManager.getCurrentPage();
-  // Inicializar recursos específicos por página
-  // Garantir LanguageManager em todas as páginas (replicar comportamento das páginas que funcionam)
-  if (!languageManager) {
-    languageManager = new LanguageManager();
-  }
-
-  // Inicializar recursos específicos por página
-  if (currentPage === 'index') {
-    productManager = new ProductManager();
-    searchManager = new SearchManager();
-  } else if (currentPage === 'catalog') {
-    const catalogFeatures = new CatalogFeatures();
-    searchManager = new SearchManager();
-  } else if (currentPage === 'sobre') {
-    const aboutFeatures = new AboutFeatures();
-  }
-
-  // Inicializar sistema de busca global
-  if (searchManager && !window.searchManager) {
-    window.searchManager = searchManager;
-  }
-
-  // Estilos dinâmicos (agora que themeManager existe)
-  addDynamicStyles();
-  addAdditionalStyles(currentPage);
-
-  // Exportar instâncias globais, se for usar em outro script
-  window.themeManager = themeManager;
-  window.productManager = productManager;
-  window.languageManager = languageManager;
-
-  // Verificar se voltou da página de sucesso do FormSubmit
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('enviado') === '1') {
-    alertEl.textContent = 'Mensagem enviada com sucesso! Obrigado pelo contato.';
-    alertEl.style.display = 'block';
-    // Limpar a URL
-    window.history.replaceState(null, null, window.location.pathname);
-  }
-
-  // Inicializar form de contato
-  const form = document.getElementById('contactForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const sending = document.getElementById('sending');
-  const alertEl = document.getElementById('formAlert');
-  const errorEl = document.getElementById('formError');
-  const charCount = document.getElementById('charCount');
-  const mensagem = document.getElementById('mensagem');
-
-  if (mensagem) {
-    mensagem.addEventListener('input', () => {
-      charCount.textContent = `${mensagem.value.length} / 3000`;
-    });
-  }
-
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      alertEl.style.display = 'none';
-      errorEl.style.display = 'none';
-
-      const formData = new FormData(form);
-      if (formData.get('website')) { // honeypot
-        e.preventDefault();
-        return;
-      }
-
-      if (!form.checkValidity()) {
-        e.preventDefault();
-        form.reportValidity();
-        return;
-      }
-
-      // Validação passou, permitir envio para FormSubmit.co
-      submitBtn.disabled = true;
-      sending.style.display = 'block';
-      // Não chamar e.preventDefault() para permitir o submit
-    });
-  }
-  console.log('DOMContentLoaded completed successfully');
+  // Inicializar gerenciadores
+  window.themeManager = new ThemeManager();
+  window.productManager = new ProductManager();
+  window.languageManager = new LanguageManager();
+  window.searchManager = new SearchManager();
+  window.navigationManager = new NavigationManager();
+  window.catalogFeatures = new CatalogFeatures();
+  window.aboutFeatures = new AboutFeatures();
+  window.menuToggle = new MenuToggle();
+  window.productCarousel = new ProductCarousel();
 });
-
-// Footer link / deep-hash handling: smooth scroll on same-page anchors and scroll-on-load for deep links
-function smoothScrollToId(id) {
-  if (!id) return;
-  const el = document.getElementById(id) || document.querySelector(`[id="#${id}"]`);
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
-
-// Intercept footer links that are same-page anchors (e.g., href="#qualidade")
-document.querySelectorAll('.footer a[href^="#"]').forEach(link => {
-  const href = link.getAttribute('href');
-  if (!href || href === '#') return;
-  link.addEventListener('click', (e) => {
-    // If the link is a pure hash and we're on any page, try smooth scroll
-    e.preventDefault();
-    const id = href.slice(1);
-    smoothScrollToId(id);
-    // update URL without reloading
-    history.replaceState(null, '', '#' + id);
-  });
-});
-
-// For footer links that point to another page with a hash (e.g., sobre.html#qualidade)
-// store the target hash so the destination page can smooth-scroll after navigation.
-document.querySelectorAll('.footer a[href*="#"]').forEach(link => {
-  const href = link.getAttribute('href');
-  if (!href || href.indexOf('#') === -1) return;
-  // skip pure-hash links (already handled above)
-  if (href.startsWith('#')) return;
-  link.addEventListener('click', () => {
-    try {
-      const url = new URL(href, window.location.href);
-      const hash = url.hash.replace('#', '');
-      if (hash) {
-        sessionStorage.setItem('scrollTarget', hash);
-      }
-    } catch (err) {
-      // ignore malformed urls
-    }
-  });
-});
-
-// On load, first check for sessionStorage handoff (set when clicking a footer link that navigates)
-const pendingHash = sessionStorage.getItem('scrollTarget');
-if (pendingHash) {
-  setTimeout(() => {
-    smoothScrollToId(pendingHash);
-    sessionStorage.removeItem('scrollTarget');
-  }, 80);
-} else if (window.location.hash) {
-  const hashId = window.location.hash.replace('#', '');
-  setTimeout(() => smoothScrollToId(hashId), 60);
-}
-
-// --------- Download PDF modal (Catalog page) ---------
-const downloadPdfBtn = document.getElementById('downloadPdfBtn');
-if (downloadPdfBtn) {
-  downloadPdfBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    openDownloadModal();
-  });
-}
-
-function openDownloadModal() {
-  // Dados com links reais
-  const leveOptions = [
-    { label: 'Catálogo Completo Linha Leve', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20LEVE.pdf' },
-    { label: 'Linha FIAT', url: 'https://abr.ind.br/catalogos/pb/2%20-%20FIAT%202019.pdf' },
-    { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/3%20-%20FORD%202019%20site.pdf' },
-    { label: 'Linha GM', url: 'https://abr.ind.br/catalogos/pb/4%20-%20GM%202019.pdf' },
-    { label: 'Linha Honda', url: 'https://abr.ind.br/catalogos/pb/5%20-%20HONDA%202019.pdf' },
-    { label: 'Linha HYNDAI / MITSUBISHI', url: 'https://abr.ind.br/catalogos/pb/6%20-%20HYUNDAI-MITSUBISHI%202019.pdf' },
-    { label: 'Linha ASIA-KIA', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ASIA-KIA%202019.pdf' },
-    { label: 'Linha NISSAN', url: 'https://abr.ind.br/catalogos/pb/8%20-%20NISSAN%202019.pdf' },
-    { label: 'Linha PEUGEOT / CITROEN', url: 'https://abr.ind.br/catalogos/pb/9%20-%20PEUGEOT-CITROEN%202019.pdf' },
-    { label: 'Linha RENAULT', url: 'https://abr.ind.br/catalogos/pb/10%20-%20RENAULT%202019.pdf' },
-    { label: 'Linha SUZUKI', url: 'https://abr.ind.br/catalogos/pb/11%20-%20SUZUKI%202019.pdf' },
-    { label: 'Linha TOYOTA', url: 'https://abr.ind.br/catalogos/pb/12%20-%20TOYOTA%202019.pdf' },
-    { label: 'Linha VOLKSWAGEN', url: 'https://abr.ind.br/catalogos/pb/13%20-%20VOLKSWAGEN%202019.pdf' }
-  ];
-
-  const pesadaOptions = [
-    { label: 'Catálogo Completo Linha Pesada', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20PESADA.pdf' },
-    { label: 'Linha CUMMINS', url: 'https://abr.ind.br/catalogos/pb/1%20-%20ABR%20Catalogo%20CUMMINS.pdf' },
-    { label: 'Linha Mercedes', url: 'https://abr.ind.br/catalogos/pb/2%20-%20ABR%20Catalogo%20MERCEDES.pdf' },
-    { label: 'Linha MWM', url: 'https://abr.ind.br/catalogos/pb/3%20-%20ABR%20Catalogo%20MWM.pdf' },
-    { label: 'Linha MAXION / PERKINS', url: 'https://abr.ind.br/catalogos/pb/4%20-%20ABR%20Catalogo%20MAXION%20PERKINS.pdf' },
-    { label: 'Linha IVECO', url: 'https://abr.ind.br/catalogos/pb/5%20-%20ABR%20Catalogo%20IVECO.pdf' },
-    { label: 'Linha SCANIA', url: 'https://abr.ind.br/catalogos/pb/6%20-%20ABR%20Catalogo%20SCANIA.pdf' },
-    { label: 'Linha JOHN DEERE', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ABR%20Catalogo%20JOHN%20DEERE.pdf' },
-    { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/8%20-%20ABR%20Catalogo%20FORD.pdf' },
-    { label: 'Linha VALTRA', url: 'https://abr.ind.br/catalogos/pb/9%20-%20ABR%20Catalogo%20VALTRA.pdf' }
-  ];
-
-  // Modal structure com estilo profissional
-  const overlay = document.createElement('div');
-  overlay.className = 'modal-overlay download-modal-overlay';
-  overlay.style.cssText = `
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 3000;
-      padding: 20px;
-      animation: fadeIn 0.3s ease-out;
-    `;
-
-  const modal = document.createElement('div');
-  modal.className = 'download-modal-content';
-  modal.style.cssText = `
-      width: 100%;
-      max-width: 520px;
-      background: var(--bg-white);
-      border-radius: 12px;
-      padding: 32px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-      color: var(--text-primary);
-      animation: slideDown 0.3s ease-out;
-    `;
-
-  modal.innerHTML = `
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border-light); padding-bottom: 16px">
-        <h2 style="margin: 0; font-size: 20px; font-weight: 600">Catálogos em PDF</h2>
-        <button class="close-download-modal" aria-label="Fechar" style="background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary); transition: color 0.2s">✕</button>
-      </div>
-
-      <fieldset style="border: none; padding: 0; margin: 0 0 24px 0">
-        <legend style="font-weight: 600; margin-bottom: 12px; color: var(--text-primary)">Escolha o tipo de catálogo</legend>
-        <div style="display: flex; flex-direction: column; gap: 12px">
-          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none">
-            <input type="radio" name="downloadType" value="complete" checked style="width: 18px; height: 18px; cursor: pointer">
-            <span>Catálogo Completo</span>
-          </label>
-          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none">
-            <input type="radio" name="downloadType" value="leve" style="width: 18px; height: 18px; cursor: pointer">
-            <span>Linha Leve</span>
-          </label>
-          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none">
-            <input type="radio" name="downloadType" value="pesada" style="width: 18px; height: 18px; cursor: pointer">
-            <span>Linha Pesada</span>
-          </label>
-        </div>
-      </fieldset>
-
-      <div id="leve-select-container" style="display: none; margin-bottom: 20px">
-        <label for="leveSelect" style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-primary)">Selecione a opção</label>
-        <select id="leveSelect" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px; background: var(--bg-white); color: var(--text-primary); cursor: pointer; transition: border-color 0.2s">
-        </select>
-      </div>
-
-      <div id="pesada-select-container" style="display: none; margin-bottom: 20px">
-        <label for="pesadaSelect" style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--text-primary)">Selecione a opção</label>
-        <select id="pesadaSelect" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-light); border-radius: 6px; font-size: 14px; background: var(--bg-white); color: var(--text-primary); cursor: pointer; transition: border-color 0.2s">
-        </select>
-      </div>
-
-      <div style="display: flex; gap: 12px; justify-content: flex-end">
-        <button class="cancel-download" style="padding: 10px 20px; border: 1px solid var(--border-light); background: var(--bg-white); color: var(--text-primary); border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-size: 14px">Cancelar</button>
-        <button class="confirm-download" style="padding: 10px 24px; background: var(--primary); color: white; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-size: 14px; display: flex; align-items: center; gap: 6px"><i class="fa-solid fa-download"></i> Download</button>
-      </div>
-    `;
-
-  overlay.appendChild(modal);
-  document.body.appendChild(overlay);
-
-  const leveSelect = modal.querySelector('#leveSelect');
-  leveOptions.forEach(opt => {
-    const o = document.createElement('option');
-    o.value = opt.url;
-    o.textContent = opt.label;
-    leveSelect.appendChild(o);
-  });
-
-  const pesadaSelect = modal.querySelector('#pesadaSelect');
-  pesadaOptions.forEach(opt => {
-    const o = document.createElement('option');
-    o.value = opt.url;
-    o.textContent = opt.label;
-    pesadaSelect.appendChild(o);
-  });
-
-  const updateVisibility = () => {
-    const val = modal.querySelector('input[name="downloadType"]:checked').value;
-    modal.querySelector('#leve-select-container').style.display = val === 'leve' ? 'block' : 'none';
-    modal.querySelector('#pesada-select-container').style.display = val === 'pesada' ? 'block' : 'none';
-  };
-
-  modal.querySelectorAll('input[name="downloadType"]').forEach(r => r.addEventListener('change', updateVisibility));
-
-  // close handlers
-  modal.querySelector('.close-download-modal').addEventListener('click', closeModal);
-  modal.querySelector('.cancel-download').addEventListener('click', closeModal);
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) closeModal();
-  });
-
-  function closeModal() {
-    overlay.style.animation = 'fadeOut 0.2s ease-out';
-    setTimeout(() => overlay.remove(), 200);
-  }
-
-  modal.querySelector('.confirm-download').addEventListener('click', () => {
-    const type = modal.querySelector('input[name="downloadType"]:checked').value;
-    if (type === 'complete') {
-      const url = 'https://abr.ind.br/catalogos/pb/ABR_CATALOGO_COMPLETO_2022.pdf';
-      const a = document.createElement('a');
-      a.href = url;
-      a.target = '_blank';
-      a.rel = 'noopener';
-      a.click();
-      closeModal();
-      return;
-    }
-
-    if (type === 'leve') {
-      const link = modal.querySelector('#leveSelect').value;
-      if (link) {
-        const a = document.createElement('a');
-        a.href = link;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.click();
-        closeModal();
-      }
-      return;
-    }
-
-    if (type === 'pesada') {
-      const link = modal.querySelector('#pesadaSelect').value;
-      if (link) {
-        const a = document.createElement('a');
-        a.href = link;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.click();
-        closeModal();
-      }
-      return;
-    }
-  });
-}
 
 // ====================
 // EXPORTAR CLASSES PARA USO GLOBAL (OPCIONAL)
@@ -1627,3 +1250,4 @@ window.NavigationManager = NavigationManager;
 window.CatalogFeatures = CatalogFeatures;
 window.AboutFeatures = AboutFeatures;
 window.MenuToggle = MenuToggle;
+window.ProductCarousel = ProductCarousel;

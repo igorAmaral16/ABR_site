@@ -8,7 +8,11 @@
     --radius-lg: 12px;
 }
 
-body {
+/* ===========================================
+   CONTACT SECTION SPECIFIC STYLES
+   =========================================== */
+
+#contato {
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     background: var(--bg);
     color: var(--title);
@@ -17,8 +21,8 @@ body {
     transition: background-color 300ms ease, color 300ms ease;
 }
 
-/* Dark Mode */
-body.dark-mode {
+/* Dark Mode for Contact Section */
+body.dark-mode #contato {
     --bg: var(--dark-bg-primary);
     --card: var(--dark-bg-secondary);
     --muted: var(--dark-text-secondary);
@@ -27,28 +31,14 @@ body.dark-mode {
     --shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
-.header {
-    background: var(--card);
-    box-shadow: 0 1px 0 rgba(13, 30, 64, 0.04);
-    transition: background-color 300ms ease, box-shadow 300ms ease;
-}
-
-body.dark-mode .header {
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-}
-
-.main {
-    padding: 0 0 80px;
-}
-
-.contact-hero {
+#contato .contact-hero {
     padding: 84px 0 24px;
     text-align: center;
     background: var(--bg);
     transition: background-color 300ms ease;
 }
 
-.contact-hero .page-title {
+#contato .contact-hero .page-title {
     font-size: 42px;
     font-weight: 800;
     margin: 0;
@@ -56,7 +46,7 @@ body.dark-mode .header {
     transition: color 300ms ease;
 }
 
-.contact-hero .title-underline {
+#contato .contact-hero .title-underline {
     width: 64px;
     height: 4px;
     background: var(--accent);
@@ -65,14 +55,14 @@ body.dark-mode .header {
     transition: background-color 300ms ease;
 }
 
-.contact-hero .subtitle {
+#contato .contact-hero .subtitle {
     color: var(--muted);
     margin-top: 10px;
     font-size: 15px;
     transition: color 300ms ease;
 }
 
-.contact-container {
+#contato .contact-container {
     width: 92%;
     max-width: 1100px;
     margin: 36px auto 0;
@@ -82,7 +72,7 @@ body.dark-mode .header {
     align-items: start;
 }
 
-.contact-card {
+#contato .contact-card {
     background: var(--card);
     padding: 28px;
     border-radius: 14px;
@@ -90,14 +80,14 @@ body.dark-mode .header {
     transition: background-color 300ms ease, box-shadow 300ms ease;
 }
 
-form .field {
+#contato form .field {
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin-bottom: 16px;
 }
 
-label {
+#contato label {
     font-size: 14px;
     color: var(--muted);
     font-weight: 600;
