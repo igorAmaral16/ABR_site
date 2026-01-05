@@ -178,6 +178,7 @@ svg {
 .logo {
     height: 36px;
     width: auto;
+    aspect-ratio: 1.333;
 }
 
 /* Header escondível ao rolar - REMOVER para mobile */
@@ -248,7 +249,7 @@ body.dark-mode .back-to-top {
 section[id] {
     scroll-margin-top: 72px;
     /* Apenas a altura do header */
-    scroll-snap-margin-top: 72px;
+    scroll-margin-top: 72px;
     /* Para compatibilidade antiga */
 }
 
@@ -564,7 +565,7 @@ section[id] {
 .product-image {
     max-width: 500px;
     width: 100%;
-    height: auto;
+    aspect-ratio: 455 / 549;
     object-fit: contain;
     background: none !important;
     box-shadow: none !important;
@@ -1776,6 +1777,7 @@ body.dark-mode::before {
 
 .markets-image img {
     width: 100%;
+    aspect-ratio: 1.5;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
 }
@@ -2206,7 +2208,7 @@ body.dark-mode .menu-toggle span {
 
 #imprensa .press-card img {
     width: 100%;
-    height: 200px;
+    aspect-ratio: 1.34;
     object-fit: cover;
 }
 
