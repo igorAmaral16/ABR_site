@@ -62,8 +62,8 @@
     padding: 0;
 }
 
+/* REMOVER scroll-behavior do html - isso causa problemas em mobile */
 html {
-    scroll-behavior: smooth;
     overflow-x: hidden;
 }
 
@@ -79,6 +79,9 @@ body {
     max-width: 100vw;
     transition: background-color var(--theme-transition) ease,
         color var(--theme-transition) ease;
+    /* Adicionar para melhor performance de rolagem */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: none;
 }
 
 /* Prevenir overflow horizontal em todos os elementos */
@@ -141,11 +144,17 @@ svg {
     height: 72px;
     background: var(--bg-white);
     border-bottom: 1px solid var(--border-light);
-    position: sticky;
+    position: fixed;
+    /* Alterado de sticky para fixed */
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 1000;
     box-shadow: var(--shadow-sm);
     transition: all var(--theme-transition) ease;
+    /* Melhorar performance */
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .header-inner {
@@ -171,11 +180,13 @@ svg {
     width: auto;
 }
 
-/* Header escondível ao rolar */
-.header.hidden {
-    transform: translateY(-100%);
-    box-shadow: none;
-    pointer-events: none;
+/* Header escondível ao rolar - REMOVER para mobile */
+@media (min-width: 769px) {
+    .header.hidden {
+        transform: translateY(-100%);
+        box-shadow: none;
+        pointer-events: none;
+    }
 }
 
 /* Botão flutuante: voltar ao topo */
@@ -235,8 +246,10 @@ body.dark-mode .back-to-top {
 
 /* Ajuste para scroll ancorado: garantir que a seção apareça abaixo do header */
 section[id] {
-    scroll-margin-top: 84px;
-    /* header 72px + 12px spacing */
+    scroll-margin-top: 72px;
+    /* Apenas a altura do header */
+    scroll-snap-margin-top: 72px;
+    /* Para compatibilidade antiga */
 }
 
 .nav-link {
@@ -311,8 +324,6 @@ section[id] {
     transform: translateY(0);
 }
 
-
-
 .hidden {
     display: none !important;
 }
@@ -326,6 +337,8 @@ section[id] {
     grid-template-columns: minmax(350px, 1fr) minmax(400px, 1.2fr) minmax(300px, 0.8fr);
     gap: 40px;
     align-items: start;
+    /* Adicionar padding-top para compensar header fixo */
+    padding-top: calc(60px + 72px);
 }
 
 /* Painel do Produto */
@@ -340,8 +353,6 @@ section[id] {
     position: relative;
     animation: fadeIn 0.5s ease-out;
     z-index: 5;
-    transform: translateZ(0);
-    will-change: transform;
 }
 
 .product-header {
@@ -494,8 +505,6 @@ section[id] {
     align-items: center;
     justify-content: center;
     animation: slideIn 0.5s ease-out 0.2s both;
-    transform: translateZ(0);
-    will-change: transform;
     box-shadow: none !important;
     background: transparent !important;
 }
@@ -511,9 +520,6 @@ section[id] {
     box-shadow: none !important;
     border: none !important;
     padding: 0 !important;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    perspective: 1000px;
 }
 
 .floating-image-wrapper {
@@ -566,8 +572,6 @@ section[id] {
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
     position: relative;
     z-index: 25;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
 }
 
 .floating-image-wrapper:hover .product-image {
@@ -624,16 +628,25 @@ section[id] {
     z-index: -1;
 }
 
-/* Sidebar do Catálogo */
+/* Sidebar do Catálogo - REMOVER position: sticky em mobile */
 .catalog-sidebar {
-    position: sticky;
-    top: 100px;
+    position: relative;
     height: fit-content;
-    max-height: calc(100vh - 140px);
-    overflow-y: auto;
-    padding-right: 8px;
+    max-height: none;
+    overflow-y: visible;
+    padding-right: 0;
     animation: fadeIn 0.5s ease-out 0.4s both;
     z-index: 5;
+}
+
+@media (min-width: 769px) {
+    .catalog-sidebar {
+        position: sticky;
+        top: 100px;
+        max-height: calc(100vh - 140px);
+        overflow-y: auto;
+        padding-right: 8px;
+    }
 }
 
 .catalog-sidebar::-webkit-scrollbar {
@@ -845,18 +858,6 @@ section[id] {
     }
 }
 
-@keyframes darkModeFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .product-panel,
 .image-viewer,
 .catalog-sidebar {
@@ -955,7 +956,6 @@ body.dark-mode #darkModeToggle {
 body.dark-mode #darkModeToggle:hover {
     background: rgba(77, 166, 255, 0.2);
 }
-
 
 /* Painel do Produto Noturno */
 body.dark-mode .product-panel {
@@ -1183,17 +1183,6 @@ body.dark-mode::before {
     z-index: -1;
 }
 
-/* Badges adicionais */
-body.dark-mode .badge-new {
-    background: linear-gradient(135deg, var(--dark-accent) 0%, #ff704d 100%);
-    color: white;
-}
-
-body.dark-mode .badge-promo {
-    background: linear-gradient(135deg, var(--dark-warning) 0%, #ffb300 100%);
-    color: #000000;
-}
-
 /* ==================== */
 /* ESTILOS PARA PÁGINA DE CATÁLOGO */
 /* ==================== */
@@ -1202,6 +1191,8 @@ body.dark-mode .badge-promo {
     max-width: 1200px;
     margin: 0 auto;
     padding: 80px 32px;
+    padding-top: calc(80px + 72px);
+    /* Compensar header fixo */
 }
 
 .catalog-hero {
@@ -1572,6 +1563,8 @@ body.dark-mode .badge-promo {
     max-width: 1200px;
     margin: 0 auto;
     padding: 80px 32px;
+    padding-top: calc(80px + 72px);
+    /* Compensar header fixo */
 }
 
 .about-hero {
@@ -2139,6 +2132,8 @@ body.dark-mode .menu-toggle span {
     text-align: center;
     background: var(--bg-light);
     margin-bottom: 60px;
+    padding-top: calc(80px + 72px);
+    /* Compensar header fixo */
 }
 
 #imprensa .press-hero-inner {
@@ -2238,6 +2233,8 @@ body.dark-mode .menu-toggle span {
     text-align: center;
     background: var(--bg-light);
     margin-bottom: 60px;
+    padding-top: calc(80px + 72px);
+    /* Compensar header fixo */
 }
 
 #contato .contact-hero .page-title {
@@ -2359,8 +2356,16 @@ body.dark-mode .menu-toggle span {
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-light);
-    position: sticky;
-    top: 100px;
+    position: relative;
+    /* Alterado de sticky para relative em mobile */
+    top: auto;
+}
+
+@media (min-width: 769px) {
+    #contato .contact-info {
+        position: sticky;
+        top: 100px;
+    }
 }
 
 #contato .contact-info h4 {
@@ -2481,6 +2486,8 @@ body.dark-mode .menu-toggle span {
         grid-template-columns: 1fr;
         padding: 40px 20px;
         gap: 32px;
+        padding-top: calc(40px + 72px);
+        /* Compensar header fixo */
     }
 
     .header-inner {
@@ -2577,6 +2584,8 @@ body.dark-mode .menu-toggle span {
     .catalog-container,
     .press-container {
         padding: 40px 20px;
+        padding-top: calc(40px + 72px);
+        /* Compensar header fixo */
     }
 
     .about-title,
@@ -2669,8 +2678,6 @@ body.dark-mode .menu-toggle span {
         width: 36px;
         height: 36px;
     }
-
-
 
     .product-title {
         font-size: 24px;
