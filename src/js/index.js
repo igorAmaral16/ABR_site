@@ -1432,6 +1432,9 @@ class PDFModalManager {
     this.downloadBtn = document.getElementById('downloadPdfBtn');
     this.tabButtons = document.querySelectorAll('.tab-button');
     this.tabContents = document.querySelectorAll('.tab-content');
+    this.isOpen = false;
+    this.touchStartY = 0;
+    this.touchStartX = 0;
     this.init();
   }
 
@@ -1445,6 +1448,7 @@ class PDFModalManager {
 
     if (this.closeBtn) {
       this.closeBtn.addEventListener('click', () => this.closeModal());
+      this.closeBtn.addEventListener('touchstart', () => this.provideHapticFeedback());
     }
 
     if (this.modal) {
@@ -1453,31 +1457,128 @@ class PDFModalManager {
           this.closeModal();
         }
       });
+
+      // Touch events for mobile swipe to close
+      this.modal.addEventListener('touchstart', (e) => {
+        this.touchStartY = e.touches[0].clientY;
+        this.touchStartX = e.touches[0].clientX;
+      }, { passive: true });
+
+      this.modal.addEventListener('touchmove', (e) => {
+        if (!this.isOpen) return;
+
+        const touchY = e.touches[0].clientY;
+        const touchX = e.touches[0].clientX;
+        const deltaY = touchY - this.touchStartY;
+        const deltaX = Math.abs(touchX - this.touchStartX);
+
+        // Only allow swipe down if it's mostly vertical and from top area
+        if (deltaY > 50 && deltaX < 30 && this.touchStartY < 100) {
+          this.closeModal();
+        }
+      }, { passive: true });
     }
 
-    // Tab switching
+    // Tab switching with haptic feedback
     this.tabButtons.forEach(button => {
       button.addEventListener('click', () => {
         const tab = button.getAttribute('data-tab');
         this.switchTab(tab);
+        this.provideHapticFeedback();
+      });
+
+      button.addEventListener('touchstart', () => this.provideHapticFeedback(), { passive: true });
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!this.isOpen) return;
+
+      if (e.key === 'Escape') {
+        this.closeModal();
+      } else if (e.key === 'ArrowLeft') {
+        this.switchToPreviousTab();
+      } else if (e.key === 'ArrowRight') {
+        this.switchToNextTab();
+      }
+    });
+
+    // Populate lists with enhanced links
+    this.populatePDFLists();
+
+    // Prevent body scroll when modal is open
+    this.setupScrollPrevention();
+  }
+
+  setupScrollPrevention() {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          const display = this.modal.style.display;
+          if (display === 'block' && !this.isOpen) {
+            this.isOpen = true;
+            document.body.style.overflow = 'hidden';
+            this.focusTrap();
+          } else if (display === 'none' && this.isOpen) {
+            this.isOpen = false;
+            document.body.style.overflow = '';
+          }
+        }
       });
     });
 
-    // Populate lists
-    this.populatePDFLists();
+    observer.observe(this.modal, {
+      attributes: true,
+      attributeFilter: ['style']
+    });
+  }
+
+  focusTrap() {
+    const focusableElements = this.modal.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    this.modal.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    });
+
+    // Focus first element when modal opens
+    setTimeout(() => {
+      if (firstElement) firstElement.focus();
+    }, 100);
   }
 
   openModal() {
     if (this.modal) {
       this.modal.style.display = 'block';
-      document.body.style.overflow = 'hidden'; // Prevent background scroll
+      this.provideHapticFeedback();
+      // Announce to screen readers
+      this.announceToScreenReader('Modal de download de PDFs aberto');
     }
   }
 
   closeModal() {
     if (this.modal) {
       this.modal.style.display = 'none';
-      document.body.style.overflow = ''; // Restore scroll
+      this.provideHapticFeedback();
+      // Return focus to trigger button
+      if (this.downloadBtn) this.downloadBtn.focus();
+      // Announce to screen readers
+      this.announceToScreenReader('Modal de download de PDFs fechado');
     }
   }
 
@@ -1490,26 +1591,81 @@ class PDFModalManager {
       }
     });
 
-    // Update tab contents
+    // Update tab contents with animation
     this.tabContents.forEach(content => {
-      content.classList.remove('active');
       if (content.id === `${tab}-tab`) {
         content.classList.add('active');
+      } else {
+        content.classList.remove('active');
       }
     });
+
+    // Announce tab change to screen readers
+    const tabName = tab === 'leve' ? 'Linha Leve' : 'Linha Pesada';
+    this.announceToScreenReader(`Aba ${tabName} selecionada`);
+  }
+
+  switchToPreviousTab() {
+    const activeTab = document.querySelector('.tab-button.active');
+    if (activeTab) {
+      const currentTab = activeTab.getAttribute('data-tab');
+      const tabs = ['leve', 'pesada'];
+      const currentIndex = tabs.indexOf(currentTab);
+      const previousIndex = currentIndex === 0 ? tabs.length - 1 : currentIndex - 1;
+      this.switchTab(tabs[previousIndex]);
+    }
+  }
+
+  switchToNextTab() {
+    const activeTab = document.querySelector('.tab-button.active');
+    if (activeTab) {
+      const currentTab = activeTab.getAttribute('data-tab');
+      const tabs = ['leve', 'pesada'];
+      const currentIndex = tabs.indexOf(currentTab);
+      const nextIndex = (currentIndex + 1) % tabs.length;
+      this.switchTab(tabs[nextIndex]);
+    }
   }
 
   populatePDFLists() {
     // Populate leve tab
     const leveList = document.querySelector('#leve-tab .pdf-list');
     if (leveList) {
-      leveOptions.forEach(option => {
+      leveOptions.forEach((option, index) => {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.href = option.url;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
-        a.textContent = option.label;
+        a.setAttribute('aria-label', `Baixar ${option.label} (abre em nova aba)`);
+
+        // Create icon element
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'pdf-icon';
+        iconSpan.innerHTML = '<i class="fa-solid fa-file-pdf" aria-hidden="true"></i>';
+
+        // Create text span
+        const textSpan = document.createElement('span');
+        textSpan.className = 'pdf-text';
+        textSpan.textContent = option.label;
+
+        // Create download icon
+        const downloadSpan = document.createElement('span');
+        downloadSpan.className = 'download-icon';
+        downloadSpan.innerHTML = '<i class="fa-solid fa-download" aria-hidden="true"></i>';
+
+        // Assemble link
+        a.appendChild(iconSpan);
+        a.appendChild(textSpan);
+        a.appendChild(downloadSpan);
+
+        // Add click tracking and loading state
+        a.addEventListener('click', (e) => {
+          this.handlePDFClick(e, option.label);
+        });
+
+        a.addEventListener('touchstart', () => this.provideHapticFeedback(), { passive: true });
+
         li.appendChild(a);
         leveList.appendChild(li);
       });
@@ -1518,17 +1674,90 @@ class PDFModalManager {
     // Populate pesada tab
     const pesadaList = document.querySelector('#pesada-tab .pdf-list');
     if (pesadaList) {
-      pesadaOptions.forEach(option => {
+      pesadaOptions.forEach((option, index) => {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.href = option.url;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
-        a.textContent = option.label;
+        a.setAttribute('aria-label', `Baixar ${option.label} (abre em nova aba)`);
+
+        // Create icon element
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'pdf-icon';
+        iconSpan.innerHTML = '<i class="fa-solid fa-file-pdf" aria-hidden="true"></i>';
+
+        // Create text span
+        const textSpan = document.createElement('span');
+        textSpan.className = 'pdf-text';
+        textSpan.textContent = option.label;
+
+        // Create download icon
+        const downloadSpan = document.createElement('span');
+        downloadSpan.className = 'download-icon';
+        downloadSpan.innerHTML = '<i class="fa-solid fa-download" aria-hidden="true"></i>';
+
+        // Assemble link
+        a.appendChild(iconSpan);
+        a.appendChild(textSpan);
+        a.appendChild(downloadSpan);
+
+        // Add click tracking and loading state
+        a.addEventListener('click', (e) => {
+          this.handlePDFClick(e, option.label);
+        });
+
+        a.addEventListener('touchstart', () => this.provideHapticFeedback(), { passive: true });
+
         li.appendChild(a);
         pesadaList.appendChild(li);
       });
     }
+  }
+
+  handlePDFClick(e, label) {
+    // Provide feedback
+    this.provideHapticFeedback();
+
+    // Visual feedback
+    const link = e.target;
+    link.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+      link.style.transform = '';
+    }, 150);
+
+    // Track download (optional analytics)
+    console.log(`PDF download initiated: ${label}`);
+
+    // Announce to screen readers
+    this.announceToScreenReader(`Iniciando download de ${label}`);
+  }
+
+  provideHapticFeedback() {
+    // Provide tactile feedback if available
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+  }
+
+  announceToScreenReader(message) {
+    // Create temporary element for screen reader announcement
+    const announcement = document.createElement('div');
+    announcement.setAttribute('aria-live', 'polite');
+    announcement.setAttribute('aria-atomic', 'true');
+    announcement.style.position = 'absolute';
+    announcement.style.left = '-10000px';
+    announcement.style.width = '1px';
+    announcement.style.height = '1px';
+    announcement.style.overflow = 'hidden';
+
+    announcement.textContent = message;
+    document.body.appendChild(announcement);
+
+    // Remove after announcement
+    setTimeout(() => {
+      document.body.removeChild(announcement);
+    }, 1000);
   }
 }
 

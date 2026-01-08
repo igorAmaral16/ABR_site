@@ -3023,17 +3023,23 @@ body.dark-mode .spinner {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .modal-content {
     background-color: var(--bg-white);
-    margin: 5% auto;
+    margin: 0 auto;
     padding: 0;
     border-radius: var(--radius-lg);
-    width: 90%;
+    width: 100%;
     max-width: 600px;
+    max-height: 90vh;
     box-shadow: var(--shadow-xl);
     animation: modalFadeIn 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
 }
 
 body.dark-mode .modal-content {
@@ -3044,12 +3050,12 @@ body.dark-mode .modal-content {
 @keyframes modalFadeIn {
     from {
         opacity: 0;
-        transform: translateY(-50px);
+        transform: translateY(-20px) scale(0.95);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -3059,6 +3065,7 @@ body.dark-mode .modal-content {
     align-items: center;
     padding: 20px;
     border-bottom: 1px solid var(--border-light);
+    flex-shrink: 0;
 }
 
 body.dark-mode .modal-header {
@@ -3067,34 +3074,52 @@ body.dark-mode .modal-header {
 
 .modal-header h2 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 600;
 }
 
 .close-modal {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
     cursor: pointer;
     color: var(--text-muted);
     transition: color 0.2s;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin: -8px;
 }
 
 .close-modal:hover {
     color: var(--text-primary);
+    background-color: var(--bg-light);
 }
 
 body.dark-mode .close-modal:hover {
     color: var(--dark-text-primary);
+    background-color: var(--dark-bg-tertiary);
 }
 
 .modal-body {
     padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .modal-tabs {
     display: flex;
     margin-bottom: 20px;
     border-bottom: 1px solid var(--border-light);
+    position: sticky;
+    top: 0;
+    background-color: inherit;
+    z-index: 1;
+    padding-bottom: 10px;
 }
 
 body.dark-mode .modal-tabs {
@@ -3103,32 +3128,63 @@ body.dark-mode .modal-tabs {
 
 .tab-button {
     flex: 1;
-    padding: 10px;
+    padding: 12px 16px;
     background: none;
     border: none;
     cursor: pointer;
     font-weight: 600;
     color: var(--text-muted);
-    transition: color 0.2s, border-bottom 0.2s;
+    transition: all 0.2s ease;
     border-bottom: 2px solid transparent;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    font-size: 0.95rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tab-button:hover {
+    background-color: var(--bg-light);
+    color: var(--text-primary);
 }
 
 .tab-button.active {
     color: var(--primary);
     border-bottom-color: var(--primary);
+    background-color: var(--primary-light);
+}
+
+body.dark-mode .tab-button:hover {
+    background-color: var(--dark-bg-tertiary);
+    color: var(--dark-text-primary);
 }
 
 body.dark-mode .tab-button.active {
     color: var(--dark-primary);
     border-bottom-color: var(--dark-primary);
+    background-color: rgba(77, 166, 255, 0.1);
 }
 
 .tab-content {
     display: none;
+    animation: tabFadeIn 0.3s ease-out;
 }
 
 .tab-content.active {
     display: block;
+}
+
+@keyframes tabFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .pdf-list {
@@ -3138,23 +3194,61 @@ body.dark-mode .tab-button.active {
 }
 
 .pdf-list li {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .pdf-list a {
-    display: block;
-    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
     background-color: var(--bg-light);
     color: var(--text-primary);
     text-decoration: none;
     border-radius: var(--radius-md);
-    transition: background-color 0.2s, color 0.2s;
+    transition: all 0.2s ease;
     font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    min-height: 48px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.pdf-list a .pdf-icon {
+    margin-right: 12px;
+    flex-shrink: 0;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.pdf-list a .pdf-text {
+    flex: 1;
+    font-weight: 500;
+}
+
+.pdf-list a .download-icon {
+    margin-left: auto;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+    color: var(--primary);
+    font-size: 0.9rem;
+    flex-shrink: 0;
 }
 
 .pdf-list a:hover {
     background-color: var(--primary-light);
     color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
+.pdf-list a:hover .download-icon {
+    opacity: 1;
+}
+
+.pdf-list a:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 body.dark-mode .pdf-list a {
@@ -3165,4 +3259,218 @@ body.dark-mode .pdf-list a {
 body.dark-mode .pdf-list a:hover {
     background-color: rgba(77, 166, 255, 0.1);
     color: var(--dark-primary);
+}
+
+body.dark-mode .pdf-list a .pdf-icon,
+body.dark-mode .pdf-list a .download-icon {
+    color: var(--dark-primary);
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+    .tab-button {
+        min-height: 48px;
+    }
+
+    .pdf-list a {
+        min-height: 52px;
+    }
+
+    .pdf-list a .pdf-icon {
+        font-size: 1.2rem;
+    }
+
+    .pdf-list a .download-icon {
+        font-size: 1rem;
+    }
+
+    .close-modal {
+        min-width: 48px;
+        min-height: 48px;
+    }
+}
+
+/* Focus states for accessibility */
+.tab-button:focus,
+.pdf-list a:focus,
+.close-modal:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+body.dark-mode .tab-button:focus,
+body.dark-mode .pdf-list a:focus,
+body.dark-mode .close-modal:focus {
+    outline-color: var(--dark-primary);
+}
+
+/* Loading state for PDF links */
+.pdf-list a.loading {
+    opacity: 0.7;
+    pointer-events: none;
+    position: relative;
+}
+
+.pdf-list a.loading .download-icon {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: auto;
+    opacity: 1;
+}
+
+.pdf-list a.loading .download-icon::before {
+    display: none;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Swipe indicator for mobile */
+@media (max-width: 768px) {
+    .modal-header::after {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 4px;
+        background-color: var(--border-light);
+        border-radius: 2px;
+        opacity: 0.5;
+    }
+
+    body.dark-mode .modal-header::after {
+        background-color: var(--dark-border);
+    }
+}
+
+/* Improved animations for mobile */
+@media (prefers-reduced-motion: no-preference) {
+    .tab-content {
+        animation: tabFadeIn 0.3s ease-out;
+    }
+
+    .pdf-list a:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .modal-content {
+        border: 2px solid;
+    }
+
+    .tab-button.active {
+        border: 2px solid;
+        border-bottom-width: 3px;
+    }
+
+    .pdf-list a {
+        border: 1px solid;
+    }
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+    .modal {
+        padding: 10px;
+    }
+
+    .modal-content {
+        max-height: 95vh;
+        border-radius: var(--radius-md);
+    }
+
+    .modal-header {
+        padding: 16px 20px;
+    }
+
+    .modal-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .close-modal {
+        font-size: 20px;
+        width: 36px;
+        height: 36px;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+
+    .modal-tabs {
+        margin-bottom: 16px;
+    }
+
+    .tab-button {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+        min-height: 40px;
+    }
+
+    .pdf-list a {
+        padding: 14px 16px;
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+
+    .pdf-list a .pdf-icon {
+        font-size: 1.1rem;
+        margin-right: 10px;
+    }
+
+    .pdf-list a .download-icon {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal {
+        padding: 5px;
+    }
+
+    .modal-content {
+        max-height: 98vh;
+        border-radius: var(--radius-sm);
+    }
+
+    .modal-header {
+        padding: 12px 16px;
+    }
+
+    .modal-header h2 {
+        font-size: 1rem;
+    }
+
+    .modal-body {
+        padding: 12px;
+    }
+
+    .tab-button {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        min-height: 36px;
+    }
+
+    .pdf-list a {
+        padding: 12px 14px;
+        font-size: 0.85rem;
+        min-height: 40px;
+    }
+
+    .pdf-list a .pdf-icon {
+        font-size: 1rem;
+        margin-right: 8px;
+    }
 }
