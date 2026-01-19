@@ -2200,6 +2200,7 @@ body.dark-mode .menu-toggle span {
     box-shadow: var(--shadow-md);
     overflow: hidden;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 /* Remover efeitos de hover em mobile para press-card */
@@ -2223,11 +2224,287 @@ body.dark-mode .menu-toggle span {
     margin: 0;
 }
 
-#imprensa .press-card p {
-    padding: 0 25px 25px;
+#imprensa .press-card.expanded {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+/* ==================== */
+/* SEÇÃO REPRESENTANTES */
+/* ==================== */
+
+#representantes .representantes-hero {
+    padding: 80px 0 60px;
+    text-align: center;
+    background: var(--bg-light);
+    margin-bottom: 60px;
+}
+
+#representantes .representantes-hero-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#representantes .representantes-container {
+    padding: 0 20px;
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+#representantes .region-section {
+    margin-bottom: 20px;
+    background: var(--bg-white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+#representantes .region-toggle {
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+#representantes .region-toggle:hover {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    transform: translateX(4px);
+}
+
+#representantes .region-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+#representantes .toggle-icon {
+    transition: transform 0.3s ease;
+    font-size: 14px;
+}
+
+#representantes .region-toggle[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+}
+
+#representantes .region-content {
+    padding: 20px;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+    }
+    to {
+        opacity: 1;
+        max-height: 2000px;
+    }
+}
+
+#representantes .representative-card {
+    background: var(--bg-light);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    margin-bottom: 15px;
+    border-left: 4px solid var(--secondary);
+    transition: all 0.3s ease;
+}
+
+#representantes .representative-card:last-child {
+    margin-bottom: 0;
+}
+
+#representantes .representative-card:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+}
+
+#representantes .rep-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-light);
+}
+
+#representantes .rep-header h3 {
+    color: var(--primary);
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+#representantes .rep-state {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+#representantes .rep-cities {
+    background: white;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 16px;
+    border-left: 3px solid var(--accent);
+}
+
+#representantes .cities-text {
+    font-size: 13px;
     color: var(--text-secondary);
     line-height: 1.6;
+    margin-top: 6px;
+}
+
+#representantes .rep-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#representantes .info-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+#representantes .info-item i {
+    color: var(--primary);
+    font-size: 16px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+#representantes .info-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
     margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#representantes .info-value {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 4px 0 0 0;
+    font-weight: 500;
+}
+
+#representantes .info-value[href] {
+    color: var(--primary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+#representantes .info-value[href]:hover {
+    color: var(--secondary);
+    text-decoration: underline;
+}
+
+/* Dark mode */
+body.dark-mode #representantes .region-section {
+    background: var(--dark-bg-secondary);
+    border-color: var(--dark-border);
+    box-shadow: var(--dark-shadow-sm);
+}
+
+body.dark-mode #representantes .representative-card {
+    background: var(--dark-bg-tertiary);
+}
+
+body.dark-mode #representantes .representative-card:hover {
+    box-shadow: var(--dark-shadow-md);
+}
+
+body.dark-mode #representantes .rep-cities {
+    background: var(--dark-surface);
+}
+
+body.dark-mode #representantes .rep-header {
+    border-bottom-color: var(--dark-border);
+}
+
+body.dark-mode #representantes .rep-state {
+    color: var(--dark-text-muted);
+}
+
+body.dark-mode #representantes .info-value {
+    color: var(--dark-text-primary);
+}
+
+body.dark-mode #representantes .cities-text {
+    color: var(--dark-text-secondary);
+}
+
+/* Mobile responsivo */
+@media (max-width: 768px) {
+    #representantes .representantes-container {
+        padding: 0 15px;
+    }
+
+    #representantes .region-toggle {
+        padding: 16px;
+        font-size: 15px;
+    }
+
+    #representantes .region-name {
+        gap: 10px;
+        font-size: 15px;
+    }
+
+    #representantes .representative-card {
+        padding: 16px;
+        margin-bottom: 12px;
+    }
+
+    #representantes .rep-header {
+        margin-bottom: 12px;
+        gap: 6px;
+    }
+
+    #representantes .rep-header h3 {
+        font-size: 15px;
+    }
+
+    #representantes .rep-state {
+        font-size: 12px;
+    }
+
+    #representantes .info-item {
+        gap: 10px;
+    }
+
+    #representantes .info-item i {
+        font-size: 14px;
+    }
+
+    #representantes .info-label {
+        font-size: 11px;
+    }
+
+    #representantes .info-value {
+        font-size: 13px;
+    }
+
+    #representantes .cities-text {
+        font-size: 12px;
+    }
 }
 
 /* ==================== */

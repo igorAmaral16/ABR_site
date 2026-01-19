@@ -987,10 +987,12 @@ class ProductCarousel {
     }
 
     if (descriptionElement) {
-      descriptionElement.textContent = `A ABR ind. e Comércio é especialista em soluções de vedação automotiva de alta performance.
-Desenvolvemos juntas de cabeçote, anéis O'ring e vedadores especiais para motores.
-Nossos produtos garantem durabilidade, segurança e eficiência em todas as aplicações.
-Atendemos montadoras, reposição e lojas de autopeças.`;
+      descriptionElement.textContent = `A ABR desenvolve juntas e retentores com alta tecnologia para garantir a eficiência da vedação, contribuindo para o máximo desempenho do motor, mesmo em condições extremas.
+
+No mercado OEM, é reconhecida como uma das fornecedoras mais conceituadas do setor, resultado do investimento constante em inovação e da conquista de importantes prêmios de qualidade.
+
+Essa experiência impulsionou a expansão para o Aftermarket, levando ao mercado de reposição o mesmo padrão de desenvolvimento e qualidade para todos os clientes.
+`;
     }
 
     if (imageElement) {
@@ -1001,7 +1003,7 @@ Atendemos montadoras, reposição e lojas de autopeças.`;
 
     setTimeout(() => {
       this.startCarousel();
-    }, 20000); // 20 segundos para a tela inicial
+    }, 50000); // 20 segundos para a tela inicial
   }
 
   startCarousel() {
@@ -1951,6 +1953,123 @@ class PDFModalManager {
   }
 }
 
+class PressCardsManager {
+  constructor() {
+    this.cards = document.querySelectorAll('.press-card');
+    this.maxPreviewLength = 80; // Caracteres para prévia
+    this.init();
+  }
+
+  init() {
+    this.cards.forEach(card => {
+      const description = card.querySelector('.press-description');
+      if (description) {
+        const fullText = description.textContent.trim();
+        description.dataset.fullText = fullText;
+        description.textContent = this.truncateText(fullText, this.maxPreviewLength);
+        card.addEventListener('click', () => this.toggleCard(card));
+      }
+    });
+  }
+
+  truncateText(text, maxLength) {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength).trim() + '...';
+  }
+
+  toggleCard(card) {
+    const description = card.querySelector('.press-description');
+    if (!description) return;
+
+    const isExpanded = card.classList.contains('expanded');
+    const fullText = description.dataset.fullText;
+
+    if (isExpanded) {
+      // Recolher para prévia
+      description.textContent = this.truncateText(fullText, this.maxPreviewLength);
+      card.classList.remove('expanded');
+    } else {
+      // Expandir para texto completo
+      description.textContent = fullText;
+      card.classList.add('expanded');
+    }
+  }
+}
+
+class RepresentantesManager {
+  constructor() {
+    this.regionToggles = document.querySelectorAll('.region-toggle');
+    this.init();
+  }
+
+  init() {
+    this.regionToggles.forEach(toggle => {
+      toggle.addEventListener('click', (e) => {
+        this.toggleRegion(e.currentTarget);
+      });
+
+      // Adicionar suporte a teclado (Enter e Space)
+      toggle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.toggleRegion(e.currentTarget);
+        }
+      });
+    });
+  }
+
+  toggleRegion(toggle) {
+    const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+    const contentId = toggle.getAttribute('aria-controls');
+    const content = document.getElementById(contentId);
+
+    if (!content) return;
+
+    // Fechar outras seções
+    this.regionToggles.forEach(otherToggle => {
+      if (otherToggle !== toggle) {
+        otherToggle.setAttribute('aria-expanded', 'false');
+        const otherId = otherToggle.getAttribute('aria-controls');
+        const otherContent = document.getElementById(otherId);
+        if (otherContent) {
+          otherContent.hidden = true;
+        }
+      }
+    });
+
+    // Toggle da seção atual
+    if (isExpanded) {
+      toggle.setAttribute('aria-expanded', 'false');
+      content.hidden = true;
+    } else {
+      toggle.setAttribute('aria-expanded', 'true');
+      content.hidden = false;
+
+      // Scroll suave para o conteúdo após expansão
+      setTimeout(() => {
+        this.scrollToContent(toggle);
+      }, 300); // Esperar a animação de expansão terminar
+    }
+  }
+
+  scrollToContent(toggle) {
+    const toggleRect = toggle.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const toggleTop = toggleRect.top + window.pageYOffset;
+
+    // Calcular posição ideal: toggle no topo da tela com margem
+    const offset = 100; // Margem do topo
+    const targetScroll = toggleTop - offset;
+
+    // Scroll suave
+    window.scrollTo({
+      top: targetScroll,
+      behavior: 'smooth'
+    });
+  }
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
   // Inicializar gerenciadores
   window.themeManager = new ThemeManager();
@@ -1963,6 +2082,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.scrollManager = new ScrollManager();
   window.productCarousel = new ProductCarousel();
   window.pdfModalManager = new PDFModalManager();
+  window.pressCardsManager = new PressCardsManager();
+  window.representantesManager = new RepresentantesManager();
 });
 
 // ====================
@@ -1978,3 +2099,5 @@ window.AboutFeatures = AboutFeatures;
 window.MenuToggle = MenuToggle;
 window.ProductCarousel = ProductCarousel;
 window.PDFModalManager = PDFModalManager;
+window.PressCardsManager = PressCardsManager;
+window.RepresentantesManager = RepresentantesManager;
