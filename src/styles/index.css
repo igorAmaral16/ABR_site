@@ -2188,39 +2188,6 @@ body.dark-mode .menu-toggle span {
     box-shadow: var(--shadow-lg);
 }
 
-#imprensa .video-placeholder {
-    width: 100%;
-    max-width: 800px;
-    height: 450px;
-    background-size: cover;
-    background-position: center;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    position: relative;
-    cursor: pointer;
-    display: inline-block;
-}
-
-#imprensa .play-button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    font-size: 24px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-#imprensa .play-button:hover {
-    background: rgba(0, 0, 0, 0.9);
-}
-
 #imprensa .press-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -2958,10 +2925,6 @@ body.dark-mode #representantes .cities-text {
         height: 250px;
     }
 
-    .video-placeholder {
-        height: 250px;
-    }
-
     .press-grid {
         grid-template-columns: 1fr;
     }
@@ -3040,10 +3003,6 @@ body.dark-mode #representantes .cities-text {
     }
 
     .press-video iframe {
-        height: 200px;
-    }
-
-    .video-placeholder {
         height: 200px;
     }
 
