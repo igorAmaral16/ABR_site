@@ -2101,3 +2101,29 @@ window.ProductCarousel = ProductCarousel;
 window.PDFModalManager = PDFModalManager;
 window.PressCardsManager = PressCardsManager;
 window.RepresentantesManager = RepresentantesManager;
+
+// ====================
+// VÍDEO LAZY LOAD
+// ====================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const videoPlaceholder = document.getElementById('video-placeholder');
+    if (videoPlaceholder) {
+        videoPlaceholder.addEventListener('click', function() {
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://www.youtube-nocookie.com/embed/jm-ymoKL9rc';
+            iframe.title = 'Vídeo institucional';
+            iframe.frameBorder = '0';
+            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+            iframe.allowFullscreen = true;
+            iframe.style.width = '100%';
+            iframe.style.maxWidth = '800px';
+            iframe.style.height = '450px';
+            iframe.style.borderRadius = 'var(--radius-lg)';
+            iframe.style.boxShadow = 'var(--shadow-lg)';
+
+            // Substituir o placeholder pelo iframe
+            videoPlaceholder.parentNode.replaceChild(iframe, videoPlaceholder);
+        });
+    }
+});
