@@ -767,7 +767,7 @@ class ProductCarousel {
 
     if (descriptionElement) {
       descriptionElement.textContent =
-`A ABR desenvolve juntas e retentores com alta tecnologia para garantir a eficiência da vedação, contribuindo para o máximo desempenho do motor, mesmo em condições extremas.
+        `A ABR desenvolve juntas e retentores com alta tecnologia para garantir a eficiência da vedação, contribuindo para o máximo desempenho do motor, mesmo em condições extremas.
 
 No mercado OEM, é reconhecida como uma das fornecedoras mais conceituadas do setor, resultado do investimento constante em inovação e da conquista de importantes prêmios de qualidade.
 
@@ -1265,6 +1265,7 @@ class PDFModalManager {
     this.tabButtons = document.querySelectorAll('.tab-button');
     this.tabContents = document.querySelectorAll('.tab-content');
     this.isOpen = false;
+    this.scrollLocked = false;
     this.touchStartY = 0;
     this.touchStartX = 0;
     this.init();
@@ -1383,43 +1384,45 @@ class PDFModalManager {
   }
 
   openModal() {
-    if (this.modal) {
-      this.modal.style.display = 'block';
-      this.isOpen = true;
+    if (!this.modal || this.isOpen) return;
 
-      // Esconder o header da página principal
-      this.hideMainHeader();
+    this.modal.style.display = 'block';
+    this.isOpen = true;
 
-      // Impedir completamente qualquer scroll da página de fundo
-      this.preventBackgroundScroll();
+    // Esconder o header da página principal
+    this.hideMainHeader();
 
-      this.provideHapticFeedback();
-      this.focusTrap();
-      // Announce to screen readers
-      this.announceToScreenReader('Modal de download de PDFs aberto');
-    }
+    // Impedir completamente qualquer scroll da página de fundo
+    this.preventBackgroundScroll();
+
+    this.provideHapticFeedback();
+    this.focusTrap();
+    // Announce to screen readers
+    this.announceToScreenReader('Modal de download de PDFs aberto');
   }
 
   closeModal() {
-    if (this.modal) {
-      this.modal.style.display = 'none';
-      this.isOpen = false;
+    if (!this.modal || !this.isOpen) return;
 
-      // Mostrar novamente o header da página principal
-      this.showMainHeader();
+    this.modal.style.display = 'none';
+    this.isOpen = false;
 
-      // Restaurar scroll da página
-      this.restoreBackgroundScroll();
+    // Mostrar novamente o header da página principal
+    this.showMainHeader();
 
-      this.provideHapticFeedback();
-      // Return focus to trigger button
-      if (this.downloadBtn) this.downloadBtn.focus();
-      // Announce to screen readers
-      this.announceToScreenReader('Modal de download de PDFs fechado');
-    }
+    // Restaurar scroll da página
+    this.restoreBackgroundScroll();
+
+    this.provideHapticFeedback();
+    // Return focus to trigger button
+    if (this.downloadBtn) this.downloadBtn.focus();
+    // Announce to screen readers
+    this.announceToScreenReader('Modal de download de PDFs fechado');
   }
 
   preventBackgroundScroll() {
+    if (this.scrollLocked) return;
+    this.scrollLocked = true;
     // Método ultra-robusto para prevenir scroll da página de fundo
     const scrollbarWidth = this.getScrollbarWidth();
 
@@ -1465,9 +1468,14 @@ class PDFModalManager {
 
     // Limpar event listeners
     this.restoreScrollEvents();
+
+    this.scrollLocked = false;
   }
 
   preventScrollEvents() {
+    // Evitar duplicar handlers (ex.: double-click abrindo o modal mais de uma vez)
+    this.restoreScrollEvents();
+
     // Prevenir scroll via múltiplas técnicas
     this.scrollHandlers = {
       wheel: (e) => {
@@ -1901,27 +1909,27 @@ window.RepresentantesManager = RepresentantesManager;
 // VÍDEO LAZY LOAD COM CONSENTIMENTO
 // ====================
 
-document.addEventListener('DOMContentLoaded', function() {
-    const loadVideoBtn = document.getElementById('load-video-btn');
-    if (loadVideoBtn) {
-        loadVideoBtn.addEventListener('click', function() {
-            const videoPlaceholder = document.getElementById('video-placeholder');
-            if (videoPlaceholder) {
-                const iframe = document.createElement('iframe');
-                iframe.src = 'https://www.youtube-nocookie.com/embed/jm-ymoKL9rc';
-                iframe.title = 'Vídeo institucional';
-                iframe.frameBorder = '0';
-                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-                iframe.allowFullscreen = true;
-                iframe.style.width = '100%';
-                iframe.style.maxWidth = '800px';
-                iframe.style.height = videoPlaceholder.offsetHeight + 'px'; // Usar altura atual do placeholder
-                iframe.style.borderRadius = 'var(--radius-lg)';
-                iframe.style.boxShadow = 'var(--shadow-lg)';
+document.addEventListener('DOMContentLoaded', function () {
+  const loadVideoBtn = document.getElementById('load-video-btn');
+  if (loadVideoBtn) {
+    loadVideoBtn.addEventListener('click', function () {
+      const videoPlaceholder = document.getElementById('video-placeholder');
+      if (videoPlaceholder) {
+        const iframe = document.createElement('iframe');
+        iframe.src = 'https://www.youtube-nocookie.com/embed/jm-ymoKL9rc';
+        iframe.title = 'Vídeo institucional';
+        iframe.frameBorder = '0';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        iframe.style.width = '100%';
+        iframe.style.maxWidth = '800px';
+        iframe.style.height = videoPlaceholder.offsetHeight + 'px'; // Usar altura atual do placeholder
+        iframe.style.borderRadius = 'var(--radius-lg)';
+        iframe.style.boxShadow = 'var(--shadow-lg)';
 
-                // Substituir o placeholder pelo iframe
-                videoPlaceholder.parentNode.replaceChild(iframe, videoPlaceholder);
-            }
-        });
-    }
+        // Substituir o placeholder pelo iframe
+        videoPlaceholder.parentNode.replaceChild(iframe, videoPlaceholder);
+      }
+    });
+  }
 });
