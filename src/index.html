@@ -686,6 +686,7 @@
 
                     <div class="press-grid" role="list">
                         <article class="press-card" role="article" aria-labelledby="press-1-title">
+                            <button class="close-btn" aria-label="Fechar card" type="button">&times;</button>
                             <img src="assets/imprensa1.webp" alt="Capa da matéria - ABR entre as 50 melhores"
                                 loading="lazy">
                             <h3 id="press-1-title">ABR entre as 50 melhores</h3>
@@ -703,6 +704,7 @@
                         </article>
 
                         <article class="press-card" role="article" aria-labelledby="press-2-title">
+                            <button class="close-btn" aria-label="Fechar card" type="button">&times;</button>
                             <img src="assets/imprensa3.webp" alt="Capa da matéria - Tricampeã do GM Global"
                                 loading="lazy">
                             <h3 id="press-2-title">Tricampeã do GM Global</h3>
@@ -722,6 +724,7 @@
                         </article>
 
                         <article class="press-card" role="article" aria-labelledby="press-3-title">
+                            <button class="close-btn" aria-label="Fechar card" type="button">&times;</button>
                             <img src="assets/imprensa2.webp" alt="Capa da matéria - Nota Novo Varejo" loading="lazy">
                             <h3 id="press-3-title">Nota Novo Varejo</h3>
                             <p class="press-description">
@@ -1380,6 +1383,46 @@
             </button>
 
             <script src="js/index.js"></script>
+
+            <script>
+                // Press cards expand/collapse com suporte a desktop
+                document.addEventListener('DOMContentLoaded', function () {
+                    const pressGrid = document.querySelector('.press-grid');
+                    if (!pressGrid) return;
+
+                    pressGrid.addEventListener('click', function (e) {
+                        // Verificar se clicou no botão de fechar
+                        const closeBtn = e.target.closest('.close-btn');
+                        if (closeBtn) {
+                            const card = closeBtn.closest('.press-card');
+                            if (card) {
+                                card.classList.remove('expanded');
+                                pressGrid.classList.remove('has-expanded');
+                            }
+                            return;
+                        }
+
+                        // Caso contrário, expandir o card
+                        const card = e.target.closest('.press-card');
+                        if (!card) return;
+
+                        // Fechar todos os outros cards
+                        document.querySelectorAll('.press-card').forEach(c => {
+                            if (c !== card) c.classList.remove('expanded');
+                        });
+
+                        // Toggle do card atual
+                        card.classList.toggle('expanded');
+
+                        // Adicionar classe no grid para desktop
+                        if (card.classList.contains('expanded')) {
+                            pressGrid.classList.add('has-expanded');
+                        } else {
+                            pressGrid.classList.remove('has-expanded');
+                        }
+                    });
+                });
+            </script>
 </body>
 
 </html>

@@ -1780,43 +1780,42 @@ class PDFModalManager {
 
 class PressCardsManager {
   constructor() {
-    this.cards = document.querySelectorAll('.press-card');
-    this.maxPreviewLength = 80; // Caracteres para prévia
-    this.init();
+    setTimeout(() => this.init(), 0);
   }
 
   init() {
-    this.cards.forEach(card => {
-      const description = card.querySelector('.press-description');
-      if (description) {
-        const fullText = description.textContent.trim();
-        description.dataset.fullText = fullText;
-        description.textContent = this.truncateText(fullText, this.maxPreviewLength);
-        card.addEventListener('click', () => this.toggleCard(card));
+    const pressGrid = document.querySelector('.press-grid');
+    if (!pressGrid) {
+      return;
+    }
+
+    pressGrid.addEventListener('click', (event) => {
+      const card = event.target.closest('.press-card');
+      if (card) {
+        event.stopPropagation();
+        this.toggleCard(card, pressGrid);
       }
     });
   }
 
-  truncateText(text, maxLength) {
-    if (text.length <= maxLength) return text;
-    return text.substring(0, maxLength).trim() + '...';
-  }
-
-  toggleCard(card) {
-    const description = card.querySelector('.press-description');
-    if (!description) return;
-
+  toggleCard(card, pressGrid) {
     const isExpanded = card.classList.contains('expanded');
-    const fullText = description.dataset.fullText;
+    const allCards = pressGrid.querySelectorAll('.press-card');
 
+    // Fechar todos os outros cards
+    allCards.forEach(otherCard => {
+      if (otherCard !== card) {
+        otherCard.classList.remove('expanded');
+      }
+    });
+
+    // Toggle do card atual
     if (isExpanded) {
-      // Recolher para prévia
-      description.textContent = this.truncateText(fullText, this.maxPreviewLength);
       card.classList.remove('expanded');
+      pressGrid.classList.remove('has-expanded');
     } else {
-      // Expandir para texto completo
-      description.textContent = fullText;
       card.classList.add('expanded');
+      pressGrid.classList.add('has-expanded');
     }
   }
 }

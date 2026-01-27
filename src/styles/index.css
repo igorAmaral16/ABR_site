@@ -2276,6 +2276,35 @@ html[data-theme="dark"] .menu-toggle span {
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
+    position: relative;
+}
+
+#imprensa .press-card .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+#imprensa .press-card .close-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+#imprensa .press-card.expanded .close-btn {
+    display: flex;
 }
 
 /* Remover efeitos de hover em mobile para press-card */
@@ -2299,9 +2328,67 @@ html[data-theme="dark"] .menu-toggle span {
     margin: 0;
 }
 
+#imprensa .press-description {
+    padding: 0 25px 25px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    opacity: 0;
+}
+
+#imprensa .press-card.expanded .press-description {
+    max-height: 800px;
+    opacity: 1;
+    padding: 15px 25px 25px;
+}
+
 #imprensa .press-card.expanded {
     box-shadow: var(--shadow-lg);
     transform: translateY(-2px);
+}
+
+/* Desktop: Layout expandido lado a lado */
+@media (min-width: 1024px) {
+    #imprensa .press-grid.has-expanded {
+        grid-template-columns: 1fr;
+    }
+
+    #imprensa .press-grid.has-expanded .press-card:not(.expanded) {
+        display: none;
+    }
+
+    #imprensa .press-card.expanded {
+        display: grid;
+        grid-template-columns: 40% 1fr;
+        gap: 0;
+        max-height: 500px;
+        transform: none;
+    }
+
+    #imprensa .press-card.expanded img {
+        width: 100%;
+        aspect-ratio: auto;
+        object-fit: cover;
+        grid-column: 1;
+        grid-row: 1 / 4;
+    }
+
+    #imprensa .press-card.expanded h3 {
+        grid-column: 2;
+        grid-row: 1;
+        padding: 20px 25px 10px 25px;
+    }
+
+    #imprensa .press-card.expanded .press-description {
+        grid-column: 2;
+        grid-row: 2 / 4;
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 0 25px 20px 25px;
+        opacity: 1;
+    }
 }
 
 /* ==================== */
