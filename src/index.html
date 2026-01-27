@@ -766,7 +766,7 @@
                             </span>
                             <i class="toggle-icon fa-solid fa-chevron-down"></i>
                         </button>
-                        <div id="sudeste-content" class="region-content" hidden>
+                        <div id="sudeste-content" class="region-content">
                             <div class="representative-card">
                                 <div class="rep-header">
                                     <h3>Aurea Repres.</h3>
@@ -826,7 +826,7 @@
                             </span>
                             <i class="toggle-icon fa-solid fa-chevron-down"></i>
                         </button>
-                        <div id="sul-content" class="region-content" hidden>
+                        <div id="sul-content" class="region-content">
                             <div class="representative-card">
                                 <div class="rep-header">
                                     <h3>ABR Indústria e Comércio</h3>
@@ -862,7 +862,7 @@
                             </span>
                             <i class="toggle-icon fa-solid fa-chevron-down"></i>
                         </button>
-                        <div id="centro-oeste-content" class="region-content" hidden>
+                        <div id="centro-oeste-content" class="region-content">
                             <div class="representative-card">
                                 <div class="rep-header">
                                     <h3>Osmandino Representações</h3>
@@ -922,7 +922,7 @@
                             </span>
                             <i class="toggle-icon fa-solid fa-chevron-down"></i>
                         </button>
-                        <div id="norte-content" class="region-content" hidden>
+                        <div id="norte-content" class="region-content">
                             <div class="representative-card">
                                 <div class="rep-header">
                                     <h3>Penha Cunha Rep.</h3>
@@ -1034,7 +1034,7 @@
                             </span>
                             <i class="toggle-icon fa-solid fa-chevron-down"></i>
                         </button>
-                        <div id="nordeste-content" class="region-content" hidden>
+                        <div id="nordeste-content" class="region-content">
                             <div class="representative-card">
                                 <div class="rep-header">
                                     <h3>CA Repres.</h3>
@@ -1419,6 +1419,36 @@
                             pressGrid.classList.add('has-expanded');
                         } else {
                             pressGrid.classList.remove('has-expanded');
+                        }
+                    });
+                });
+            </script>
+
+            <!-- Representantes toggle -->
+            <script>
+                const regionToggles = document.querySelectorAll('.region-toggle');
+
+                regionToggles.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const contentId = this.getAttribute('aria-controls');
+                        const content = document.getElementById(contentId);
+
+                        if (!content) return;
+
+                        const isOpen = content.classList.contains('show');
+
+                        // Fechar todos os outros
+                        document.querySelectorAll('.region-content').forEach(el => {
+                            el.classList.remove('show');
+                        });
+                        document.querySelectorAll('.region-toggle').forEach(el => {
+                            el.setAttribute('aria-expanded', 'false');
+                        });
+
+                        // Abrir/Fechar este
+                        if (!isOpen) {
+                            content.classList.add('show');
+                            this.setAttribute('aria-expanded', 'true');
                         }
                     });
                 });

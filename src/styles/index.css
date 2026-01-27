@@ -2463,7 +2463,12 @@ html[data-theme="dark"] .menu-toggle span {
 
 #representantes .region-content {
     padding: 20px;
-    animation: slideDown 0.3s ease-out;
+    display: none;
+    transition: all 0.3s ease-out;
+}
+
+#representantes .region-content.show {
+    display: block;
 }
 
 @keyframes slideDown {
