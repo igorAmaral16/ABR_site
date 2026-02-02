@@ -915,6 +915,279 @@ Essa experiência impulsionou a expansão para o Aftermarket, levando ao mercado
   }
 }
 
+// ====================
+// GERENCIADOR DE REPRESENTANTES
+// ====================
+
+class RepresentantesManager {
+  constructor() {
+    this.regionToggles = document.querySelectorAll('.region-toggle');
+    this.init();
+  }
+
+  init() {
+    this.regionToggles.forEach(button => {
+      button.addEventListener('click', (e) => this.handleToggleClick(e));
+    });
+  }
+
+  handleToggleClick(e) {
+    const button = e.currentTarget;
+    const contentId = button.getAttribute('aria-controls');
+    const content = document.getElementById(contentId);
+
+    if (!content) return;
+
+    const isOpen = content.classList.contains('show');
+
+    // Fechar todos os outros
+    document.querySelectorAll('.region-content').forEach(el => {
+      el.classList.remove('show');
+    });
+    document.querySelectorAll('.region-toggle').forEach(el => {
+      el.setAttribute('aria-expanded', 'false');
+    });
+
+    // Abrir/Fechar este
+    if (!isOpen) {
+      content.classList.add('show');
+      button.setAttribute('aria-expanded', 'true');
+    }
+  }
+}
+
+// ====================
+// ARRAYS DE OPÇÕES DE PDF
+// ====================
+
+const leveOptions = [
+  { label: 'Catálogo Completo Linha Leve', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20LEVE.pdf' },
+  { label: 'Linha FIAT', url: 'https://abr.ind.br/catalogos/pb/2%20-%20FIAT%202019.pdf' },
+  { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/3%20-%20FORD%202019%20site.pdf' },
+  { label: 'Linha GM', url: 'https://abr.ind.br/catalogos/pb/4%20-%20GM%202019.pdf' },
+  { label: 'Linha Honda', url: 'https://abr.ind.br/catalogos/pb/5%20-%20HONDA%202019.pdf' },
+  { label: 'Linha HYNDAI / MITSUBISHI', url: 'https://abr.ind.br/catalogos/pb/6%20-%20HYUNDAI-MITSUBISHI%202019.pdf' },
+  { label: 'Linha ASIA-KIA', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ASIA-KIA%202019.pdf' },
+  { label: 'Linha NISSAN', url: 'https://abr.ind.br/catalogos/pb/8%20-%20NISSAN%202019.pdf' },
+  { label: 'Linha PEUGEOT / CITROEN', url: 'https://abr.ind.br/catalogos/pb/9%20-%20PEUGEOT-CITROEN%202019.pdf' },
+  { label: 'Linha RENAULT', url: 'https://abr.ind.br/catalogos/pb/10%20-%20RENAULT%202019.pdf' },
+  { label: 'Linha SUZUKI', url: 'https://abr.ind.br/catalogos/pb/11%20-%20SUZUKI%202019.pdf' },
+  { label: 'Linha TOYOTA', url: 'https://abr.ind.br/catalogos/pb/12%20-%20TOYOTA%202019.pdf' },
+  { label: 'Linha VOLKSWAGEN', url: 'https://abr.ind.br/catalogos/pb/13%20-%20VOLKSWAGEN%202019.pdf' }
+];
+
+const pesadaOptions = [
+  { label: 'Catálogo Completo Linha Pesada', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20PESADA.pdf' },
+  { label: 'Linha CUMMINS', url: 'https://abr.ind.br/catalogos/pb/1%20-%20ABR%20Catalogo%20CUMMINS.pdf' },
+  { label: 'Linha Mercedes', url: 'https://abr.ind.br/catalogos/pb/2%20-%20ABR%20Catalogo%20MERCEDES.pdf' },
+  { label: 'Linha MWM', url: 'https://abr.ind.br/catalogos/pb/3%20-%20ABR%20Catalogo%20MWM.pdf' },
+  { label: 'Linha MAXION / PERKINS', url: 'https://abr.ind.br/catalogos/pb/4%20-%20ABR%20Catalogo%20MAXION%20PERKINS.pdf' },
+  { label: 'Linha IVECO', url: 'https://abr.ind.br/catalogos/pb/5%20-%20ABR%20Catalogo%20IVECO.pdf' },
+  { label: 'Linha SCANIA', url: 'https://abr.ind.br/catalogos/pb/6%20-%20ABR%20Catalogo%20SCANIA.pdf' },
+  { label: 'Linha JOHN DEERE', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ABR%20Catalogo%20JOHN%20DEERE.pdf' },
+  { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/8%20-%20ABR%20Catalogo%20FORD.pdf' },
+  { label: 'Linha VALTRA', url: 'https://abr.ind.br/catalogos/pb/9%20-%20ABR%20Catalogo%20VALTRA.pdf' }
+];
+
+// ====================
+// GERENCIADOR DO MODAL DE PDF
+// ====================
+
+class PDFModalManager {
+  constructor() {
+    this.modal = document.getElementById('pdfModal');
+    this.closeBtn = document.getElementById('closeModal');
+    this.downloadBtn = document.getElementById('downloadPdfBtn');
+    this.tabButtons = document.querySelectorAll('.tab-button');
+    this.tabContents = document.querySelectorAll('.tab-content');
+    this.isOpen = false;
+    this.scrollLocked = false;
+    this.init();
+  }
+
+  init() {
+    if (this.downloadBtn) {
+      this.downloadBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.openModal();
+      });
+    }
+
+    if (this.closeBtn) {
+      this.closeBtn.addEventListener('click', () => this.closeModal());
+    }
+
+    if (this.modal) {
+      this.modal.addEventListener('click', (e) => {
+        if (e.target === this.modal) {
+          this.closeModal();
+        }
+      });
+    }
+
+    this.tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tab = button.getAttribute('data-tab');
+        this.switchTab(tab);
+      });
+    });
+
+    this.populatePDFLists();
+  }
+
+  openModal() {
+    if (!this.modal || this.isOpen) return;
+    this.modal.style.display = 'block';
+    this.isOpen = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeModal() {
+    if (!this.modal) return;
+    this.modal.style.display = 'none';
+    this.isOpen = false;
+    document.body.style.overflow = '';
+  }
+
+  switchTab(tab) {
+    this.tabButtons.forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.getAttribute('data-tab') === tab) {
+        btn.classList.add('active');
+      }
+    });
+
+    this.tabContents.forEach(content => {
+      if (content.id === `${tab}-tab`) {
+        content.classList.add('active');
+      } else {
+        content.classList.remove('active');
+      }
+    });
+  }
+
+  populatePDFLists() {
+    const leveList = document.querySelector('#leve-tab .pdf-list');
+    if (leveList) {
+      leveOptions.forEach((option) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = option.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'pdf-icon';
+        iconSpan.innerHTML = '<i class="fa-solid fa-file-pdf" aria-hidden="true"></i>';
+
+        const textSpan = document.createElement('span');
+        textSpan.className = 'pdf-text';
+        textSpan.textContent = option.label;
+
+        const downloadSpan = document.createElement('span');
+        downloadSpan.className = 'download-icon';
+        downloadSpan.innerHTML = '<i class="fa-solid fa-download" aria-hidden="true"></i>';
+
+        a.appendChild(iconSpan);
+        a.appendChild(textSpan);
+        a.appendChild(downloadSpan);
+
+        li.appendChild(a);
+        leveList.appendChild(li);
+      });
+    }
+
+    const pesadaList = document.querySelector('#pesada-tab .pdf-list');
+    if (pesadaList) {
+      pesadaOptions.forEach((option) => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = option.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'pdf-icon';
+        iconSpan.innerHTML = '<i class="fa-solid fa-file-pdf" aria-hidden="true"></i>';
+
+        const textSpan = document.createElement('span');
+        textSpan.className = 'pdf-text';
+        textSpan.textContent = option.label;
+
+        const downloadSpan = document.createElement('span');
+        downloadSpan.className = 'download-icon';
+        downloadSpan.innerHTML = '<i class="fa-solid fa-download" aria-hidden="true"></i>';
+
+        a.appendChild(iconSpan);
+        a.appendChild(textSpan);
+        a.appendChild(downloadSpan);
+
+        li.appendChild(a);
+        pesadaList.appendChild(li);
+      });
+    }
+  }
+}
+
+// ====================
+// GERENCIADOR DE CARDS DE IMPRENSA
+// ====================
+
+class PressCardsManager {
+  constructor() {
+    setTimeout(() => this.init(), 0);
+  }
+
+  init() {
+    const pressGrid = document.querySelector('.press-grid');
+    if (!pressGrid) return;
+
+    pressGrid.addEventListener('click', (event) => {
+      const closeBtn = event.target.closest('.close-btn');
+      const card = event.target.closest('.press-card');
+
+      if (!card) return;
+
+      event.stopPropagation();
+
+      if (closeBtn) {
+        this.closeCard(card, pressGrid);
+      } else {
+        this.toggleCard(card, pressGrid);
+      }
+    });
+  }
+
+  toggleCard(card, pressGrid) {
+    const isExpanded = card.classList.contains('expanded');
+    const allCards = pressGrid.querySelectorAll('.press-card');
+
+    // Fechar todos os outros cards
+    allCards.forEach(otherCard => {
+      if (otherCard !== card) {
+        otherCard.classList.remove('expanded');
+      }
+    });
+
+    // Toggle do card atual
+    if (isExpanded) {
+      card.classList.remove('expanded');
+      pressGrid.classList.remove('has-expanded');
+    } else {
+      card.classList.add('expanded');
+      pressGrid.classList.add('has-expanded');
+    }
+  }
+
+  closeCard(card, pressGrid) {
+    card.classList.remove('expanded');
+    const allCards = pressGrid.querySelectorAll('.press-card.expanded');
+    if (allCards.length === 0) {
+      pressGrid.classList.remove('has-expanded');
+    }
+  }
+}
+
 
 document.addEventListener('DOMContentLoaded', function () {
   // ====================
@@ -1096,275 +1369,5 @@ window.ProductCarousel = ProductCarousel;
 window.PDFModalManager = PDFModalManager;
 window.PressCardsManager = PressCardsManager;
 window.RepresentantesManager = RepresentantesManager;
-
-// ====================
-// GERENCIADOR DE REPRESENTANTES
-// ====================
-
-class RepresentantesManager {
-  constructor() {
-    this.regionToggles = document.querySelectorAll('.region-toggle');
-    this.init();
-  }
-
-  init() {
-    this.regionToggles.forEach(button => {
-      button.addEventListener('click', (e) => this.handleToggleClick(e));
-    });
-  }
-
-  handleToggleClick(e) {
-    const button = e.currentTarget;
-    const contentId = button.getAttribute('aria-controls');
-    const content = document.getElementById(contentId);
-
-    if (!content) return;
-
-    const isOpen = content.classList.contains('show');
-
-    // Fechar todos os outros
-    document.querySelectorAll('.region-content').forEach(el => {
-      el.classList.remove('show');
-    });
-    document.querySelectorAll('.region-toggle').forEach(el => {
-      el.setAttribute('aria-expanded', 'false');
-    });
-
-    // Abrir/Fechar este
-    if (!isOpen) {
-      content.classList.add('show');
-      button.setAttribute('aria-expanded', 'true');
-    }
-  }
-}
-
-// ====================
-// VÍDEO LAZY LOAD COM CONSENTIMENTO
-// ====================
-
-// Arrays de opções de PDF
-const leveOptions = [
-  { label: 'Catálogo Completo Linha Leve', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20LEVE.pdf' },
-  { label: 'Linha FIAT', url: 'https://abr.ind.br/catalogos/pb/2%20-%20FIAT%202019.pdf' },
-  { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/3%20-%20FORD%202019%20site.pdf' },
-  { label: 'Linha GM', url: 'https://abr.ind.br/catalogos/pb/4%20-%20GM%202019.pdf' },
-  { label: 'Linha Honda', url: 'https://abr.ind.br/catalogos/pb/5%20-%20HONDA%202019.pdf' },
-  { label: 'Linha HYNDAI / MITSUBISHI', url: 'https://abr.ind.br/catalogos/pb/6%20-%20HYUNDAI-MITSUBISHI%202019.pdf' },
-  { label: 'Linha ASIA-KIA', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ASIA-KIA%202019.pdf' },
-  { label: 'Linha NISSAN', url: 'https://abr.ind.br/catalogos/pb/8%20-%20NISSAN%202019.pdf' },
-  { label: 'Linha PEUGEOT / CITROEN', url: 'https://abr.ind.br/catalogos/pb/9%20-%20PEUGEOT-CITROEN%202019.pdf' },
-  { label: 'Linha RENAULT', url: 'https://abr.ind.br/catalogos/pb/10%20-%20RENAULT%202019.pdf' },
-  { label: 'Linha SUZUKI', url: 'https://abr.ind.br/catalogos/pb/11%20-%20SUZUKI%202019.pdf' },
-  { label: 'Linha TOYOTA', url: 'https://abr.ind.br/catalogos/pb/12%20-%20TOYOTA%202019.pdf' },
-  { label: 'Linha VOLKSWAGEN', url: 'https://abr.ind.br/catalogos/pb/13%20-%20VOLKSWAGEN%202019.pdf' }
-];
-
-const pesadaOptions = [
-  { label: 'Catálogo Completo Linha Pesada', url: 'https://abr.ind.br/catalogos/pb/ABR%20Catalogo%20LINHA%20PESADA.pdf' },
-  { label: 'Linha CUMMINS', url: 'https://abr.ind.br/catalogos/pb/1%20-%20ABR%20Catalogo%20CUMMINS.pdf' },
-  { label: 'Linha Mercedes', url: 'https://abr.ind.br/catalogos/pb/2%20-%20ABR%20Catalogo%20MERCEDES.pdf' },
-  { label: 'Linha MWM', url: 'https://abr.ind.br/catalogos/pb/3%20-%20ABR%20Catalogo%20MWM.pdf' },
-  { label: 'Linha MAXION / PERKINS', url: 'https://abr.ind.br/catalogos/pb/4%20-%20ABR%20Catalogo%20MAXION%20PERKINS.pdf' },
-  { label: 'Linha IVECO', url: 'https://abr.ind.br/catalogos/pb/5%20-%20ABR%20Catalogo%20IVECO.pdf' },
-  { label: 'Linha SCANIA', url: 'https://abr.ind.br/catalogos/pb/6%20-%20ABR%20Catalogo%20SCANIA.pdf' },
-  { label: 'Linha JOHN DEERE', url: 'https://abr.ind.br/catalogos/pb/7%20-%20ABR%20Catalogo%20JOHN%20DEERE.pdf' },
-  { label: 'Linha FORD', url: 'https://abr.ind.br/catalogos/pb/8%20-%20ABR%20Catalogo%20FORD.pdf' },
-  { label: 'Linha VALTRA', url: 'https://abr.ind.br/catalogos/pb/9%20-%20ABR%20Catalogo%20VALTRA.pdf' }
-];
-
-// ====================
-// GERENCIADOR DO MODAL DE PDF
-// ====================
-
-class PDFModalManager {
-  constructor() {
-    this.modal = document.getElementById('pdfModal');
-    this.closeBtn = document.getElementById('closeModal');
-    this.downloadBtn = document.getElementById('downloadPdfBtn');
-    this.tabButtons = document.querySelectorAll('.tab-button');
-    this.tabContents = document.querySelectorAll('.tab-content');
-    this.isOpen = false;
-    this.scrollLocked = false;
-    this.init();
-  }
-
-  init() {
-    if (this.downloadBtn) {
-      this.downloadBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.openModal();
-      });
-    }
-
-    if (this.closeBtn) {
-      this.closeBtn.addEventListener('click', () => this.closeModal());
-    }
-
-    if (this.modal) {
-      this.modal.addEventListener('click', (e) => {
-        if (e.target === this.modal) {
-          this.closeModal();
-        }
-      });
-    }
-
-    this.tabButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const tab = button.getAttribute('data-tab');
-        this.switchTab(tab);
-      });
-    });
-
-    this.populatePDFLists();
-  }
-
-  openModal() {
-    if (!this.modal || this.isOpen) return;
-    this.modal.style.display = 'block';
-    this.isOpen = true;
-    document.body.style.overflow = 'hidden';
-  }
-
-  closeModal() {
-    if (!this.modal) return;
-    this.modal.style.display = 'none';
-    this.isOpen = false;
-    document.body.style.overflow = '';
-  }
-
-  switchTab(tab) {
-    this.tabButtons.forEach(btn => {
-      btn.classList.remove('active');
-      if (btn.getAttribute('data-tab') === tab) {
-        btn.classList.add('active');
-      }
-    });
-
-    this.tabContents.forEach(content => {
-      if (content.id === `${tab}-tab`) {
-        content.classList.add('active');
-      } else {
-        content.classList.remove('active');
-      }
-    });
-  }
-
-  populatePDFLists() {
-    const leveList = document.querySelector('#leve-tab .pdf-list');
-    if (leveList) {
-      leveOptions.forEach((option) => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = option.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-
-        const iconSpan = document.createElement('span');
-        iconSpan.className = 'pdf-icon';
-        iconSpan.innerHTML = '<i class="fa-solid fa-file-pdf" aria-hidden="true"></i>';
-
-        const textSpan = document.createElement('span');
-        textSpan.className = 'pdf-text';
-        textSpan.textContent = option.label;
-
-        const downloadSpan = document.createElement('span');
-        downloadSpan.className = 'download-icon';
-        downloadSpan.innerHTML = '<i class="fa-solid fa-download" aria-hidden="true"></i>';
-
-        a.appendChild(iconSpan);
-        a.appendChild(textSpan);
-        a.appendChild(downloadSpan);
-
-        li.appendChild(a);
-        leveList.appendChild(li);
-      });
-    }
-
-    const pesadaList = document.querySelector('#pesada-tab .pdf-list');
-    if (pesadaList) {
-      pesadaOptions.forEach((option) => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = option.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-
-        const iconSpan = document.createElement('span');
-        iconSpan.className = 'pdf-icon';
-        iconSpan.innerHTML = '<i class="fa-solid fa-file-pdf" aria-hidden="true"></i>';
-
-        const textSpan = document.createElement('span');
-        textSpan.className = 'pdf-text';
-        textSpan.textContent = option.label;
-
-        const downloadSpan = document.createElement('span');
-        downloadSpan.className = 'download-icon';
-        downloadSpan.innerHTML = '<i class="fa-solid fa-download" aria-hidden="true"></i>';
-
-        a.appendChild(iconSpan);
-        a.appendChild(textSpan);
-        a.appendChild(downloadSpan);
-
-        li.appendChild(a);
-        pesadaList.appendChild(li);
-      });
-    }
-  }
-}
-
-class PressCardsManager {
-  constructor() {
-    setTimeout(() => this.init(), 0);
-  }
-
-  init() {
-    const pressGrid = document.querySelector('.press-grid');
-    if (!pressGrid) return;
-
-    pressGrid.addEventListener('click', (event) => {
-      const closeBtn = event.target.closest('.close-btn');
-      const card = event.target.closest('.press-card');
-
-      if (!card) return;
-
-      event.stopPropagation();
-
-      if (closeBtn) {
-        this.closeCard(card, pressGrid);
-      } else {
-        this.toggleCard(card, pressGrid);
-      }
-    });
-  }
-
-  toggleCard(card, pressGrid) {
-    const isExpanded = card.classList.contains('expanded');
-    const allCards = pressGrid.querySelectorAll('.press-card');
-
-    // Fechar todos os outros cards
-    allCards.forEach(otherCard => {
-      if (otherCard !== card) {
-        otherCard.classList.remove('expanded');
-      }
-    });
-
-    // Toggle do card atual
-    if (isExpanded) {
-      card.classList.remove('expanded');
-      pressGrid.classList.remove('has-expanded');
-    } else {
-      card.classList.add('expanded');
-      pressGrid.classList.add('has-expanded');
-    }
-  }
-
-  closeCard(card, pressGrid) {
-    card.classList.remove('expanded');
-    const allCards = pressGrid.querySelectorAll('.press-card.expanded');
-    if (allCards.length === 0) {
-      pressGrid.classList.remove('has-expanded');
-    }
-  }
-}
 
 
