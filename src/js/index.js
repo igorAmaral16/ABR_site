@@ -921,12 +921,12 @@ Essa experiência impulsionou a expansão para o Aftermarket, levando ao mercado
 
 class RepresentantesManager {
   constructor() {
-    this.regionToggles = document.querySelectorAll('.region-toggle');
     this.init();
   }
 
   init() {
-    this.regionToggles.forEach(button => {
+    const regionToggles = document.querySelectorAll('.region-toggle');
+    regionToggles.forEach(button => {
       button.addEventListener('click', (e) => this.handleToggleClick(e));
     });
   }
@@ -940,13 +940,16 @@ class RepresentantesManager {
 
     const isOpen = content.classList.contains('show');
 
-    // Fechar todos os outros
-    document.querySelectorAll('.region-content').forEach(el => {
-      el.classList.remove('show');
-    });
-    document.querySelectorAll('.region-toggle').forEach(el => {
-      el.setAttribute('aria-expanded', 'false');
-    });
+    // Fechar todos os outros (apenas dentro de representantes)
+    const representantesSection = document.querySelector('#representantes');
+    if (representantesSection) {
+      representantesSection.querySelectorAll('.region-content').forEach(el => {
+        el.classList.remove('show');
+      });
+      representantesSection.querySelectorAll('.region-toggle').forEach(el => {
+        el.setAttribute('aria-expanded', 'false');
+      });
+    }
 
     // Abrir/Fechar este
     if (!isOpen) {
@@ -1135,19 +1138,21 @@ class PDFModalManager {
 
 class PressCardsManager {
   constructor() {
-    setTimeout(() => this.init(), 0);
+    this.init();
   }
 
   init() {
     const pressGrid = document.querySelector('.press-grid');
     if (!pressGrid) return;
 
+    // Event delegation consolidado
     pressGrid.addEventListener('click', (event) => {
       const closeBtn = event.target.closest('.close-btn');
       const card = event.target.closest('.press-card');
 
       if (!card) return;
 
+      // Parar propagação apenas para cards de imprensa
       event.stopPropagation();
 
       if (closeBtn) {
@@ -1172,7 +1177,11 @@ class PressCardsManager {
     // Toggle do card atual
     if (isExpanded) {
       card.classList.remove('expanded');
-      pressGrid.classList.remove('has-expanded');
+      // Verificar se ainda há algum card expandido
+      const expandedCards = pressGrid.querySelectorAll('.press-card.expanded');
+      if (expandedCards.length === 0) {
+        pressGrid.classList.remove('has-expanded');
+      }
     } else {
       card.classList.add('expanded');
       pressGrid.classList.add('has-expanded');
@@ -1181,8 +1190,9 @@ class PressCardsManager {
 
   closeCard(card, pressGrid) {
     card.classList.remove('expanded');
-    const allCards = pressGrid.querySelectorAll('.press-card.expanded');
-    if (allCards.length === 0) {
+    // Verificar se ainda há algum card expandido
+    const expandedCards = pressGrid.querySelectorAll('.press-card.expanded');
+    if (expandedCards.length === 0) {
       pressGrid.classList.remove('has-expanded');
     }
   }
