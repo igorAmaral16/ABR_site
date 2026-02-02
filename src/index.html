@@ -1571,46 +1571,10 @@
             <script src="js/index.js"></script>
 
             <script>
-                // Press cards expand/collapse com suporte a desktop
-                document.addEventListener('DOMContentLoaded', function () {
-                    const pressGrid = document.querySelector('.press-grid');
-                    if (!pressGrid) return;
-
-                    pressGrid.addEventListener('click', function (e) {
-                        // Verificar se clicou no botão de fechar
-                        const closeBtn = e.target.closest('.close-btn');
-                        if (closeBtn) {
-                            const card = closeBtn.closest('.press-card');
-                            if (card) {
-                                card.classList.remove('expanded');
-                                pressGrid.classList.remove('has-expanded');
-                            }
-                            return;
-                        }
-
-                        // Caso contrário, expandir o card
-                        const card = e.target.closest('.press-card');
-                        if (!card) return;
-
-                        // Fechar todos os outros cards
-                        document.querySelectorAll('.press-card').forEach(c => {
-                            if (c !== card) c.classList.remove('expanded');
-                        });
-
-                        // Toggle do card atual
-                        card.classList.toggle('expanded');
-
-                        // Adicionar classe no grid para desktop
-                        if (card.classList.contains('expanded')) {
-                            pressGrid.classList.add('has-expanded');
-                        } else {
-                            pressGrid.classList.remove('has-expanded');
-                        }
-                    });
-                });
+                // Press cards gerenciado pela classe PressCardsManager em index.js
+                // Representantes gerenciado pela classe RepresentantesManager em index.js
             </script>
 
-            <!-- Representantes toggle (gerenciado pela classe RepresentantesManager em index.js) -->
 </body>
 
 </html>
